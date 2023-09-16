@@ -1,0 +1,116 @@
+name: Merge dev
+on:
+  push:
+    branches: [RF**, FIX**]
+jobs:
+  correr-test-funcionalidad:
+    name: Correr-test
+    if:  ${{ contains(github.event.head_commit.message, 'DONE') }}
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Instalación de librerías y dependencias-usuarios
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r users/requirements.txt
+      - name: Correr pruebas usuarios
+        id: correr-pruebas-usuarios
+        if: ${{ contains(github.event.head_commit.message, 'DONE') }}
+        run: |
+          cd users
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=80
+
+      - name: Instalación de librerías y dependencias-ofertas
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r offers/requirements.txt
+      - name: Correr pruebas oferas
+        id: correr-pruebas-ofertas
+        if: ${{ contains(github.event.head_commit.message, 'DONE') }}
+        run: |
+          cd offers
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=80
+
+      - name: Instalación de librerías y dependencias-publicaciones
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r servicio_publicaciones/requirements.txt
+      - name: Correr pruebas publicaciones
+        id: correr-pruebas-publicaciones
+        if: ${{ contains(github.event.head_commit.message, 'DONE') }}
+        run: |
+          cd servicio_publicaciones
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=80
+
+      - name: Instalación de librerías y dependencias-trayectos
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r servicio_trayectos/requirements.txt
+      - name: Correr pruebas trayectos
+        id: correr-pruebas-trayectos
+        if: ${{ contains(github.event.head_commit.message, 'DONE') }}
+        run: |
+          cd servicio_trayectos
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=80
+
+      - name: Instalación de librerías y dependencias-public
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r public/requirements.txt
+      - name: Correr pruebas public
+        id: correr-pruebas-public
+        if: ${{ contains(github.event.head_commit.message, 'DONE') }}
+        run: |
+          cd public
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=80
+
+      - name: Validar resultado con errores
+        if: ${{ failure() }}
+        env:
+          MENSAJE_ERROR: Una o varias pruebas fallaron
+        run: echo "::set-output name=respuesta::${MENSAJE_ERROR}"
+      - name: Validar resultado sin errores
+        if: ${{ success() }}
+        env:
+          MENSAJE_EXITO: Todas las pruebas fueron exitosas
+        run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+
+
+  merege-ramafuncion-desarrollo:
+    name: Merge-dev
+    needs: correr-test-funcionalidad
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+    - name: Mezcla ${{ github.ref }} -> develop
+      if: echo ${{needs.correr-test-funcionalidad.outputs.salida}}
+      uses: tukasz/direct-merge-action@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        source-branch: ${{ github.ref }}
+        target-branch: develop
+      env:
+        MENSAJE_MERGE: Merge successful
+
+
+  
+
+
+        
+        
+
+
