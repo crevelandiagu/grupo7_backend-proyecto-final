@@ -36,3 +36,8 @@ def token_user():
 def root():
     return 'pong'
 
+
+@candidate.route('/ping', methods=['GET'])
+def ping():
+    print("hola")
+    return 'pong'
