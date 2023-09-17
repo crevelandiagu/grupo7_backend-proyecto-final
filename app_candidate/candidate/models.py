@@ -12,12 +12,12 @@ class Candidates(db.Model):
     lastname: str = db.Column(db.String(150))
     email: str = db.Column(db.String(150))
 
-    cv_file: str = db.Column(db.String(150), nullable=False)
-    score: str = db.Column(db.String(5), nullable=False)
-    payment_id: str = db.Column(db.String(150), nullable=False)
-    status: str = db.Column(db.String(150), nullable=False)
-    choose_one: str = db.Column(db.Boolean, default=False, nullable=False)
-    course_id: str = db.Column(db.String(150), nullable=False)
+    cv_file: str = db.Column(db.String(150), nullable=True)
+    score: str = db.Column(db.String(5), nullable=True)
+    payment_id: str = db.Column(db.String(150), nullable=True)
+    status: str = db.Column(db.String(150), nullable=True)
+    choose_one: str = db.Column(db.Boolean, default=False, nullable=True)
+    course_id: str = db.Column(db.String(150), nullable=True)
 
     cv: int = db.Column(db.Integer, db.ForeignKey('curriculum_vitae.id'))
 
