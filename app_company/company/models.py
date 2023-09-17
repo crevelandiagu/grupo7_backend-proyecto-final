@@ -8,13 +8,13 @@ class Companies(db.Model):
 
     __tablename__ = 'companies'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name: str = db.Column(db.String(150), nullable=False)
-    nit: str = db.Column(db.String(150), nullable=False)
+    name: str = db.Column(db.String(150), nullable=True)
+    nit: str = db.Column(db.String(150), nullable=True)
     username: str = db.Column(db.String(150))
     email: str = db.Column(db.String(150))
-    number_employees: int = db.Column(db.Integer, nullable=False)
-    core: str = db.Column(db.String(150), nullable=False)
-    senority: str = db.Column(db.String(150), nullable=False)
+    number_employees: int = db.Column(db.Integer, nullable=True)
+    core: str = db.Column(db.String(150), nullable=True)
+    senority: str = db.Column(db.String(150), nullable=True)
     project_id: int = db.Column(db.Integer, db.ForeignKey('projects.id'))
 
     password: str = db.Column(db.Text)
