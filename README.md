@@ -1,5 +1,10 @@
 # ABC Jobs
 
+## Hipotesis 1
+
+En la carpeta app_candidate se encuentra el codigo para la primera hipotesis.
+En la carpeta deployment se encuntre los archivos de k8s para desplegar el ingress y el pod
+de candidate.
 
 ## Tecnologias utilizadas
 1. Postman
