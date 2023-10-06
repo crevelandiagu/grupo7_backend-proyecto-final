@@ -58,7 +58,7 @@ def test_crear_oferta(mock_endpoint_offers,
     mock_endpoint_offers.return_value = (201,
                                          data_returned)
 
-    response = app.test_client().post('/app_interview_process/posts/1/app_performance', json=data_create, headers={"Authorization": f'Bearer {token}'})
+    response = app.test_client().post('/app_selection_process/posts/1/app_performance', json=data_create, headers={"Authorization": f'Bearer {token}'})
     response_info = json.loads(response.data.decode('utf-8'))
     print(response_info)
     assert response.status_code == 201
@@ -112,7 +112,7 @@ def test_crear_oferta_mismo_usuario(mock_endpoint_offers,
     mock_endpoint_offers.return_value = (201,
                                          data_returned)
 
-    response = app.test_client().post('/app_interview_process/posts/1/app_performance', json=data_create, headers={"Authorization": f'Bearer {token}'})
+    response = app.test_client().post('/app_selection_process/posts/1/app_performance', json=data_create, headers={"Authorization": f'Bearer {token}'})
     response_info = json.loads(response.data.decode('utf-8'))
     print(response_info)
     assert response.status_code == 412
@@ -154,7 +154,7 @@ def test_crear_oferta_mal_token(mock_endpoint_offers,
     mock_endpoint_offers.return_value = (201,
                                          data_returned)
 
-    response = app.test_client().post('/app_interview_process/posts/1/app_performance', json=data_create, headers=token)
+    response = app.test_client().post('/app_selection_process/posts/1/app_performance', json=data_create, headers=token)
     assert response.status_code == 401
 
 '''----------- Test create offer success --------------------'''
@@ -197,7 +197,7 @@ def test_crear_oferta_post_no_existe(mock_endpoint_offers,
     mock_endpoint_offers.return_value = (201,
                                          data_returned)
 
-    response = app.test_client().post('/app_interview_process/posts/10/app_performance', json=data_create, headers={"Authorization": f'Bearer {token}'})
+    response = app.test_client().post('/app_selection_process/posts/10/app_performance', json=data_create, headers={"Authorization": f'Bearer {token}'})
     assert response.status_code == 404
 
 def test_wrong_token_post():

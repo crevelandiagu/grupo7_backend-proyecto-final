@@ -6,7 +6,7 @@ from unittest.mock import patch
 fake = Faker()
 
 def test_ping():
-    response = app.test_client().get('/app_interview_process/ping')
+    response = app.test_client().get('/app_selection_process/ping')
     assert response.status_code == 200
     assert response.data.decode('utf-8') == 'pong'
 
@@ -48,7 +48,7 @@ def test_creacion_publicacion_201(mock_posts, mock_journey):
        "Authorization": f'Bearer {token}'
    }
    
-   response = app.test_client().post('/app_interview_process/posts', json=data, headers=header)
+   response = app.test_client().post('/app_selection_process/posts', json=data, headers=header)
    assert response.status_code == 201
 
 #==== creacion_publicacion 400
@@ -71,7 +71,7 @@ def test_creacion_publicacion_400():
        "Authorization": f'Bearer {token}'
    }
    
-   response = app.test_client().post('/app_interview_process/posts', json=data, headers=header)
+   response = app.test_client().post('/app_selection_process/posts', json=data, headers=header)
    assert response.status_code == 400
 
 #==== creacion_publicacion 401
@@ -92,7 +92,7 @@ def test_creacion_publicacion_401():
       "bagCost": fake.random_int(100,10000)
    }
    
-   response = app.test_client().post('/app_interview_process/posts', json=data, headers=header)
+   response = app.test_client().post('/app_selection_process/posts', json=data, headers=header)
    assert response.status_code == 401
 
 #==== creacion_publicacion 412
@@ -131,7 +131,7 @@ def test_creacion_publicacion_201(mock_posts, mock_journey):
        "Authorization": f'Bearer {token}'
    }
    
-   response = app.test_client().post('/app_interview_process/posts', json=data, headers=header)
+   response = app.test_client().post('/app_selection_process/posts', json=data, headers=header)
    assert response.status_code == 412
    
 

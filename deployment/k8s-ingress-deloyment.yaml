@@ -41,7 +41,7 @@ spec:
 #            port:
 #              number: 80
 #      - pathType: Prefix
-#        path: /app_interview_process
+#        path: /app_selection_process
 #        backend:
 #          service:
 #            name: servicio-publicnew

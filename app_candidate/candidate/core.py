@@ -40,13 +40,13 @@ def creacion_usuario(request):
 def autenticar_usuario(request):
     try:
 
-        usuario_auth = Candidates.query.filter(Candidates.username == request.json["username"]).first()
+        usuario_auth = Candidates.query.filter(Candidates.email == request.json["email"]).first()
 
         if usuario_auth is None:
             return {"mensaje": "Usuario con username no exista o contrasena incorrecta"}, 404
 
         password_input = f"{request.json['password']}{usuario_auth.salt}"
-        password = Candidates.query.filter(Candidates.username == request.json["username"],
+        password = Candidates.query.filter(Candidates.email == request.json["email"],
                                          Candidates.password == hashlib.sha256(password_input.encode()).hexdigest()
                                          ).first()
 

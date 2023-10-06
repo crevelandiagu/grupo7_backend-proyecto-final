@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: candidate
-          image: us-central1-docker.pkg.dev/abc-jobs-grupo7/abc-jobs-dockers/python-test:3.0
+          image: s
           ports:
             - containerPort: 3000
           env:

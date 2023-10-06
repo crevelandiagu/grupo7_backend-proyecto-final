@@ -53,7 +53,7 @@ def test_consultar_publicacion(mock_endpoint_offers,
     mock_endpoint_offers.return_value = (200,
                                          DATA_OFFERS)
 
-    response = app.test_client().get('/app_interview_process/posts/1', json=data, headers={"Authorization": f'Bearer {token}'})
+    response = app.test_client().get('/app_selection_process/posts/1', json=data, headers={"Authorization": f'Bearer {token}'})
     response_info = json.loads(response.data.decode('utf-8'))
     print(response_info)
     assert response.status_code == 200
