@@ -14,6 +14,7 @@ de candidate.
 ```
 cuando se construya la imagen 
 
+
 ```shell
 docker run -p 3000:3000 test-python-2 
 ```
