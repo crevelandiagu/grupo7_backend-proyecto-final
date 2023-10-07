@@ -19,7 +19,7 @@ dbname = os.getenv('DB_NAME', 'usuarios_db')
 hostname = os.getenv('DB_HOST', 'db_usuarios')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://admin:admin@db_ofertas:5432/ofertas_db')
 
-if os.getenv('TEST_APP', "True") == 'True':
+if os.getenv('TEST_APP', 'True') == 'True':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = url_posgres
