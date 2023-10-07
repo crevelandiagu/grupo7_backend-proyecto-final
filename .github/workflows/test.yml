@@ -68,6 +68,7 @@ jobs:
       env:
         GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
       run: |
+        cd app_candidate
         gcloud auth configure-docker --quiet
         docker build -t us-central1-docker.pkg.dev/$PORJECT_ID/abc-jobs-dockers/$IMAGE_NAME:latest .
         docker push us-central1-docker.pkg.dev/$PORJECT_ID/abc-jobs-dockers/$IMAGE_NAME:latest
