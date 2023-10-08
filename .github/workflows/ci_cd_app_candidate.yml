@@ -1,7 +1,7 @@
 name: App Candidate
 on:
   push:
-    branches: [RF**, FIX**, develop]
+    branches: [RF**, FIX**]
 jobs:
   test-app-candidate:
     name: Correr-test
@@ -99,7 +99,7 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
         run: |
           cd deployment
-          gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
+          gcloud container clusters get-credentials autopilot-$GOOGLE_PROJECT --region us-central1  --project $GOOGLE_PROJECT
           sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-base-layer-deployment.yaml
           kubectl apply -f k8s-base-layer-deployment.yaml
 
