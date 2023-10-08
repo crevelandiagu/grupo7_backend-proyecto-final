@@ -19,10 +19,15 @@ spec:
     spec:
       containers:
         - name: candidate
-          image: s
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/candidate:latest
           ports:
             - containerPort: 3000
           env:
+            - name: "SQLALCHEMY_DATABASE_URI"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: uri
             - name: USERS_URL
               value: http://servicio-candidates/
           imagePullPolicy: Always

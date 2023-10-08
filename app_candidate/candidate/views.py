@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint
 from flask import request
 
@@ -37,7 +38,7 @@ def root():
     return 'pong'
 
 
-@candidate.route('/ping', methods=['GET'])
+@candidate.route('candidate/ping2', methods=['GET'])
 def ping():
-    print("hola")
-    return 'pong'
+    username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
+    return f'pong {username}'

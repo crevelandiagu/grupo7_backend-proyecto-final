@@ -1,11 +1,11 @@
-name: App Candidate
+name: App Search Tool
 on:
   push:
-    branches: [develop]
+    branches: [RF**, FIX**]
 jobs:
   test-app-candidate:
     name: Correr-test
-    if:  ${{ contains(github.event.head_commit.message, 'app_candidate') }}
+    if:  ${{ contains(github.event.head_commit.message, 'app_search_tool') }}
     runs-on: ubuntu-latest
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
@@ -26,7 +26,7 @@ jobs:
 
       - name: Correr pruebas app_candidate
         id: correr-pruebas-usuarios
-        if: ${{ contains(github.event.head_commit.message, 'app_candidate') }}
+        if: ${{ contains(github.event.head_commit.message, 'app_search_tool') }}
         run: |
           cd app_candidate
           export TEST_APP=True
@@ -44,7 +44,7 @@ jobs:
         run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
 
 
-  ci-cd-app-candidate:
+  ci-app-candidate:
     name: Build and push to GCP
     needs: test-app-candidate
     runs-on: ubuntu-latest
@@ -71,3 +71,51 @@ jobs:
         gcloud auth configure-docker us-central1-docker.pkg.dev
         docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest .
         docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        
+
+  cd-app-candidate:
+    name: Deploy to GCP k8s
+    needs: [test-app-candidate, ci-app-candidate]
+    runs-on: ubuntu-latest
+
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+
+    steps:
+
+      - name: code checkout
+        uses: actions/checkout@v2
+
+      - name: install the gcloud cli
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          install_components: 'gke-gcloud-auth-plugin'
+          export_default_credentials: true
+
+      - name: deploy to gke
+        env:
+          GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
+        run: |
+          cd deployment
+          gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-base-layer-deployment.yaml
+          kubectl apply -f k8s-base-layer-deployment.yaml
+
+  merege-develop:
+    name: Merge-dev
+    needs: [test-app-candidate, ci-app-candidate]
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+      - name: Mezcla ${{ github.ref }} -> develop
+        if: echo ${{needs.correr-test-funcionalidad.outputs.salida}}
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: ${{ github.ref }}
+          target-branch: develop
+        env:
+          MENSAJE_MERGE: Merge successful

@@ -1,0 +1,121 @@
+name: App Company Employees
+on:
+  push:
+    branches: [RF**, FIX**]
+jobs:
+  test-app-candidate:
+    name: Correr-test
+    if:  ${{ contains(github.event.head_commit.message, 'app_company_employees') }}
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+
+    steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Instalación de app_candidate
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r app_candidate/requirements.txt
+
+      - name: Correr pruebas app_candidate
+        id: correr-pruebas-usuarios
+        if: ${{ contains(github.event.head_commit.message, 'app_company_employees') }}
+        run: |
+          cd app_candidate
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=0
+
+      - name: Validar resultado con errores
+        if: ${{ failure() }}
+        env:
+          MENSAJE_ERROR: Una o varias pruebas fallaron
+        run: echo "::set-output name=respuesta::${MENSAJE_ERROR}"
+      - name: Validar resultado sin errores
+        if: ${{ success() }}
+        env:
+          MENSAJE_EXITO: Todas las pruebas fueron exitosas
+        run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+
+
+  ci-app-candidate:
+    name: Build and push to GCP
+    needs: test-app-candidate
+    runs-on: ubuntu-latest
+
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+    - name: code checkout
+      uses: actions/checkout@v2
+
+    - name: install the gcloud cli
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ secrets.PROJECT_ID }}
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        export_default_credentials: true
+
+    - name: build and push the docker image
+      env:
+        GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
+        IMAGE_NAME: candidate
+      run: |
+        cd app_candidate
+        gcloud auth configure-docker us-central1-docker.pkg.dev
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest .
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        
+
+  cd-app-candidate:
+    name: Deploy to GCP k8s
+    needs: [test-app-candidate, ci-app-candidate]
+    runs-on: ubuntu-latest
+
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+
+    steps:
+
+      - name: code checkout
+        uses: actions/checkout@v2
+
+      - name: install the gcloud cli
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          install_components: 'gke-gcloud-auth-plugin'
+          export_default_credentials: true
+
+      - name: deploy to gke
+        env:
+          GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
+        run: |
+          cd deployment
+          gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-base-layer-deployment.yaml
+          kubectl apply -f k8s-base-layer-deployment.yaml
+
+  merege-develop:
+    name: Merge-dev
+    needs: [test-app-candidate, ci-app-candidate]
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+      - name: Mezcla ${{ github.ref }} -> develop
+        if: echo ${{needs.correr-test-funcionalidad.outputs.salida}}
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: ${{ github.ref }}
+          target-branch: develop
+        env:
+          MENSAJE_MERGE: Merge successful
