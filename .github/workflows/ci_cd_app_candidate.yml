@@ -99,7 +99,7 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
         run: |
           cd deployment
-          gcloud container clusters get-credentials autopilot-$GOOGLE_PROJECT --region us-central1  --project $GOOGLE_PROJECT
+          gcloud container clusters get-credentials autopilot-abc-jobs-k8s --region us-central1  --project $GOOGLE_PROJECT
           sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-base-layer-deployment.yaml
           kubectl apply -f k8s-base-layer-deployment.yaml
 
@@ -114,7 +114,7 @@ jobs:
         if: echo ${{needs.correr-test-funcionalidad.outputs.salida}}
         uses: tukasz/direct-merge-action@master
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
           source-branch: ${{ github.ref }}
           target-branch: develop
         env:
