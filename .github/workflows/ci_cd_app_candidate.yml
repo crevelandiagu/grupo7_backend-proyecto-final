@@ -117,11 +117,10 @@ jobs:
     steps:
       - name: Mezcla ${{ github.ref }} -> develop
         if: echo ${{needs.correr-test-funcionalidad.outputs.salida}}
-        uses: tukasz/direct-merge-action@master
+        uses: devmasx/merge-branch@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: ${{ github.ref }}
           target-branch: develop
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
         env:
           MENSAJE_MERGE: Merge successful
