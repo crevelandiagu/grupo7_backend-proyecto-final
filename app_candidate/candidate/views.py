@@ -41,4 +41,4 @@ def root():
 @candidate.route('candidate/ping2', methods=['GET'])
 def ping():
     username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
-    return f'pong3 {username}'
+    return f'pong4 {username}'

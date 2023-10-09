@@ -66,11 +66,11 @@ jobs:
       env:
         GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
         IMAGE_NAME: candidate
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${{ github.run_number }}
       run: |
         cd app_candidate
         gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:IMAGE_TAG -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest .
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest .
         docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME
         
 
