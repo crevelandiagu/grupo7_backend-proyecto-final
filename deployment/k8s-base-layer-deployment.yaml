@@ -20,6 +20,7 @@ spec:
       containers:
         - name: candidate
           image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/candidate:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

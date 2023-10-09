@@ -66,11 +66,12 @@ jobs:
       env:
         GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
         IMAGE_NAME: candidate
+        IMAGE_TAG: ${{ github.sha }}
       run: |
         cd app_candidate
         gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest .
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:IMAGE_TAG -t latest.
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME
         
 
   cd-app-candidate:
@@ -114,8 +115,9 @@ jobs:
         if: echo ${{needs.correr-test-funcionalidad.outputs.salida}}
         uses: tukasz/direct-merge-action@master
         with:
-
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: ${{ github.ref }}
           target-branch: develop
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
         env:
           MENSAJE_MERGE: Merge successful
