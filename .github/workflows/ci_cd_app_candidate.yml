@@ -70,7 +70,7 @@ jobs:
       run: |
         cd app_candidate
         gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:IMAGE_TAG -t latest.
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:IMAGE_TAG -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest .
         docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME
         
 
