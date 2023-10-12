@@ -17,7 +17,7 @@ jobs:
         with:
           type: now
           target_branch: develop
-          message: Merge staging into uat
+          message: Merge staging ${{ github.event.head_commit.message }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
 
