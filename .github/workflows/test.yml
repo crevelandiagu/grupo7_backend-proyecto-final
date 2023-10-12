@@ -1,18 +1,14 @@
-name: Merge dev
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   push:
     branches: [RF**, FIX**]
 jobs:
-
-  merege-ramafuncion-desarrollo:
-    name: Merge-dev
+  merge-branch:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout de repositorio
-        uses: actions/checkout@master
-
-      - name: Mezcla ${{ github.ref }} -> develop
+      - uses: actions/checkout@master
+      - name: Merge staging -> uat
         uses: devmasx/merge-branch@master
         with:
           type: now
@@ -22,14 +18,12 @@ jobs:
 
 
 
-        env:
-          MENSAJE_MERGE: Merge successful
 
 
-  
 
 
-        
-        
+
+
+
 
 
