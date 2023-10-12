@@ -22,22 +22,28 @@ jobs:
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
-    - name: Mezcla ${{ github.ref }} -> develop
+      - name: checkout master branch
+        uses: actions/checkout@master
+      - name: Merge master -> compiled-master
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: ${{ github.ref }}
+          target_branch: develop
+          github_token: ${{ github.token }}
 
-      uses: tukasz/direct-merge-action@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        source-branch: ${{ github.ref }}
-        target-branch: develop
-      env:
-        MENSAJE_MERGE: Merge successful
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ github.token }}
+          branch: 'develop'
 
 
 
-  
 
 
-        
-        
+
+
+
 
 
