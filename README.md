@@ -1,5 +1,27 @@
 # ABC Jobs
 
+## CI/CD
+Se usa el github workflow y para cada microservicio
+y en cada uno se propone los siguientes trabajos
+
+### Test
+
+Se crea un trabajo para  revisar los test unitarios y el coverage del codigo
+si este trabajo no pasa, no se haran los siguientes trabajos
+### Build
+
+Si pasan los test unitarios se creara la imagen y se subira a
+artifact registry
+
+### Deploy
+
+Una vez se suba la nueva imagen se desplegara a travez de kubernetes engine de GCP
+
+### Merge a Develop
+
+A su vez se hara un merge de lo nuevo en develop para sus pruebas de
+integracion y posterior a esto se hara el merge a main.
+
 ## Hipotesis 1
 
 En la carpeta app_candidate se encuentra el codigo para la primera hipotesis.
