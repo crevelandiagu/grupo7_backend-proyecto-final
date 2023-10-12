@@ -1,42 +1,23 @@
-name: Merge dev
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   push:
     branches: [RF**, FIX**]
 jobs:
-  sync-branch:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@master
-
-        - name: Merge development -> staging
-          uses: devmasx/merge-branch@master
-          with:
-            type: now
-            from_branch: ${{ github.ref }}
-            target_branch: development
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-
-  merege-release-main:
-    name: Merge-main
+  merge-branch:
     runs-on: ubuntu-latest
-    outputs:
-      salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
-      - name: checkout master branch
-        uses: actions/checkout@master
-      - name: Merge master -> compiled-master
-        uses: devmasx/merge-branch@v1.3.1
+      - uses: actions/checkout@master
+
+      - name: Merge staging -> uat
+        uses: devmasx/merge-branch@master
         with:
           type: now
-          from_branch: ${{ github.ref }}
           target_branch: develop
-          github_token: ${{ github.token }}
+          message: Merge staging into uat
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ github.token }}
-          branch: 'develop'
+
 
 
 
