@@ -27,8 +27,8 @@ jobs:
       uses: tukasz/direct-merge-action@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        source-branch: release
-        target-branch: main
+        source-branch: ${{ github.ref }}
+        target-branch: develop
       env:
         MENSAJE_MERGE: Merge successful
 
