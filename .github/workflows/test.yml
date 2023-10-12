@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: ${{ github.ref }}
           target-branch: develop
-          message: Merge staging into uat
+          commit-message: Merge staging into uat
         env:
           MENSAJE_MERGE: Merge successful
 
