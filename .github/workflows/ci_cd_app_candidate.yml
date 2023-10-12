@@ -1,4 +1,5 @@
 name: App Candidate
+run-name: ${{ github.actor }} is deploy App Candidate 🚀
 on:
   push:
     branches: [RF**, FIX**]
@@ -124,3 +125,17 @@ jobs:
           target-branch: develop
         env:
           MENSAJE_MERGE: Merge successful
+
+  merge-branch-develop:
+    name: Merge-dev
+    needs: [test-app-candidate, ci-app-candidate]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Mezcla ${{ github.head_ref }} -> develop
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: develop
+          message: Merge ${{ github.head_ref }} into develop
+          github_token: ${{ secrets.GITHUB_TOKEN }}
