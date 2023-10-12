@@ -15,7 +15,6 @@ jobs:
       - name: Mezcla ${{ github.ref }} -> develop
         uses: tukasz/direct-merge-action@master
         with:
-          type: now
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: ${{ github.ref }}
           target-branch: develop
