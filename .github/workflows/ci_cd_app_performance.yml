@@ -2,6 +2,8 @@ name: App Performance
 on:
   push:
     branches: [RF**, FIX**]
+    paths:
+      - 'app_performance/**'
 jobs:
   test-app-candidate:
     name: Correr-test
