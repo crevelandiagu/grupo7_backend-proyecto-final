@@ -2,6 +2,8 @@ name: App Search Tool
 on:
   push:
     branches: [RF**, FIX**]
+    paths:
+      - 'app_search_tool/**'
 jobs:
   test-app-candidate:
     name: Correr-test
