@@ -6,7 +6,6 @@ jobs:
 
   merege-ramafuncion-desarrollo:
     name: Merge-dev
-    needs: correr-test-funcionalidad
     runs-on: ubuntu-latest
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
