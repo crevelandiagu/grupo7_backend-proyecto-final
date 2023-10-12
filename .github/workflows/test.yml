@@ -7,11 +7,10 @@ jobs:
   merege-ramafuncion-desarrollo:
     name: Merge-dev
     runs-on: ubuntu-latest
-    outputs:
-      salida: ${{ steps.imprimir.outputs.respuesta }}
+
     steps:
       - name: Checkout de repositorio
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
       - name: Mezcla ${{ github.ref }} -> develop
         uses: devmasx/merge-branch@master
