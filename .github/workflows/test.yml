@@ -1,0 +1,34 @@
+name: Merge dev
+on:
+  push:
+    branches: [RF**, FIX**]
+jobs:
+
+  merege-ramafuncion-desarrollo:
+    name: Merge-dev
+    needs: correr-test-funcionalidad
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+      - name: Mezcla ${{ github.ref }} -> develop
+        uses: tukasz/direct-merge-action@master
+        with:
+          type: now
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: ${{ github.ref }}
+          target-branch: develop
+          message: Merge staging into uat
+        env:
+          MENSAJE_MERGE: Merge successful
+
+
+  
+
+
+        
+        
+
+
