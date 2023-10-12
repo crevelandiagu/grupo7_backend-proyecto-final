@@ -3,6 +3,18 @@ on:
   push:
     branches: [RF**, FIX**]
 jobs:
+  sync-branch:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@master
+
+        - name: Merge development -> staging
+          uses: devmasx/merge-branch@master
+          with:
+            type: now
+            from_branch: ${{ github.ref }}
+            target_branch: development
+            github_token: ${{ secrets.GITHUB_TOKEN }}
 
   merege-ramafuncion-desarrollo:
     name: Merge-dev
@@ -19,8 +31,6 @@ jobs:
           target_branch: develop
           message: Merge staging ${{ github.event.head_commit.message }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
 
         env:
           MENSAJE_MERGE: Merge successful
