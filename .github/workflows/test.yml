@@ -16,24 +16,22 @@ jobs:
             target_branch: development
             github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  merege-ramafuncion-desarrollo:
-    name: Merge-dev
+  merege-release-main:
+    name: Merge-main
     runs-on: ubuntu-latest
-
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
-      - name: Checkout de repositorio
-        uses: actions/checkout@master
+    - name: Mezcla ${{ github.ref }} -> develop
 
-      - name: Mezcla ${{ github.ref }} -> develop
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          target_branch: develop
-          message: Merge staging ${{ github.event.head_commit.message }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      uses: tukasz/direct-merge-action@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        source-branch: release
+        target-branch: main
+      env:
+        MENSAJE_MERGE: Merge successful
 
-        env:
-          MENSAJE_MERGE: Merge successful
 
 
   
