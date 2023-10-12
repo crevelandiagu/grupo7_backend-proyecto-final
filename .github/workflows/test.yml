@@ -13,12 +13,15 @@ jobs:
       - name: Checkout de repositorio
         uses: actions/checkout@v2
       - name: Mezcla ${{ github.ref }} -> develop
-        uses: tukasz/direct-merge-action@master
+        uses: devmasx/merge-branch@master
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: ${{ github.ref }}
-          target-branch: develop
-          commit-message: Merge staging into uat
+          type: now
+
+          message: Merge staging into uat
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          from_branch: ${{ github.ref }}
+          target_branch: develop
+
         env:
           MENSAJE_MERGE: Merge successful
 
