@@ -15,26 +15,25 @@ def test_ping():
 
 '''----------- Test sign in --------------------'''
 
-#
-# def test_user_singin_201_412():
-#     data = {
-#         "username": fake_data.name(),
-#         "password": fake_data.name(),
-#         "email": fake_data.name()
-#     }
-#
-#     response_data_201= app.test_client().post('/app_company', json=data)
-#     response_info_201 = json.loads(response_data_201.data.decode('utf-8'))
-#
-#     response_data_412 = app.test_client().post('/app_company', json=data)
-#     response_info_412 = json.loads(response_data_412.data.decode('utf-8'))
-#
-#     assert response_data_201.status_code == 201
-#     assert list(response_info_201.keys()) == ['createdAt', 'id']
-#
-#     assert response_data_412.status_code == 412
-#     assert response_info_412['mensaje'] == 'El usuario ya existe, pruebe con otro'
-#
+
+def test_user_singup_201_412():
+    data = {
+        "password": fake_data.password(),
+        "email": fake_data.email()
+    }
+
+    response_data_201= app.test_client().post('/candidate/singup', json=data)
+    response_info_201 = json.loads(response_data_201.data.decode('utf-8'))
+
+    response_data_412 = app.test_client().post('/candidate/singup', json=data)
+    response_info_412 = json.loads(response_data_412.data.decode('utf-8'))
+
+    assert response_data_201.status_code == 201
+    assert list(response_info_201.keys()) == ['createdAt', 'email', 'id', 'mensaje']
+
+    assert response_data_412.status_code == 412
+    assert response_info_412['mensaje'] == 'El usuario ya existe, pruebe con otro'
+
 #
 # def test_user_singin_400():
 #     data = {

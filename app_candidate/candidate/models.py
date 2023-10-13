@@ -8,8 +8,8 @@ class Candidates(db.Model):
 
     __tablename__ = 'candidate'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name: str = db.Column(db.String(150))
-    lastname: str = db.Column(db.String(150))
+    name: str = db.Column(db.String(150), nullable=True)
+    lastname: str = db.Column(db.String(150), nullable=True)
     email: str = db.Column(db.String(150))
 
     cv_file: str = db.Column(db.String(150), nullable=True)

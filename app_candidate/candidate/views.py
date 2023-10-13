@@ -16,7 +16,7 @@ candidate = APIBlueprint('candidate', __name__, url_prefix='/candidate')
 @candidate.post("/singup", tags=[candidate_tag])
 def register_users():
     '''
-    User can register
+    candidate can register
     :return: response
     '''
     response, status = creacion_usuario(request)
@@ -25,6 +25,10 @@ def register_users():
 
 @candidate.post("/login", tags=[candidate_tag])
 def information_user():
+    '''
+    Candidate can login
+    :return: respone
+    '''
     response, status = autenticar_usuario(request)
     return response, status
 
@@ -43,6 +47,10 @@ def post_token_user():
 
 @candidate.get('/ping', tags=[candidate_tag])
 def root():
+    '''
+    Healt Check
+    :return: pong
+    '''
     return 'pong'
 
 
