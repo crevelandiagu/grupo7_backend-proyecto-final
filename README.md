@@ -22,6 +22,19 @@ Una vez se suba la nueva imagen se desplegara a travez de kubernetes engine de G
 A su vez se hara un merge de lo nuevo en develop para sus pruebas de
 integracion y posterior a esto se hara el merge a main.
 
+## Documentacion y coverage
+
+se uso Open Api y Swagger [Open Api Flask](https://luolingchun.github.io/flask-openapi3/v2.x/)
+
+para acceder a la documentacion de plantea lo siguiente
+
+### documentcion api metodos
+/url-proyecto/docs para la docuemntacion de la api. ejemplo candidate/docs/
+
+### docuemntacion coverage
+/url-proyecto/coverage para los test de la api. ejemplo candidate/coverage/
+
+
 ## Hipotesis 1
 
 En la carpeta app_candidate se encuentra el codigo para la primera hipotesis.

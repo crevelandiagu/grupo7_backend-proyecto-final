@@ -49,7 +49,7 @@ def root():
 @candidate.get('/ping2', tags=[candidate_tag])
 def ping():
     username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
-    return f'pong10 {username}'
+    return f'pong11 {username}'
 
 
 @candidate.route('/coverage')
