@@ -11,7 +11,11 @@ ACTIVATE_ENDPOINTS = (('/', candidate),)
 
 info = Info(title="Candidate API", version="0.0.1")
 
-app = OpenAPI(__name__, info=info)
+app = OpenAPI(__name__,
+              info=info,
+              doc_prefix="/candidate/docs"
+              )
+
 app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False

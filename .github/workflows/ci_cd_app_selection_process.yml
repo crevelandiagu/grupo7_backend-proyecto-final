@@ -2,6 +2,8 @@ name: App Selection Process
 on:
   push:
     branches: [RF**, FIX**]
+    paths:
+      - 'app_selection_process/**'
 jobs:
   test-app-candidate:
     name: Correr-test
