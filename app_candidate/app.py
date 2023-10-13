@@ -4,11 +4,14 @@ from flask_cors import CORS
 from candidate import candidate
 from candidate.models import db
 from flask_jwt_extended import JWTManager
+from flask_openapi3 import Info
+from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', candidate),)
 
+info = Info(title="Candidate API", version="0.0.1")
 
-app = Flask(__name__)
+app = OpenAPI(__name__, info=info)
 app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
@@ -40,7 +43,7 @@ cors = CORS(app)
 
 
 for url, blueprint in ACTIVATE_ENDPOINTS:
-    app.register_blueprint(blueprint, url_prefix=url)
+    app.register_api(blueprint)
 
 jwt = JWTManager(app)
 

@@ -120,13 +120,10 @@ jobs:
       - name: Branch name
         run: |
           echo running on branch ${GITHUB_REF##*/}
-          echo ${{ github.head_ref }}
-          echo ${{ github.base_ref }}
-          echo ${{ github.head_ref || github.ref_name }}
-      - name: Mezcla ${{ github.head_ref }} -> develop
+      - name: Mezcla ${GITHUB_REF##*/} -> develop
         uses: devmasx/merge-branch@master
         with:
           type: now
           target_branch: develop
-          message: Merge ${{ github.head_ref }} into develop
+          message: Merge ${GITHUB_REF##*/} into develop
           github_token: ${{ secrets.GITHUB_TOKEN }}
