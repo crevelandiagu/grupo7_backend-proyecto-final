@@ -22,7 +22,7 @@ def test_user_singup_201_412():
         "email": fake_data.email()
     }
 
-    response_data_201= app.test_client().post('/candidate/singup', json=data)
+    response_data_201 = app.test_client().post('/candidate/singup', json=data)
     response_info_201 = json.loads(response_data_201.data.decode('utf-8'))
 
     response_data_412 = app.test_client().post('/candidate/singup', json=data)
@@ -47,52 +47,52 @@ def test_user_singup_201_412():
 #     assert response_info['mensaje'] == "falta 'email'"
 #
 #
-# '''----------- Test log in --------------------'''
-#
-#
-#
-# def test_user_login_200_400():
-#
-#     data = 	{
-#         "username": fake_data.name(),
-#         "password": fake_data.name(),
-#         "email": fake_data.name()
-#     }
-#
-#     app.test_client().post('/app_company', json=data)
-#
-#     data_login = {"username": data['username'],
-#                   "password": data['password'],
-#                   }
-#
-#     response_data_200 = app.test_client().post('/app_company/auth', json=data_login)
-#     response_info_200 = json.loads(response_data_200.data.decode('utf-8'))
-#
-#     data_login_miss = {"username": data['username']
-#                   }
-#
-#     response_data_400 = app.test_client().post('/app_company/auth', json=data_login_miss)
-#     response_info_400 = json.loads(response_data_400.data.decode('utf-8'))
-#
-#     assert response_data_200.status_code == 200
-#     assert len(list(response_info_200.keys())) == 3
-#
-#     assert response_data_400.status_code == 400
-#     assert response_info_400['mensaje'] == "falta 'password'"
-#
-#
-# def test_user_singin_404():
-#     data = {
-#         "username": fake_data.name(),
-#         "password": fake_data.name()
-#     }
-#     response_data_404 = app.test_client().post('/app_company/auth', json=data)
-#     response_info_404 = json.loads(response_data_404.data.decode('utf-8'))
-#
-#     assert response_data_404.status_code == 404
-#     assert response_info_404['mensaje'] == "Usuario con username no exista o contrasena incorrecta"
-#
-#
+'''----------- Test log in --------------------'''
+
+
+
+def test_user_login_200_400():
+
+    data = {
+        "password": fake_data.password(),
+        "email": fake_data.email()
+    }
+
+    app.test_client().post('/candidate/singup', json=data)
+
+    data_login = {"email": data['email'],
+                  "password": data['password'],
+                  }
+
+    response_data_200 = app.test_client().post('/candidate/login', json=data_login)
+    response_info_200 = json.loads(response_data_200.data.decode('utf-8'))
+
+    data_login_miss = {
+        "email": data['email']
+                  }
+
+    response_data_400 = app.test_client().post('/candidate/login', json=data_login_miss)
+    response_info_400 = json.loads(response_data_400.data.decode('utf-8'))
+
+    assert response_data_200.status_code == 200
+    assert len(list(response_info_200.keys())) == 3
+
+    assert response_data_400.status_code == 400
+    assert response_info_400['mensaje'] == "falta 'password'"
+
+
+def test_user_singin_404():
+    data = {
+        "password": fake_data.password(),
+        "email": fake_data.email()
+    }
+    response_data_404 = app.test_client().post('/candidate/login', json=data)
+    response_info_404 = json.loads(response_data_404.data.decode('utf-8'))
+
+    assert response_data_404.status_code == 404
+    assert response_info_404['mensaje'] == "Usuario con username no exista o contrasena incorrecta"
+
+
 # '''----------- Test me --------------------'''
 #
 #
