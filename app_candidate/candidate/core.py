@@ -21,7 +21,7 @@ def creacion_usuario(request):
         valid_password = validate_password(request.json["password"])
 
         if (not valid_password):
-            return {"message": "Password must have at least: 8 characters, 1 uppercase letter, 1 number and 1 special characters"}
+            return {"message": "Password must have at least: 8 characters, 1 uppercase letter, 1 number and 1 special characters"}, 412
         
         existe_email = Candidates.query.filter(Candidates.email == request.json["email"]).first()
         if existe_email is not None:
@@ -37,14 +37,14 @@ def creacion_usuario(request):
         )
         db.session.add(nuevo_usuario)
         db.session.commit()
-        return {"mensaje": "User successfully added",
+        return {"message": "User successfully added",
                 "id": nuevo_usuario.id,                
                 "email": nuevo_usuario.email,
                 "createdAt": datetime.now().isoformat()
                 }, 201
     except Exception as e:
         print(e)
-        return {"mensaje": f"Missing: {e}"}, 400
+        return {"message": f"Missing: {e}"}, 400
 
 
 def autenticar_usuario(request):
