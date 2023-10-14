@@ -22,10 +22,10 @@ def test_user_singup_201_412():
         "email": fake_data.email()
     }
 
-    response_data_201 = app.test_client().post('/candidate/singup', json=data)
+    response_data_201 = app.test_client().post('/candidate/signup', json=data)
     response_info_201 = json.loads(response_data_201.data.decode('utf-8'))
 
-    response_data_412 = app.test_client().post('/candidate/singup', json=data)
+    response_data_412 = app.test_client().post('/candidate/signup', json=data)
     response_info_412 = json.loads(response_data_412.data.decode('utf-8'))
 
     assert response_data_201.status_code == 201
@@ -58,7 +58,7 @@ def test_user_login_200_400():
         "email": fake_data.email()
     }
 
-    app.test_client().post('/candidate/singup', json=data)
+    app.test_client().post('/candidate/signup', json=data)
 
     data_login = {"email": data['email'],
                   "password": data['password'],
