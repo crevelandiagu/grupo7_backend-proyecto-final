@@ -21,7 +21,7 @@ def creacion_usuario(request):
         valid_password = validate_password(request.json["password"])
 
         if (not valid_password):
-            return {"message": "Password must have at least: 8 characters, 1 uppercase letter, 1 number and 1 special characters"}, 412
+            return {"message": "Password must have at least: 8 characters, 1 uppercase letter, 1 number and 1 special character"}, 412
         
         existe_email = Candidates.query.filter(Candidates.email == request.json["email"]).first()
         if existe_email is not None:
