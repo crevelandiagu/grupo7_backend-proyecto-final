@@ -13,7 +13,7 @@ candidate_tag = Tag(name="candidate", description="Some candidate")
 candidate = APIBlueprint('candidate', __name__, url_prefix='/candidate')
 
 
-@candidate.post("/singup", tags=[candidate_tag])
+@candidate.post("/signup", tags=[candidate_tag])
 def register_users():
     '''
     candidate can register

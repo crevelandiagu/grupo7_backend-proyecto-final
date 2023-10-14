@@ -49,3 +49,5 @@ webargs==8.3.0
 Werkzeug==2.2.2
 zope.event==4.6
 zope.interface==5.5.2
+email_validator
+password_strength
