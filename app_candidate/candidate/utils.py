@@ -8,6 +8,7 @@ def validate_email_address(email):
         email_validated=validate_email(email)
         return True, "Valid email"
     except EmailNotValidError as e:
+        print(str(e))
         return False, str(e)
 
 def validate_password(password):
@@ -19,6 +20,10 @@ def validate_password(password):
         special=1,
         nonletters=2
     )
+    if(len(policy.test(password)) != 0):
+        return False
+    return True
+
 
 def validate_cv_fields(request):
 

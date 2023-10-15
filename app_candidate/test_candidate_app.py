@@ -18,8 +18,8 @@ def test_ping():
 
 def test_user_singup_201_412():
     data = {
-        "password": "Abcdef1!",#fake_data.password(),
-        "email": "alguien@algo.com"#fake_data.email()
+        "password": fake_data.password(),
+        "email": fake_data.first_name()+'.'+fake_data.last_name()+"@"+fake_data.last_name()+".com"
     }
 
     response_data_201 = app.test_client().post('/candidate/signup', json=data)
@@ -55,10 +55,14 @@ def test_user_login_200_400():
 
     data = {
         "password": fake_data.password(),
-        "email": fake_data.email()
+        "email": fake_data.first_name()+'.'+fake_data.last_name()+"@"+fake_data.last_name()+".com"
     }
 
-    app.test_client().post('/candidate/signup', json=data)
+    print(data['email'])
+
+    response_create_201 = app.test_client().post('/candidate/signup', json=data)
+
+    assert response_create_201.status_code == 201
 
     data_login = {"email": data['email'],
                   "password": data['password'],
@@ -66,7 +70,7 @@ def test_user_login_200_400():
 
     response_data_200 = app.test_client().post('/candidate/login', json=data_login)
     response_info_200 = json.loads(response_data_200.data.decode('utf-8'))
-
+    
     data_login_miss = {
         "email": data['email']
                   }
@@ -84,7 +88,7 @@ def test_user_login_200_400():
 def test_user_singin_404():
     data = {
         "password": fake_data.password(),
-        "email": fake_data.email()
+        "email": fake_data.first_name()+'.'+fake_data.last_name()+"@"+fake_data.last_name()+".com"
     }
     response_data_404 = app.test_client().post('/candidate/login', json=data)
     response_info_404 = json.loads(response_data_404.data.decode('utf-8'))
