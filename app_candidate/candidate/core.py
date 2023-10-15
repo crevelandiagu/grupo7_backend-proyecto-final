@@ -2,6 +2,7 @@ import secrets
 import hashlib
 from datetime import timedelta, datetime
 from .models import Candidates, db
+from .utils import validate_cv_fields
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 
@@ -74,3 +75,12 @@ def self_information(request):
             "email": 'email'}, 200
 
 
+@jwt_required
+def create_user_cv(request):
+    
+    try:
+        status, cv_values = validate_cv_fields(request)
+        return
+    except Exception as e:
+        print(e)
+        return {"message": f"falta {e}"}, 400
