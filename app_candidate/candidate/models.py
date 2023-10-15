@@ -11,8 +11,8 @@ class Candidates(db.Model):
     name: str = db.Column(db.String(150), nullable=True)
     lastname: str = db.Column(db.String(150), nullable=True)
     email: str = db.Column(db.String(150))
-    birthdate: str = db.Column(db.String(150))
-    nacionality: str = db.Column(db.String(150))
+    birthdate: str = db.Column(db.String(150), nullable=True)
+    nacionality: str = db.Column(db.String(150), nullable=True)
 
     cv_file: str = db.Column(db.String(150), nullable=True)
     score: str = db.Column(db.String(5), nullable=True)

@@ -1,10 +1,9 @@
-
 from .models import CurriculumVitae, db
 from email_validator import validate_email, EmailNotValidError
 from password_strength import PasswordPolicy
 
 def validate_email_address(email):
-
+    
     try:
         email_validated=validate_email(email)
         return True, "Valid email"
