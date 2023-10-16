@@ -4,7 +4,7 @@ from flask import request
 from flask import send_from_directory
 from .core import (creacion_usuario,
                    autenticar_usuario,
-                   self_information)
+                   self_information, create_user_cv)
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 
@@ -13,18 +13,27 @@ candidate_tag = Tag(name="candidate", description="Some candidate")
 candidate = APIBlueprint('candidate', __name__, url_prefix='/candidate')
 
 
-@candidate.post("/singup", tags=[candidate_tag])
+@candidate.post("/signup", tags=[candidate_tag])
 def register_users():
     '''
-    User can register
+    candidate can register
     :return: response
     '''
     response, status = creacion_usuario(request)
     return response, status
 
+@candidate.post("/createcv", tags=[candidate_tag])
+def create_cv():
+
+    response, status = create_user_cv(request)
+    return response, status
 
 @candidate.post("/login", tags=[candidate_tag])
 def information_user():
+    '''
+    Candidate can login
+    :return: respone
+    '''
     response, status = autenticar_usuario(request)
     return response, status
 
@@ -43,6 +52,10 @@ def post_token_user():
 
 @candidate.get('/ping', tags=[candidate_tag])
 def root():
+    '''
+    Healt Check
+    :return: pong
+    '''
     return 'pong'
 
 

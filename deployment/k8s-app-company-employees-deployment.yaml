@@ -1,28 +1,28 @@
 ###################################
-# app_company
+# app_company_employees
 ###################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: company
+  name: company-employees
   labels:
-    app: company
+    app: company-employees
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: company
+      app: company-employees
   template:
     metadata:
       labels:
-        app: company
+        app: company-employees
     spec:
       containers:
-        - name: company
-          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/company:latest
+        - name: company-employees
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/company-employees:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 3001
+            - containerPort: 3002
           env:
             - name: "SQLALCHEMY_DATABASE_URI"
               valueFrom:
@@ -36,27 +36,28 @@ spec:
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: app-company-config
+  name: app-company-employees-config
 spec:
   healthCheck:
     checkIntervalSec: 30
-    port: 3001
+    port: 3002
     type: HTTP
-    requestPath: /company/ping
+    requestPath: /company-employees/ping
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: servicio-app-company
+  name: servicio-app-company-employees
   annotations:
-    cloud.google.com/backend-config: '{"default": "app-company-config"}'
+    cloud.google.com/backend-config: '{"default": "app-company-employees-config"}'
 spec:
   type: NodePort
   selector:
-    app: company
+    app: company-employees
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3001
-      nodePort: 31021
+      targetPort: 3002
+      nodePort: 31022
 ---
+
