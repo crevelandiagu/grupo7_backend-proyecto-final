@@ -9,7 +9,7 @@ from flask_jwt_extended import jwt_required
 
 def creacion_usuario(request):
     try:
-        if not is_validate_password(request.json['password']) and not is_valid_email(request.json["username"]):
+        if not is_validate_password(request.json['password']) and not is_valid_email(request.json["email"]):
             return {"message": "email or password is not validate"}, 412
 
         existe_email = Companies.query.filter(Companies.email == request.json["email"]).first()
