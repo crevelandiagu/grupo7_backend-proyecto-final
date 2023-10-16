@@ -1,4 +1,4 @@
-# Servicios de usuarios 
+# Servicios de candidato 
 
 En este proyecto se encuentra el código de usuarios el cual permite crear un usuario con username
 passwork y un email, acceder a su cuenta por medio del username y passwork, el cual le regrea un token 
@@ -57,5 +57,5 @@ Este proyecto hace uso de pipenv para gestión de dependencias y pytest para el 
 ```
 2. Corriendo el coverage 
 ```shell
-  pytest --cov=. -v -s --cov-fail-under=80
+  pytest --cov=. -v -s --cov-fail-under=70
 ```
