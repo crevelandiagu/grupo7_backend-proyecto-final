@@ -1,0 +1,49 @@
+###################################
+# INGRESS
+###################################
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  labels:
+    name: gateway-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /candidate
+        backend:
+          service:
+            name: servicio-app-candidate
+            port:
+              number: 80
+#      - pathType: Prefix
+#        path: /routes
+#        backend:
+#          service:
+#            name: servicio-project
+#            port:
+#              number: 80
+#      - pathType: Prefix
+#        path: /posts
+#        backend:
+#          service:
+#            name: servicio-company_employees
+#            port:
+#              number: 80
+#      - pathType: Prefix
+#        path: /app_performance
+#        backend:
+#          service:
+#            name: servicio-app_performance
+#            port:
+#              number: 80
+#      - pathType: Prefix
+#        path: /app_selection_process
+#        backend:
+#          service:
+#            name: servicio-publicnew
+#            port:
+#              number: 80

@@ -1,0 +1,63 @@
+###################################
+# publicnew
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: publicnew
+  labels:
+    app: publicnew
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: publicnew
+  template:
+    metadata:
+      labels:
+        app: publicnew
+    spec:
+      containers:
+        - name: publicnew
+          image:
+          ports:
+            - containerPort: 3010
+          env:
+            - name: OFFERS_URL
+              value: http://servicio-offers/
+            - name: USERS_URL
+              value: http://servicio-users/
+            - name: POSTS_URL
+              value: http://servicio-publicaciones/
+            - name: ROUTES_URL
+              value: http://servicio-trayectos/
+          imagePullPolicy: Always
+
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: publicnew-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3010
+    type: HTTP
+    requestPath: /app_selection_process/ping
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicio-publicnew
+  annotations:
+    cloud.google.com/backend-config: '{"default": "publicnew-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: publicnew
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3010
+      nodePort: 31030
+---
