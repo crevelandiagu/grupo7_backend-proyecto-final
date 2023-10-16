@@ -13,7 +13,7 @@ company_tag = Tag(name="company", description="Some company")
 company = APIBlueprint('company', __name__, url_prefix='/company')
 
 
-@company.post("/singup",  tags=[company_tag])
+@company.post("/signup",  tags=[company_tag])
 def register_users():
     '''
     user company can do a acount
