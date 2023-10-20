@@ -14,11 +14,12 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          append_to_pre_release_tag: ''
+          append_to_pre_release_tag:
           default_bump: minor
+          custom_tag: v0.5.2.${GITHUB_REF##*/}
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: v1.1.0
-          name: v1.1.0
+          tag: v1.2.0
+          name: v1.2.0
           body: sprint 1
