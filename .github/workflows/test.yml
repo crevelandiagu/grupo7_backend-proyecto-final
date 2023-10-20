@@ -20,6 +20,6 @@ jobs:
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: v1.2.0
-          name: v1.2.0
+          tag: v1.3.0
+          name: v1.3.0
           body: sprint 1
