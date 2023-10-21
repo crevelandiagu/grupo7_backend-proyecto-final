@@ -1,38 +1,69 @@
+import os
 from flask import Blueprint
 from flask import request
-
+from flask import send_from_directory
 from .core import (creacion_usuario,
                    autenticar_usuario,
                    self_information)
+from flask_openapi3 import Tag
+from flask_openapi3 import APIBlueprint
 
 
-company = Blueprint('company', __name__)
+company_tag = Tag(name="company", description="Some company")
+company = APIBlueprint('company', __name__, url_prefix='/company')
 
 
-
-@company.route("/company/singup", methods=['POST'])
+@company.post("/signup",  tags=[company_tag])
 def register_users():
+    '''
+    user company can do a acount
+    :return: response, status
+    '''
     response, status = creacion_usuario(request)
     return response, status
 
 
-@company.route("/company/login", methods=['POST'])
+@company.post("/login", tags=[company_tag])
 def information_user():
+    '''
+    :return:
+    '''
     response, status = autenticar_usuario(request)
     return response, status
 
 
-@company.route("/company/profile", methods=['POST', 'GET'])
-def token_user():
-    if request.method == 'GET':
-        response, status = {}, 200
-    elif request.method == 'POST':
-        response, status = {}, 200
-    else:
-        response, status = {"error":""}, 400
+@company.get("/profile", tags=[company_tag])
+def get_token_user():
+    response, status = {}, 200
     return response, status
 
 
-@company.route('/company/ping', methods=['GET'])
+@company.post("/profile", tags=[company_tag])
+def post_token_user():
+    response, status = {}, 200
+    return response, status
+
+
+@company.get('/ping', tags=[company_tag])
 def root():
+    '''
+    Healt Check
+    :return: pong
+    '''
     return 'pong'
+
+
+@company.get('/ping2', tags=[company_tag])
+def ping():
+    username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
+    return f'pong12 {username}'
+
+
+@company.route('/coverage')
+def coverage_app():
+    return send_from_directory('./template/', 'index.html')
+
+
+@company.route('/<path>/')
+def coverage_app_files(path):
+    return send_from_directory('./template/', path)

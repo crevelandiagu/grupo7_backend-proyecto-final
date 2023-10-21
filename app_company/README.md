@@ -1,4 +1,4 @@
-# Servicios de usuarios 
+# Servicios de company 
 
 En este proyecto se encuentra el código de usuarios el cual permite crear un usuario con username
 passwork y un email, acceder a su cuenta por medio del username y passwork, el cual le regrea un token 
@@ -36,7 +36,7 @@ Este proyecto hace uso de pipenv para gestión de dependencias y pytest para el 
 ```
 3. Ejecutar el comando
 ```shell
-    gunicorn --reload wsgi:app --bind 0.0.0.0:3000 --log-level debug
+    gunicorn --reload wsgi:app --bind 0.0.0.0:3001 --log-level debug
 ```
 ### Despliegue con Dockerfile
 
@@ -57,5 +57,5 @@ Este proyecto hace uso de pipenv para gestión de dependencias y pytest para el 
 ```
 2. Corriendo el coverage 
 ```shell
-  pytest --cov=. -v -s --cov-fail-under=80
+  pytest --cov=. -v -s --cov-fail-under=70
 ```

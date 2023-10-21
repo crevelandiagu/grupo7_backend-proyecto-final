@@ -4,11 +4,18 @@ from flask_cors import CORS
 from company import company
 from company.models import db
 from flask_jwt_extended import JWTManager
+from flask_openapi3 import Info
+from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', company),)
 
+info = Info(title="Company API", version="0.0.1")
 
-app = Flask(__name__)
+app = OpenAPI(__name__,
+              info=info,
+              doc_prefix="/company/docs"
+              )
+
 app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
@@ -40,7 +47,7 @@ cors = CORS(app)
 
 
 for url, blueprint in ACTIVATE_ENDPOINTS:
-    app.register_blueprint(blueprint, url_prefix=url)
+    app.register_api(blueprint)
 
 jwt = JWTManager(app)
 
