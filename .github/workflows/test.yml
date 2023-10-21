@@ -16,10 +16,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           append_to_pre_release_tag:
           default_bump: minor
-          custom_tag: 0.5.2-${GITHUB_REF##*/}
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: v1.3.0
-          name: v1.3.0
-          body: sprint 1
+#      - name: Create a GitHub release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          tag: v1.3.0
+#          name: v1.3.0
+#          body: sprint 1
