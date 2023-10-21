@@ -1,6 +1,7 @@
-from flask import Blueprint, request
-from .core import *
 import os
+from flask import Blueprint, request
+from flask import send_from_directory
+from .core import *
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 
@@ -12,12 +13,26 @@ projects_tag = Tag(name="projects", description="manage projects")
 projects = APIBlueprint("projects", __name__,url_prefix='/projects')
 
 
-@projects.post("/createproject", tags=[projects_tag])
+@projects.post("/", tags=[projects_tag])
 def create_project():
 
-    #response, status = create_user_cv(request)
-    #return response, status
-    return "Ok", 201
+    '''
+    Company can create projects
+    :return: response
+    '''
+    
+    response, status = create_company_project(request)
+    return response, status
+
+@projects.get("/", tags=[projects_tag])
+def get_projects():
+
+    '''
+    Company can get all its projects
+    :return: response
+    '''
+    response, status = get_company_projects(request)
+    return response, status
 
 
 @projects.get('/ping', tags=[projects_tag])

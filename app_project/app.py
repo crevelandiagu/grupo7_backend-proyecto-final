@@ -24,9 +24,9 @@ app.url_map.strict_slashes = False
 
 username = os.getenv('DB_USER', 'admin')
 password = os.getenv('DB_PASSWORD', 'admin')
-dbname = os.getenv('DB_NAME', 'trayectos_db')
-hostname = os.getenv('DB_HOST', 'db_trayectos')
-url_posgres = os.getenv('DATABASE_URL', 'postgresql://admin:admin@db_trayectos:5432/trayectos_db')
+dbname = os.getenv('DB_NAME', 'projects_db')
+hostname = os.getenv('DB_HOST', 'db_projects')
+url_posgres = os.getenv('DATABASE_URL', 'postgresql://admin:admin@db_projects:5432/projects_db')
 
 if os.getenv('TEST_APP', 'True') == 'True':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
