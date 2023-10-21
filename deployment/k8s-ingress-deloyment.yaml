@@ -23,14 +23,14 @@ spec:
         path: /projects
         backend:
           service:
-            name: servicio-projects
+            name: servicio-app-projects
             port:
               number: 80
       - pathType: Prefix
         path: /company
         backend:
           service:
-            name: servicio-company
+            name: servicio-app-company
             port:
               number: 80
 #      - pathType: Prefix

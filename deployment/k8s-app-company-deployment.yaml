@@ -30,7 +30,7 @@ spec:
                   name: secretdb
                   key: uri
             - name: USERS_URL
-              value: http://servicio-candidates/
+              value: http://servicio-app-company/
 
 ---
 apiVersion: cloud.google.com/v1
@@ -47,7 +47,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: servicio-company
+  name: servicio-app-company
   annotations:
     cloud.google.com/backend-config: '{"default": "app-company-config"}'
 spec:
