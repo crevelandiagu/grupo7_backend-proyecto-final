@@ -9,7 +9,7 @@ from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', candidate),)
 
-info = Info(title="Candidate API", version="0.0.1")
+info = Info(title="Candidate API", version="0.3.1")
 
 app = OpenAPI(__name__,
               info=info,

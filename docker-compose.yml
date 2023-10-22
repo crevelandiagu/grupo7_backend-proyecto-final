@@ -3,6 +3,7 @@ services:
 # -----------------------Servicio candidate -----------------------------
   db_candidate:
     image: postgres
+    restart: always
     environment:
       POSTGRES_DB: candidate_db
       POSTGRES_USER: postgres
@@ -35,76 +36,68 @@ services:
     networks:
       - service_candidate
       - web_global
-#
-## -----------------------Servicio company_employees -----------------------------
-#  db_publicaciones:
-#    image: postgres
-#    restart: always
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
-#      - POSTGRES_DB=publicaciones_db
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-#      interval: 2s
-#      timeout: 5s
-#      retries: 5
-#    networks:
-#      - service_publicaciones
-#
-#  app_publicaciones:
-#    build: app_search_tool/
-#    environment:
-#      DB_NAME: publicaciones_db
-#      DB_HOST: db_publicaciones
-#      DB_PORT: 5432
-#      DB_USER: postgres
-#      DB_PASSWORD: postgres
-#    ports:
-#      - "3001:3001"
-#    expose:
-#      - "3001"
-#    depends_on:
-#      db_publicaciones:
-#        condition: service_healthy
-#    networks:
-#      - service_publicaciones
-#      - web_global
-#
-### -----------------------Servicio project -----------------------------
-#  db_trayectos:
-#    image: postgres
-#    restart: always
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
-#      - POSTGRES_DB=trayectos_db
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-#      interval: 2s
-#      timeout: 5s
-#      retries: 5
-#    networks:
-#      - service_trayectos
-#
-#  app_trayectos:
-#    build: app_project/
-#    environment:
-#      DB_NAME: trayectos_db
-#      DB_HOST: db_trayectos
-#      DB_PORT: 5432
-#      DB_USER: postgres
-#      DB_PASSWORD: postgres
-#    ports:
-#      - "3002:3002"
-#    expose:
-#      - "3002"
-#    depends_on:
-#      db_trayectos:
-#        condition: service_healthy
-#    networks:
-#      - service_trayectos
-#      - web_global
+
+# -----------------------Servicio company -----------------------------
+  db_company:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=company_db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - service_company
+
+  app_company:
+    build: app_company/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_company:5432/company_db
+    ports:
+      - "3001:3001"
+    expose:
+      - "3001"
+    depends_on:
+      db_publicaciones:
+        condition: service_healthy
+    networks:
+      - service_company
+      - web_global
+
+## -----------------------Servicio project -----------------------------
+  db_project:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=project_db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - service_project
+
+  app_trayectos:
+    build: app_project/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_project:5432/project_db
+    ports:
+      - "3007:3007"
+    expose:
+      - "3007"
+    depends_on:
+      db_trayectos:
+        condition: service_healthy
+    networks:
+      - service_project
+      - web_global
 ### -----------------------Servicio candidate -----------------------------
 #  db_usuarios:
 #    image: postgres
@@ -157,9 +150,8 @@ services:
 
 networks:
   service_candidate:
-#  service_publicaciones:
-#  service_trayectos:
-#  service_usuarios:
+  service_company:
+  service_project:
   web_global:
 
 
