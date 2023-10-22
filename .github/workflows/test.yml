@@ -15,7 +15,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           append_to_pre_release_tag:
-          default_bump: minor
+          default_bump: "minor"
 
 #      - name: Create a GitHub release
 #        uses: ncipollo/release-action@v1
