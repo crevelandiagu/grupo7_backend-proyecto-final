@@ -12,13 +12,13 @@ spec:
   rules:
   - http:
       paths:
-      - pathType: Prefix
-        path: /candidate
-        backend:
-          service:
-            name: servicio-app-candidate
-            port:
-              number: 80
+      # - pathType: Prefix
+      #   path: /candidate
+      #   backend:
+      #     service:
+      #       name: servicio-app-candidate
+      #       port:
+      #         number: 80
       - pathType: Prefix
         path: /projects
         backend:
@@ -26,13 +26,13 @@ spec:
             name: servicio-app-projects
             port:
               number: 80
-      - pathType: Prefix
-        path: /company
-        backend:
-          service:
-            name: servicio-app-company
-            port:
-              number: 80
+      # - pathType: Prefix
+      #   path: /company
+      #   backend:
+      #     service:
+      #       name: servicio-app-company
+      #       port:
+      #         number: 80
 #      - pathType: Prefix
 #        path: /app_performance
 #        backend:
