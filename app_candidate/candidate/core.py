@@ -2,39 +2,50 @@ import secrets
 import hashlib
 from datetime import timedelta, datetime
 from .models import Candidates, db
+from .utils import validate_email_address, validate_password
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
+from email_validator import validate_email, EmailNotValidError
+from password_strength import PasswordPolicy
 
 
 def creacion_usuario(request):
     try:
 
+        valid_email = False
+        valid_email, validation_email_mess = validate_email_address(request.json["email"])
+
+        if (not valid_email):
+            return {"message": validation_email_mess}, 412
+
+        valid_password = False
+        valid_password = validate_password(request.json["password"])
+
+        if (not valid_password):
+            return {"message": "Password must have at least: 8 characters, 1 uppercase letter, 1 number and 1 special character"}, 412
+
         existe_email = Candidates.query.filter(Candidates.email == request.json["email"]).first()
         if existe_email is not None:
-            return {"mensaje": "El correo ya existe, pruebe con otro"}, 412
+            return {"message": "Account already exists. Try with a different one"}, 412
 
         salt = secrets.token_hex(8)
         password = f"{request.json['password']}{salt}"
 
         nuevo_usuario = Candidates(
-            name=request.json["name"],
-            lastname=request.json['lastname'],
             email=request.json["email"],
             password=hashlib.sha256(password.encode()).hexdigest(),
             salt=salt,
         )
         db.session.add(nuevo_usuario)
         db.session.commit()
-        return {"mensaje": "usuario creado exitosamente",
+        return {"message": "User successfully added",
                 "id": nuevo_usuario.id,
-                "name": nuevo_usuario.name,
-                "lastname": nuevo_usuario.lastname,
                 "email": nuevo_usuario.email,
                 "createdAt": datetime.now().isoformat()
                 }, 201
     except Exception as e:
         print(e)
-        return {"mensaje": f"falta {e}"}, 400
+        return {"message": f"Missing: {e}"}, 400
 
 
 def autenticar_usuario(request):
@@ -72,5 +83,6 @@ def self_information(request):
     return {"id": 0,
             "username": 'username',
             "email": 'email'}, 200
+
 
 
