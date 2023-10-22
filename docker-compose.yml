@@ -62,7 +62,7 @@ services:
     expose:
       - "3001"
     depends_on:
-      db_publicaciones:
+      db_company:
         condition: service_healthy
     networks:
       - service_company
@@ -93,7 +93,7 @@ services:
     expose:
       - "3007"
     depends_on:
-      db_trayectos:
+      db_project:
         condition: service_healthy
     networks:
       - service_project
