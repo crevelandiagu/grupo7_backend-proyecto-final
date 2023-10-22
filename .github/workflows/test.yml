@@ -15,7 +15,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           append_to_pre_release_tag:
-          custom_tag: 1.1-algo.0
+          custom_tag: 1.1.1-algo
 #      - name: Create a GitHub release
 #        uses: ncipollo/release-action@v1
 #        with:
