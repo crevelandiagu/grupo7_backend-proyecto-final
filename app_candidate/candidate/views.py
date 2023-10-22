@@ -1,4 +1,5 @@
 import os
+import time
 from flask import Blueprint
 from flask import request
 from flask import send_from_directory
@@ -110,6 +111,7 @@ def ping():
 
 @candidate.route('/coverage')
 def coverage_app():
+    os.system('pytest --cov --cov-report=html:template')
     return send_from_directory('./template/', 'index.html')
 
 
