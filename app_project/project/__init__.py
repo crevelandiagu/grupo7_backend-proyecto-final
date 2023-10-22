@@ -1,3 +1,3 @@
-from .views import trayectos
+from .views import projects
 
-__all__ = ['trayectos']
+__all__ = ['projects']

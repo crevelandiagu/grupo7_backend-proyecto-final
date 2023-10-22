@@ -1,83 +1,60 @@
+import secrets
+import hashlib
+from .models import Projects, db, ProjectsSchema
 import requests
 import datetime
-import re
-from sqlalchemy import and_
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import jwt_required
 
-def get_token(headers, users_ip, user_port, user_endpoint):
-  #  print(headers.get('Authorization'))
+projectsSchema = ProjectsSchema()
+
+#@jwt_required
+def create_company_project(request):
+
+    data_project = dict(request.json)
+    projectName = data_project.get('projectName', "")
+    description = data_project.get('description', "")
+
+    if (len(projectName) == 0):
+        return {"message": "Missing project name"}, 412
+
     try:
-        token=headers.get('Authorization').split(" ")[1]
+        companyId = int(data_project.get("companyId", ""))
     except Exception as e:
-        return "Invalid token", 401        
-    response_token= requests.get(f'{users_ip}{user_endpoint}', headers={"Authorization": f'Bearer {token}'})
+        return {"message": "Wrong company id value"}, 412
+
+    new_project = Projects(
+        projectName = projectName,
+        description = description,
+        companyId = companyId
+    )
+    try:
+        db.session.add(new_project)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        return {"message": "Internal server error"}, 500
     
-    if (response_token.status_code == 401):
-        return "Invalid token", 401
+    return {"message": f"Project {projectName} successfully created"}, 201
 
-    return {"user_id":response_token.json()['id']}, 200
+#@jwt_required
+def get_company_projects(request):
 
-
-def query_trayectos(from_, to, when, model):
-
-    filters= []
+    try:
+        companyId = int(request.args.get('companyId', ""))
+    except:
+        return {"message": "Company Id missing or sent with wrong format"}, 400    
     
+    try:
+        companyProjects = Projects.query.filter(Projects.companyId == companyId).all()
+    except Exception as e:
+        return {"message": "Internal server error"}, 500
 
-    if from_:
-        if v_code(from_):
-            filters.append(model.sourceAirportCode.like(from_))
-        else:
-            raise Exception("El parametro from tiene un formato incorrecto")
-           
-    if to:
-        if v_code(to):
-            filters.append(model.destinyAirportCode.like(to))
-        else:
-            raise Exception("El parametro to tiene un formato incorrecto")
-
-    if when:
-        
-        try:
-            datef = datetime.datetime.strptime(when,"%Y-%m-%d")
-         #   print(datef)
-         #    filters.append(model.createAt == datef)
-        except:
-            raise Exception("El parametro when tiene un formato incorrecto")    
-
-    if len(filters) == 0:
-        trayectos = model.query.all()
-        return trayectos
+    if (len(companyProjects) == 0):
+        return {"message": "No projects found"}, 404
     
-    trayectos = model.query.filter(and_(*filters)).all()
+    projectsList = [projectsSchema.dump(proj) for proj in companyProjects]
 
-    return trayectos
-    
-
-
-def v_code(code):
-    return re.match(r'\b[A-Z]{3}\b', code)
+    return projectsList, 200
 
 
-def se_puede_agregar_trayecto(trayecto, model) -> bool:
-
-    date_pc = datetime.date.today()
-   # print(date_pc)
-
-    trayecto_buscado= model.query.filter(
-        (model.sourceCountry == trayecto.sourceCountry) & 
-        (model.destinyCountry == trayecto.destinyCountry)).all()
-
-   # if len(trayecto_buscado) == 0:
-    #    pass
-
-    for tr in trayecto_buscado:
-        date_ex = (tr.createAt + datetime.timedelta(30)).date()
-     #   print(date_ex)
-        if date_ex < date_pc:
-            continue
-        return False
-    
-    return True
-
-
-def va_nombre_pais(nombre_pais):
-    return re.match(r'[a-z]+(\s)?[a-z]*', nombre_pais, re.IGNORECASE)

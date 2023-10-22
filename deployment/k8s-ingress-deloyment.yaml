@@ -19,20 +19,20 @@ spec:
             name: servicio-app-candidate
             port:
               number: 80
-#      - pathType: Prefix
-#        path: /routes
-#        backend:
-#          service:
-#            name: servicio-project
-#            port:
-#              number: 80
-#      - pathType: Prefix
-#        path: /posts
-#        backend:
-#          service:
-#            name: servicio-company_employees
-#            port:
-#              number: 80
+      - pathType: Prefix
+        path: /projects
+        backend:
+          service:
+            name: servicio-app-projects
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /company
+        backend:
+          service:
+            name: servicio-app-company
+            port:
+              number: 80
 #      - pathType: Prefix
 #        path: /app_performance
 #        backend:

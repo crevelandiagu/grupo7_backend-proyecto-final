@@ -1,14 +1,22 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from project import trayectos
+from project import projects
 from project.models import db
+from flask_jwt_extended import JWTManager
+from flask_openapi3 import Info
+from flask_openapi3 import OpenAPI
+
+ACTIVATE_ENDPOINTS = (('/', projects),)
 
 
-ACTIVATE_ENDPOINTS = [trayectos]
+info = Info(title="Candidate API", version="0.0.1")
 
+app = OpenAPI(__name__,
+              info=info,
+              doc_prefix="/projects/docs"
+              )
 
-app = Flask(__name__)
 app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
@@ -16,11 +24,11 @@ app.url_map.strict_slashes = False
 
 username = os.getenv('DB_USER', 'admin')
 password = os.getenv('DB_PASSWORD', 'admin')
-dbname = os.getenv('DB_NAME', 'trayectos_db')
-hostname = os.getenv('DB_HOST', 'db_trayectos')
-url_posgres = os.getenv('DATABASE_URL', 'postgresql://admin:admin@db_trayectos:5432/trayectos_db')
+dbname = os.getenv('DB_NAME', 'projects_db')
+hostname = os.getenv('DB_HOST', 'db_projects')
+url_posgres = os.getenv('DATABASE_URL', 'postgresql://admin:admin@db_projects:5432/projects_db')
 
-if os.getenv('TEST_APP', False) == 'True':
+if os.getenv('TEST_APP', 'True') == 'True':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = url_posgres
@@ -38,8 +46,10 @@ app_context.push()
 cors = CORS(app)
 
 
-for blueprint in ACTIVATE_ENDPOINTS:
-    app.register_blueprint(blueprint=blueprint)
+for url, blueprint in ACTIVATE_ENDPOINTS:
+    app.register_api(blueprint)
+
+jwt = JWTManager(app)
 
 
 
