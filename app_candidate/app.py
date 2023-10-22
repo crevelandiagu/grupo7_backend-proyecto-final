@@ -20,12 +20,10 @@ app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
 
-url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/candidate_db')
+dbname = os.getenv('DB_NAME', 'candidate_db')
+url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-if not os.getenv('TEST_APP'):
-    app.config["SQLALCHEMY_DATABASE_URI"] = url_posgres
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = f"{url_posgres}{dbname}"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'frase-secreta'

@@ -23,7 +23,7 @@ services:
   app_candidate:
     build: app_candidate/
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/candidate_db
+      DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/
     ports:
       - "3000:3000"
     expose:
