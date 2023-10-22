@@ -29,6 +29,11 @@ spec:
                 secretKeyRef:
                   name: secretdb
                   key: uri
+            - name: "DATABASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: DATABASE_URL
             
 
 ---
