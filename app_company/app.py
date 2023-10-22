@@ -20,7 +20,7 @@ app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
 
-dbname = os.getenv('DB_NAME', 'candidate_db')
+dbname = os.getenv('DB_NAME', 'company_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
 if os.getenv('TEST_APP'):
