@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set color
-        id: color-selector
-        run: echo "SELECTED_COLOR=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+      - name: name branch
+        id: name_branch
+        run: echo "NAME_BRANCH=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
 
       - name: Bump version and push tag
         id: tag_version
@@ -19,7 +19,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           append_to_pre_release_tag:
-          custom_tag: 1.1.1-${{ steps.color-selector.outputs.SELECTED_COLOR }}
+          custom_tag: 1.1.1-${{ steps.color-selector.outputs.NAME_BRANCH }}
 
 #      - name: Create a GitHub release
 #        uses: ncipollo/release-action@v1
