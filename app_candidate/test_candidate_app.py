@@ -19,7 +19,7 @@ def test_ping():
 def test_user_singup_201_412():
     data = {
         "password": fake_data.password(),
-        "email": fake_data.first_name()+'.'+fake_data.last_name()+"@"+fake_data.last_name()+".com"
+        "email": f"{fake_data.first_name()}@gmail.com"
     }
 
     response_data_201 = app.test_client().post('/candidate/signup', json=data)
@@ -55,10 +55,8 @@ def test_user_login_200_400():
 
     data = {
         "password": fake_data.password(),
-        "email": fake_data.first_name()+'.'+fake_data.last_name()+"@"+fake_data.last_name()+".com"
+        "email": f"{fake_data.first_name()}@gmail.com"
     }
-
-    print(data['email'])
 
     response_create_201 = app.test_client().post('/candidate/signup', json=data)
 
@@ -97,44 +95,117 @@ def test_user_singin_404():
     assert response_info_404['mensaje'] == "Usuario con username no exista o contrasena incorrecta"
 
 
-# '''----------- Test me --------------------'''
-#
-#
-# def test_user_me_200_401():
-#
-#     data = {"username": fake_data.name(),
-#             "password": fake_data.name(),
-#             "email": fake_data.name()}
-#
-#     app.test_client().post('/app_company', json=data)
-#
-#     data_login = {"username": data['username'],
-#                   "password": data['password'],
-#                   }
-#
-#     response_data = app.test_client().post('/app_company/auth', json=data_login)
-#     response_info = json.loads(response_data.data.decode('utf-8'))
-#
-#     response_data_200 = app.test_client().get("/app_company/me", headers={"Authorization": "Basic {}".format(response_info['token'])})
-#     response_info_200 = json.loads(response_data_200.data.decode('utf-8'))
-#
-#     assert response_data_200.status_code == 200
-#     assert len(list(response_info_200.keys())) == 3
-#
-#
-# def test_user_me_400():
-#
-#     response_data_400 = app.test_client().get("/app_company/me")
-#     response_info_400 = json.loads(response_data_400.data.decode('utf-8'))
-#
-#     assert response_data_400.status_code == 400
-#     assert response_info_400['mensaje'] == "No viene token"
-#
-#
-# def test_user_me_401():
-#
-#     response_data_401 = app.test_client().get("/app_company/me", headers={"Authorization": "Basic token"})
-#     response_info_401 = json.loads(response_data_401.data.decode('utf-8'))
-#
-#     assert response_data_401.status_code == 401
-#     assert response_info_401['mensaje'] == "token no válido"
+'''----------- Test CV --------------------'''
+
+
+def test_user_cv_basicinfo_get_post_200():
+
+    data_signup = {
+        "password": fake_data.password(),
+        "email": f"{fake_data.first_name()}@gmail.com"
+    }
+
+    response = app.test_client().post('/candidate/signup', json=data_signup)
+    response_info_200 = json.loads(response.data.decode('utf-8'))
+    candidate_id = response_info_200.get('id', 1)
+
+    data = {
+        "name": fake_data.name(),
+        "lastname": fake_data.last_name(),
+        "birthdate": fake_data.date().replace('-', '/'),
+        "nacionality": fake_data.city(),
+        "phone_number": fake_data.phone_number(),
+        "number_id": fake_data.phone_number()
+    }
+
+    response_basicinfo_post = app.test_client().post(f'/candidate/profile/basicinfo/{candidate_id}', json=data)
+    response_basicinfo_get = app.test_client().get(f'/candidate/profile/basicinfo/{candidate_id}', json=data)
+
+
+    assert response_basicinfo_post.status_code == 201
+    assert response_basicinfo_get.json.get('name') == data.get('name')
+
+
+def test_user_cv_experience_get_post_200():
+
+    data_signup = {
+        "password": fake_data.password(),
+        "email": f"{fake_data.first_name()}@gmail.com"
+    }
+
+    response = app.test_client().post('/candidate/signup', json=data_signup)
+    response_info_200 = json.loads(response.data.decode('utf-8'))
+    candidate_id = response_info_200.get('id', 1)
+
+    data = {
+        "position": fake_data.name(),
+        "company_name": fake_data.company(),
+        "start_date": fake_data.date().replace('-', '/'),
+        "end_date": fake_data.date().replace('-', '/'),
+        "place": fake_data.city(),
+        "skills": ["Python", "Java"]
+
+    }
+
+    response_basicinfo_post = app.test_client().post(f'/candidate/profile/experience/{candidate_id}', json=data)
+    response_basicinfo_get = app.test_client().get(f'/candidate/profile/experience/{candidate_id}', json=data)
+
+
+    assert response_basicinfo_post.status_code == 201
+    assert response_basicinfo_get.json.get('experience')[0].get('position') == data.get('position')
+
+
+def test_user_cv_education_get_post_200():
+
+    data_signup = {
+        "password": fake_data.password(),
+        "email": f"{fake_data.first_name()}@gmail.com"
+    }
+
+    response = app.test_client().post('/candidate/signup', json=data_signup)
+    response_info_200 = json.loads(response.data.decode('utf-8'))
+    candidate_id = response_info_200.get('id', 1)
+
+    data = {
+        "university": fake_data.company(),
+        "subject":  fake_data.name(),
+        "start_date": fake_data.date().replace('-', '/'),
+        "end_date": fake_data.date().replace('-', '/'),
+        "skills": ["Python", "Java"]
+    }
+
+    response_basicinfo_post = app.test_client().post(f'/candidate/profile/education/{candidate_id}', json=data)
+    response_basicinfo_get = app.test_client().get(f'/candidate/profile/education/{candidate_id}', json=data)
+
+
+    assert response_basicinfo_post.status_code == 201
+    assert response_basicinfo_get.json.get('education')[0].get('university') == data.get('university')
+
+
+def test_user_cv_certificates_get_post_200():
+
+    data_signup = {
+        "password": fake_data.password(),
+        "email": f"{fake_data.first_name()}@gmail.com"
+    }
+
+    response = app.test_client().post('/candidate/signup', json=data_signup)
+    response_info_200 = json.loads(response.data.decode('utf-8'))
+    candidate_id = response_info_200.get('id', 1)
+
+    data = {
+
+        "name_certificate": fake_data.company(),
+        "company": fake_data.company(),
+        "expedition_date": fake_data.date().replace('-', '/'),
+        "date_expiry": fake_data.date().replace('-', '/'),
+
+    }
+
+    response_basicinfo_post = app.test_client().post(f'/candidate/profile/certificates/{candidate_id}', json=data)
+    response_basicinfo_get = app.test_client().get(f'/candidate/profile/certificates/{candidate_id}', json=data)
+
+
+    assert response_basicinfo_post.status_code == 201
+    assert response_basicinfo_get.json.get('certificates')[0].get('name_certificate') == data.get('name_certificate')
+

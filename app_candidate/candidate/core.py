@@ -2,7 +2,7 @@ import secrets
 import hashlib
 from datetime import timedelta, datetime
 from .models import Candidates, db
-from .utils import validate_cv_fields, validate_email_address, validate_password
+from .utils import validate_email_address, validate_password
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from email_validator import validate_email, EmailNotValidError
@@ -85,14 +85,4 @@ def self_information(request):
             "email": 'email'}, 200
 
 
-#@jwt_required
-def create_user_cv(request):
-    
-    try:
-        status = validate_cv_fields(request)
-        return {"message": "CV created"}, 201
-    
-    except Exception as e:
-        print(e)
-        return {"message": f"falta {e}"}, 400
 
