@@ -29,8 +29,12 @@ spec:
                 secretKeyRef:
                   name: secretdb
                   key: uri
-            - name: USERS_URL
-              value: http://servicio-app-projects/
+            - name: "DATABASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: DATABASE_URL
+            
 
 ---
 apiVersion: cloud.google.com/v1

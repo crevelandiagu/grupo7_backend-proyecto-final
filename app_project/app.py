@@ -9,7 +9,6 @@ from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', projects),)
 
-
 info = Info(title="Candidate API", version="0.2.2")
 
 app = OpenAPI(__name__,
@@ -21,17 +20,15 @@ app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
 
+dbname = os.getenv('DB_NAME', 'project_db')
+url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-username = os.getenv('DB_USER', 'admin')
-password = os.getenv('DB_PASSWORD', 'admin')
-dbname = os.getenv('DB_NAME', 'projects_db')
-hostname = os.getenv('DB_HOST', 'db_projects')
-url_posgres = os.getenv('DATABASE_URL', 'postgresql://admin:admin@db_projects:5432/projects_db')
-
-if os.getenv('TEST_APP', 'True') == 'True':
+if os.getenv('TEST_APP'):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 else:
-    app.config["SQLALCHEMY_DATABASE_URI"] = url_posgres
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"{url_posgres}{dbname}"
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'frase-secreta'
 app.config['PROPAGATE_EXCEPTIONS'] = True
