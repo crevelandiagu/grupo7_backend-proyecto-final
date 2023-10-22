@@ -1,5 +1,6 @@
 import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import JSONB
 
 db = SQLAlchemy()
 
@@ -13,15 +14,19 @@ class Candidates(db.Model):
     email: str = db.Column(db.String(150))
     birthdate: str = db.Column(db.String(150), nullable=True)
     nacionality: str = db.Column(db.String(150), nullable=True)
-
-    cv_file: str = db.Column(db.String(150), nullable=True)
+    phone_number: str = db.Column(db.String(150), nullable=True)
+    number_id: str = db.Column(db.String(150), nullable=True)
     score: str = db.Column(db.String(5), nullable=True)
     payment_id: str = db.Column(db.String(150), nullable=True)
+
     status: str = db.Column(db.String(150), nullable=True)
     choose_one: str = db.Column(db.Boolean, default=False, nullable=True)
     course_id: str = db.Column(db.String(150), nullable=True)
 
-    cv: int = db.Column(db.Integer, db.ForeignKey('curriculum_vitae.id'))
+    cv_experience_id = db.relationship('CvExperience', cascade='all, delete, delete-orphan')
+    cv_education_id = db.relationship('CvEducation', cascade='all, delete, delete-orphan')
+    cv_certificates_id = db.relationship('CvCertificates', cascade='all, delete, delete-orphan')
+    cv_skills_id = db.relationship('CvSkills', cascade='all, delete, delete-orphan')
 
     password: str = db.Column(db.Text)
     salt: str = db.Column(db.String(150))
@@ -29,17 +34,46 @@ class Candidates(db.Model):
     updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
 
 
-class CurriculumVitae(db.Model):
+class CvExperience(db.Model):
 
-    __tablename__ = 'curriculum_vitae'
+    __tablename__ = 'cv_experience'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    skills: str = db.Column(db.String(400), nullable=True)
-    my_profile: str = db.Column(db.String(400), nullable=True)
-    work_experience: str = db.Column(db.String(400), nullable=True)
-    education: str = db.Column(db.String(400), nullable=True)
-    certificates: str = db.Column(db.String(400), nullable=True)
-    administrative_data: str = db.Column(db.String(500), nullable=True)
+    experience = db.Column(JSONB, nullable=True)
     createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
     updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
 
-    candidate_id = db.relationship('Candidates', cascade='all, delete, delete-orphan')
+    candidate_id: int = db.Column(db.Integer, db.ForeignKey('candidate.id'))
+
+
+
+class CvEducation(db.Model):
+
+    __tablename__ = 'cv_education'
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    education = db.Column(JSONB, nullable=True)
+    createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
+    updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
+
+    candidate_id: int = db.Column(db.Integer, db.ForeignKey('candidate.id'))
+
+
+
+class CvCertificates(db.Model):
+
+    __tablename__ = 'cv_certificates'
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    certificates = db.Column(JSONB, nullable=True)
+    createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
+    updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
+
+    candidate_id: int = db.Column(db.Integer, db.ForeignKey('candidate.id'))
+
+class CvSkills(db.Model):
+
+    __tablename__ = 'cv_skills'
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    skills = db.Column(JSONB, nullable=True)
+    createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
+    updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
+
+    candidate_id: int = db.Column(db.Integer, db.ForeignKey('candidate.id'))

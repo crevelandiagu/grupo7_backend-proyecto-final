@@ -1,4 +1,3 @@
-from .models import CurriculumVitae, db
 from email_validator import validate_email, EmailNotValidError
 from password_strength import PasswordPolicy
 
@@ -25,68 +24,3 @@ def validate_password(password):
     return True
 
 
-def validate_cv_fields(request):
-
-    data_cv = dict(request.json)
-    name = data_cv.get('basicInfo', {}).get('name', "")
-    lastname = data_cv.get('basicInfo', {}).get('lastname', "")
-    birthday = data_cv.get('basicInfo', {}).get('birthday', "")
-    nacionality = data_cv.get('basicInfo', {}).get('nacionality', "")
-
-    experience = str(data_cv.get('experience', []))
-    education = str(data_cv.get('education', []))
-    skills = str(data_cv.get('skills', []))
-    certificates = str(data_cv.get('certificates', []))
-
-    new_cv = CurriculumVitae(
-            skills = skills,            
-            work_experience = experience,
-            education = education,
-            certificates = certificates
-        )
-    db.session.add(new_cv)
-    db.session.commit()
-    
-    return 0
-'''
-{
-    "basicinfo":
-    {
-        "name":"ccc",
-        "lastname":"",
-        "birthday":"",
-        "nacionality":""
-    },
-    "experience":[
-        {
-        },
-        {
-            "a":"",
-            "skills": [
-            ]
-        }
-    ],
-    "education":[
-        {
-            "a":"",
-            "skills": [
-            ]
-        },
-        {
-        }
-    ],
-    "skills":[
-        {
-        },
-        {
-        }
-    ],
-    "certificates":[
-        {
-            "a":"",
-        },
-        {
-        }
-    ]
-}
-'''

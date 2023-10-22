@@ -39,13 +39,13 @@ def creacion_usuario(request):
 def autenticar_usuario(request):
     try:
 
-        usuario_auth = Companies.query.filter(Companies.username == request.json["username"]).first()
+        usuario_auth = Companies.query.filter(Companies.email == request.json["email"]).first()
 
         if usuario_auth is None:
             return {"mensaje": "Usuario con username no exista o contrasena incorrecta"}, 404
 
         password_input = f"{request.json['password']}{usuario_auth.salt}"
-        password = Companies.query.filter(Companies.username == request.json["username"],
+        password = Companies.query.filter(Companies.email == request.json["email"],
                                          Companies.password == hashlib.sha256(password_input.encode()).hexdigest()
                                          ).first()
 

@@ -34,7 +34,8 @@ Este proyecto hace uso de pipenv para gestión de dependencias y pytest para el 
 ```shell
    pip3 install -r requirements.txt 
 ```
-3. Ejecutar el comando
+4. Levantar la base de datos de postgres del docker-compose
+5. Ejecutar el comando
 ```shell
     gunicorn --reload wsgi:app --bind 0.0.0.0:3000 --log-level debug
 ```

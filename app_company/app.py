@@ -9,7 +9,7 @@ from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', company),)
 
-info = Info(title="Company API", version="0.0.1")
+info = Info(title="Company API", version="0.2.2")
 
 app = OpenAPI(__name__,
               info=info,
@@ -43,7 +43,8 @@ with app.app_context():
 
 app_context = app.app_context()
 app_context.push()
-cors = CORS(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
+
 
 
 for url, blueprint in ACTIVATE_ENDPOINTS:

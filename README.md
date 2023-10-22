@@ -54,6 +54,14 @@ cuando se construya la imagen
 docker run -p 3000:3000 test-python-2 
 ```
 
+### docker compose 
+
+En el docker compose esta las apis que se van lanzando
+
+```shell
+docker-compose up --build
+```
+
 cambiar el puerto dependiendo de la aplicacion
 
 ## Tecnologias utilizadas
