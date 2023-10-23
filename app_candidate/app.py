@@ -4,25 +4,26 @@ from flask_cors import CORS
 from candidate import candidate
 from candidate.models import db
 from flask_jwt_extended import JWTManager
+from flask_openapi3 import Info
+from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', candidate),)
 
+info = Info(title="Candidate API", version="0.3.2")
 
-app = Flask(__name__)
+app = OpenAPI(__name__,
+              info=info,
+              doc_prefix="/candidate/docs"
+              )
+
 app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
 
-username = os.getenv('DB_USER', 'admin')
-password = os.getenv('DB_PASSWORD', 'admin')
-dbname = os.getenv('DB_NAME', 'usuarios_db')
-hostname = os.getenv('DB_HOST', 'db_usuarios')
-url_posgres = os.getenv('DATABASE_URL', 'postgresql://admin:-BcjB(IiHYp`6_=8@192.168.0.3:5432/candidates-bd')
+dbname = os.getenv('DB_NAME', 'candidate_db')
+url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-if os.getenv('TEST_APP', "True") == 'True':
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-else:
-    app.config["SQLALCHEMY_DATABASE_URI"] = url_posgres
+app.config["SQLALCHEMY_DATABASE_URI"] = f"{url_posgres}{dbname}"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'frase-secreta'
@@ -36,11 +37,11 @@ with app.app_context():
 
 app_context = app.app_context()
 app_context.push()
-cors = CORS(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 
 for url, blueprint in ACTIVATE_ENDPOINTS:
-    app.register_blueprint(blueprint, url_prefix=url)
+    app.register_api(blueprint)
 
 jwt = JWTManager(app)
 

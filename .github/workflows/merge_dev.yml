@@ -1,7 +1,7 @@
 name: Merge dev
 on:
   push:
-    branches: [RF**, FIX**]
+    branches: [FIX**]
 jobs:
   correr-test-funcionalidad:
     name: Correr-test

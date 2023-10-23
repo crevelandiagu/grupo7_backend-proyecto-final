@@ -1,0 +1,66 @@
+###################################
+# app_projects
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projects
+  labels:
+    app: projects
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: projects
+  template:
+    metadata:
+      labels:
+        app: projects
+    spec:
+      containers:
+        - name: projects
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/projects:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3007
+          env:
+            - name: "SQLALCHEMY_DATABASE_URI"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: uri
+            - name: "DATABASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: DATABASE_URL
+            
+
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: app-projects-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3007
+    type: HTTP
+    requestPath: /projects/ping
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicio-app-projects
+  annotations:
+    cloud.google.com/backend-config: '{"default": "app-projects-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: projects
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3007
+      nodePort: 31027
+---
