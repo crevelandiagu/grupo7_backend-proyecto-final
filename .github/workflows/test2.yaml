@@ -1,9 +1,6 @@
-name: App Candidate
-run-name: ${{ github.actor }} is Test New CI/CD 🚀
+name: 'coverage'
 on:
-  pull_request:
-  push:
-    branches: [RF**, FIX**]
+    pull_request:
 
 jobs:
   test-app-candidate:
@@ -50,34 +47,15 @@ jobs:
           MENSAJE_EXITO: Todas las pruebas fueron exitosas
         run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
 
-  productionPromotion:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          branch: feacture/hipotesis-1
-
-#  coverage:
-#    needs: test-app-candidate
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Upload coverage reports to Codecov
-#        uses: codecov/codecov-action@v3
-#        env:
-#          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-#
-#  coverage-2:
-#    runs-on: ubuntu-latest
-#    needs: test-app-candidate
-#    steps:
-#      - name: Get Cover
-#        uses: orgoro/coverage@v3.1
-#        with:
-#          coverageFile: app_candidate/to/coverage.xml
-#          token: ${{ secrets.GITHUB_TOKEN }}
+  coverage:
+      needs: test-app-candidate
+      runs-on: ubuntu-latest
+      steps:
+        - name: Get Cover
+          uses: orgoro/coverage@v3.1
+          with:
+              coverageFile: path/to/coverage.xml
+              token: ${{ secrets.GITHUB_TOKEN }}
 
 #  build:
 #    needs: test-app-candidate
