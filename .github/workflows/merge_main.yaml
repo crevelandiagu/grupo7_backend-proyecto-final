@@ -141,3 +141,27 @@ jobs:
         target-branch: main
       env:
         MENSAJE_MERGE: Merge successful
+
+  tags:
+    needs: test-app-candidate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: name branch
+        id: name_branch
+        run: echo "NAME_BRANCH=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          append_to_pre_release_tag:
+          custom_tag: 1.1.1-${{ steps.name_branch.outputs.NAME_BRANCH }}
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v1.3.0
+          name: v1.3.0
+          body: sprint 1

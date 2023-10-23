@@ -1,82 +1,69 @@
-name: 'coverage'
-on:
-    pull_request:
+name: Pytester workflow
+
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  test-app-candidate:
-    name: Correr-test
-    if: ${{ contains(github.event.head_commit.message, 'test') }}
+  build:
+
     runs-on: ubuntu-latest
-    outputs:
-      salida: ${{ steps.imprimir.outputs.respuesta }}
+    env:
+      COVERAGE_SINGLE: 60
+      COVERAGE_TOTAL: 60
 
     steps:
-      - name: Checkout de repositorio
-        uses: actions/checkout@v2
-      - name: postgres test
-        uses: ikalnytskyi/action-setup-postgres@v4
-        with:
-          database: candidate_db
+    - uses: actions/checkout@main
+    - name: Set up Python 3.9
+      uses: actions/setup-python@main
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Configuración de entorno de python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+    - name: pytester-cov
+      id: pytester-cov
+      uses: programmingwithalex/pytester-cov@main
+      with:
+        pytest-root-dir: '.'
+        cov-omit-list: 'test/*, temp/main3.py, temp/main4.py'
+        cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
+        cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
 
-      - name: Instalación de app_candidate
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r app_candidate/requirements.txt
+    - name: Coverage single fail - new issue
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Pytest coverage single falls below minimum ${{ env.COVERAGE_SINGLE }}
+        token: ${{secrets.GITHUB_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: worflow-failed
+        body: ${{ steps.pytester-cov.outputs.output-table }}
 
-      - name: Correr pruebas app_candidate
-        id: correr-pruebas-usuarios
-        if: ${{ contains(github.event.head_commit.message, 'test') }}
-        run: |
-          cd app_candidate
-          pytest --cov=. -v -s --cov-fail-under=70
-          pytest --cov-report xml:app_candidate/to/coverage.xml
+    - name: Coverage single fail - exit
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
+      run: |
+        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-single-fail }}"
+        exit 1
 
-      - name: Validar resultado con errores
-        if: ${{ failure() }}
-        env:
-          MENSAJE_ERROR: Una o varias pruebas fallaron
-        run: echo "::set-output name=respuesta::${MENSAJE_ERROR}"
-      - name: Validar resultado sin errores
-        if: ${{ success() }}
-        env:
-          MENSAJE_EXITO: Todas las pruebas fueron exitosas
-        run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+    - name: Coverage total fail - new issue
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Pytest coverage total falls below minimum ${{ env.COVERAGE_TOTAL }}
+        token: ${{secrets.GITHUB_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: worflow-failed
+        body: ${{ steps.pytester-cov.outputs.output-table }}
 
-  coverage:
-      needs: test-app-candidate
-      runs-on: ubuntu-latest
-      steps:
-        - name: Get Cover
-          uses: orgoro/coverage@v3.1
-          with:
-              coverageFile: path/to/coverage.xml
-              token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Coverage total fail - exit
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
+      run: |
+        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
+        exit 1
 
-#  build:
-#    needs: test-app-candidate
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: name branch
-#        id: name_branch
-#        run: echo "NAME_BRANCH=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
-#
-#      - name: Bump version and push tag
-#        id: tag_version
-#        uses: mathieudutour/github-tag-action@v6.1
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          append_to_pre_release_tag:
-#          custom_tag: 1.1.1-${{ steps.name_branch.outputs.NAME_BRANCH }}
-
-#      - name: Create a GitHub release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag: v1.3.0
-#          name: v1.3.0
-#          body: sprint 1
+    - name: Commit pytest coverage table
+      uses: peter-evans/commit-comment@main
+      with:
+        body: ${{ steps.pytester-cov.outputs.output-table }}

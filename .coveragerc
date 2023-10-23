@@ -1,0 +1,14 @@
+[run]
+exclude_also =
+    */app_candidate/*
+    */app_company/*
+    */app_company_employees/*
+    */app_contract/*
+    */app_learning_hub/*
+    */app_notification/*
+    */app_payments/*
+    */app_performance/*
+    */app_project/*
+    */app_search_tool/*
+    */app_selection_process/*
+
