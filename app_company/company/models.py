@@ -15,7 +15,7 @@ class Companies(db.Model):
     number_employees: int = db.Column(db.Integer, nullable=True)
     core: str = db.Column(db.String(150), nullable=True)
     senority: str = db.Column(db.String(150), nullable=True)
-    project_id: int = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    projects_id = db.relationship('Projects', cascade='all, delete, delete-orphan')
 
     password: str = db.Column(db.Text)
     salt: str = db.Column(db.String(150))
@@ -28,7 +28,7 @@ class Projects(db.Model):
 
     __tablename__ = 'projects'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    company_id = db.relationship('Companies', cascade='all, delete, delete-orphan')
+    company_id: int = db.Column(db.Integer, db.ForeignKey('companies.id'))
 
     createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
     updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)

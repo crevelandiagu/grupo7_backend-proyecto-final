@@ -1,28 +1,28 @@
 ###################################
-# app_candidate
+# app_projects
 ###################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: candidate
+  name: projects
   labels:
-    app: candidate
+    app: projects
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: candidate
+      app: projects
   template:
     metadata:
       labels:
-        app: candidate
+        app: projects
     spec:
       containers:
-        - name: candidate
-          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/candidate:latest
+        - name: projects
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/projects:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 3000
+            - containerPort: 3007
           env:
             - name: "SQLALCHEMY_DATABASE_URI"
               valueFrom:
@@ -34,32 +34,33 @@ spec:
                 secretKeyRef:
                   name: secretdb
                   key: DATABASE_URL
+            
 
 ---
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: app-candidate-config
+  name: app-projects-config
 spec:
   healthCheck:
     checkIntervalSec: 30
-    port: 3000
+    port: 3007
     type: HTTP
-    requestPath: /candidate/ping
+    requestPath: /projects/ping
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: servicio-app-candidate
+  name: servicio-app-projects
   annotations:
-    cloud.google.com/backend-config: '{"default": "app-candidates-config"}'
+    cloud.google.com/backend-config: '{"default": "app-projects-config"}'
 spec:
   type: NodePort
   selector:
-    app: candidate
+    app: projects
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
-      nodePort: 31020
+      targetPort: 3007
+      nodePort: 31027
 ---
