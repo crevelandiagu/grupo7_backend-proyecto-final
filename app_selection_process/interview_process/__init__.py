@@ -1,3 +1,3 @@
-from .views import publico
+from .views import interviews
 
-__all__ = ['publico']
+__all__ = ['interviews']

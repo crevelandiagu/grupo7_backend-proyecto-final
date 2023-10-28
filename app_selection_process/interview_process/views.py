@@ -1,38 +1,68 @@
-from flask import Blueprint
-from flask import request
-from flask import session
-from flask import Response
-from flask import url_for, flash
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-
-from .core import (creacion_publicacion,
-                   creacion_oferta_publicacion,
-                   consultar_publicacion)
+import os
+from flask import Blueprint, request
+from flask import send_from_directory
+from .core import *
+from flask_openapi3 import Tag
+from flask_openapi3 import APIBlueprint
 
 
-publico = Blueprint('interview_process', __name__)
+interviews_tag = Tag(name="interviews", description="manage inteviews")
+interviews = APIBlueprint('interviews', __name__,url_prefix='/interviews')
 
 
-@publico.route("/public/posts", methods=['POST'])
-def register_public_post():
-    response, status = creacion_publicacion(request)
+@interviews.post("/", tags=[interviews_tag])
+def create_interview():
+
+    '''
+    Company can create interviews
+    :return: response
+    '''
+    
+    response, status = create_company_interview(request)
+    return response, status
+
+@interviews.get("/company/<int:id_company>", tags=[interviews_tag])
+def get_interviewsCompany():
+
+    '''
+    Company can get all its interviews
+    :return: response
+    '''
+    response, status = get_company_interviews(request)
+    return response, status
+
+@interviews.get("/candidate/<int:id_candidate>", tags=[interviews_tag])
+def get_interviewsCandidate():
+
+    '''
+    Candidate can get all its interviews
+    :return: response
+    '''
+    response, status = get_candidate_interviews(request)
     return response, status
 
 
-@publico.route("/public/posts/<id>/offers", methods=['POST'])
-def register_public_ofert(id):
-    response, status = creacion_oferta_publicacion(request, id)
-    return response, status
-
-
-@publico.route("/public/posts/<int:id>/", methods=['GET'])
-def information_user(id):
-    response, status = consultar_publicacion(request, id)
-    return response, status
-
-
-@publico.route('/public/ping', methods=['GET'] )
+@interviews.get('/ping', tags=[interviews_tag])
 def root():
+    '''
+    Healt Check
+    :return: pong
+    '''
     return 'pong'
 
+
+@interviews.get('/ping2', tags=[interviews_tag])
+def ping():
+    username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
+    return f'pong11 {username}'
+
+
+@interviews.route('/coverage')
+def coverage_app():
+    os.system('pytest --cov --cov-report=html:template')
+    return send_from_directory('./template/', 'index.html')
+
+
+@interviews.route('/<path>/')
+def coverage_app_files(path):
+    return send_from_directory('./template/', path)
