@@ -1,4 +1,5 @@
-# Servicios de usuarios 
+# Servicios de selección de candidatos
+
 
 En esta carpeta se encuentra el código de public el cual utiliza el patron saga. Este microservicio ofrece un punto de acceso al sistema y hace una sola petición web por cada requerimiento y no una secuencia.
 
