@@ -1,4 +1,5 @@
 from flask import jsonify
+from datetime import datetime, timedelta
 from .models import (
     db,
     Candidates,
@@ -60,7 +61,7 @@ def build_experience(request):
         return {'experience': list_experience}, 200
 
     elif request.method == 'POST':
-        build_skill_candidate(request.json.get('skills'))
+        build_skill_candidate(request)
 
         experience = {
             "position": request.json.get('position'),
@@ -131,6 +132,31 @@ def build_certificates(request):
     return {"message": "No exist "}, 400
 
 
-def build_skill_candidate(skills):
+def build_skill_candidate(request):
+    id_candidate = request.view_args.get('id_candidate', -1)
+    skills = {
 
-    pass
+        "skills": request.json.get('skills')
+    }
+    years_exp = subtract_date()
+    new_experience = CvSkills(
+        name=request.json.get('name', 'None'),
+        lastname=request.json.get('lastname', 'None'),
+        skills=skills,
+        years_exp=years_exp,
+        candidate_id=id_candidate,
+    )
+    db.session.add(new_experience)
+    db.session.commit()
+    return 0
+
+
+def subtract_date(fecha_cad1='01-03-2010', fecha_cad2='01-03-2019'):
+
+    fecha_cad1 = fecha_cad1
+    fecha_cad2 = fecha_cad2
+    fecha1 = datetime.strptime(fecha_cad1, '%d-%m-%Y')
+    fecha2 = datetime.strptime(fecha_cad2, '%d-%m-%Y')
+
+    dias = round((fecha2 - fecha1) / timedelta(days=365), 2)
+    return dias
