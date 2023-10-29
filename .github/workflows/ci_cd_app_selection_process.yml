@@ -1,11 +1,12 @@
 name: App Selection Process
+run-name: ${{ github.actor }} is deploying App Selection Process 
 on:
   push:
-    branches: [RF**, FIX**]
+    branches: [feature/PROY**, fix/FIX**]
     paths:
       - 'app_selection_process/**'
 jobs:
-  test-app-candidate:
+  test-app-selection_process:
     name: Correr-test
     if:  ${{ contains(github.event.head_commit.message, 'app_selection_process') }}
     runs-on: ubuntu-latest
@@ -21,18 +22,18 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Instalación de app_candidate
+      - name: Instalación de app_selection_process
         run: |
           python -m pip install --upgrade pip
-          pip install -r app_candidate/requirements.txt
+          pip install -r app_selection_process /requirements.txt
 
-      - name: Correr pruebas app_candidate
-        id: correr-pruebas-usuarios
+      - name: Correr pruebas app_selection_process
+        id: correr-pruebas-selection_process
         if: ${{ contains(github.event.head_commit.message, 'app_selection_process') }}
         run: |
-          cd app_candidate
+          cd app_selection_process
           export TEST_APP=True
-          pytest --cov=. -v -s --cov-fail-under=0
+          pytest --cov=. -v -s --cov-fail-under=70
 
       - name: Validar resultado con errores
         if: ${{ failure() }}
@@ -46,9 +47,9 @@ jobs:
         run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
 
 
-  ci-app-candidate:
+  ci-app-selection_process:
     name: Build and push to GCP
-    needs: test-app-candidate
+    needs: test-app-selection_process
     runs-on: ubuntu-latest
 
     outputs:
@@ -67,17 +68,21 @@ jobs:
     - name: build and push the docker image
       env:
         GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
-        IMAGE_NAME: candidate
+        IMAGE_NAME: selection-process
+        IMAGE_TAG: ${{ github.run_number }}
       run: |
-        cd app_candidate
+        cd app_selection_process
         gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest .
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        docker build -t $IMAGE_NAME:latest .
+        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
+        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
         
 
-  cd-app-candidate:
+  cd-app-selection_process:
     name: Deploy to GCP k8s
-    needs: [test-app-candidate, ci-app-candidate]
+    needs: [test-app-selection_process, ci-app-selection_process]
     runs-on: ubuntu-latest
 
     outputs:
@@ -101,23 +106,41 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
         run: |
           cd deployment
-          gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
-          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-base-layer-deployment.yaml
-          kubectl apply -f k8s-base-layer-deployment.yaml
+          gcloud container clusters get-credentials autopilot-abc-jobs-k8s --region us-central1  --project $GOOGLE_PROJECT
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-app-projects-deployment.yaml
+          kubectl apply -f k8s-app-projects-deployment.yaml
+          kubectl rollout restart deployment/selection-process
 
-  merege-develop:
+  merege-branch-develop:
     name: Merge-dev
-    needs: [test-app-candidate, ci-app-candidate]
+    needs: [test-app-selection_process, ci-app-selection_process]
     runs-on: ubuntu-latest
-    outputs:
-      salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
-      - name: Mezcla ${{ github.ref }} -> develop
-        if: echo ${{needs.correr-test-funcionalidad.outputs.salida}}
-        uses: tukasz/direct-merge-action@master
+      - uses: actions/checkout@master
+      - name: Branch name
+        run: |
+          echo running on branch ${GITHUB_REF##*/}
+      - name: Mezcla ${GITHUB_REF##*/} -> develop
+        uses: devmasx/merge-branch@master
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: ${{ github.ref }}
-          target-branch: develop
-        env:
-          MENSAJE_MERGE: Merge successful
+          type: now
+          target_branch: develop
+          message: Merge ${GITHUB_REF##*/} into develop
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  tags:
+    needs: [test-app-selection_process, ci-app-selection_process]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: name branch
+        id: name_branch
+        run: echo "NAME_BRANCH=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+                
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          append_to_pre_release_tag:
+          custom_tag: 1.8.2-${{ steps.name_branch.outputs.NAME_BRANCH }}
