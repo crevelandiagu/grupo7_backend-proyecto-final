@@ -35,7 +35,7 @@ def get_interviewsCompany():
 def get_interviewsCandidate():
 
     '''
-    Candidate can get all its interviews
+    Candidate can get all their interviews
     :return: response
     '''
     response, status = get_candidate_interviews(request)

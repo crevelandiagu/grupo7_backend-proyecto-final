@@ -74,6 +74,7 @@ def get_candidate_interviews(request):
     except:
         return {"message": "Candidate Id missing"}, 400    
     
+    
     try:
         candidateInterviews = Interview.query.filter(Interview.candidate_id == candidateId).all()
     except Exception as e:
