@@ -113,3 +113,32 @@ def test_get_interviews_candidate_200_404():
 
     response_data_404 = app.test_client().get('/interviews/candidate/')
     assert response_data_404.status_code == 404
+
+
+def test_interviews_create_201_412_404():
+    
+    data = {
+        "dateTime":fake_data.iso8601(),
+        "candidateName":fake_data.name(),
+        "interviewStatus":fake_data.word(),
+        "candidateId": fake_data.random_int(),
+        "companyId": fake_data.random_int(),
+        "companyEmployeeId": fake_data.random_int(),
+        "projectId": fake_data.random_int()
+    }
+
+
+    response_data_201 = app.test_client().post('/interviews/', json=data)
+    
+    response_data_200 = app.test_client().get(f'/interviews/company/{data.get("companyId")}')
+    response_info_200 = json.loads(response_data_200.data.decode('utf-8'))
+
+    response_data_score_201 = app.test_client().post(f'/interviews/score/{response_info_200[0]["id"]}/', json={"score": fake_data.random_int()})
+
+    response_data_404 = app.test_client().post(f'/interviews/score/{fake_data.random_int()}', json={"score": fake_data.random_int()})
+    response_data_412 =  app.test_client().post(f'/interviews/score/{response_info_200[0]["id"]}/', json={"score": fake_data.word()})
+
+    assert response_data_201.status_code == 201
+    assert response_data_score_201.status_code == 201
+    assert response_data_404.status_code == 404
+    assert response_data_412.status_code == 412
