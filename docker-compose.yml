@@ -56,7 +56,7 @@ services:
   app_company:
     build: app_company/
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db_company:5432/company_db
+      DATABASE_URL: postgresql://postgres:postgres@db_company:5432/
     ports:
       - "3001:3001"
     expose:
@@ -87,7 +87,7 @@ services:
   app_trayectos:
     build: app_project/
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db_project:5432/project_db
+      DATABASE_URL: postgresql://postgres:postgres@db_project:5432/
     ports:
       - "3007:3007"
     expose:

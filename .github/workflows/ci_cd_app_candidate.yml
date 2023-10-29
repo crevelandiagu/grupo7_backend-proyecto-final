@@ -130,3 +130,21 @@ jobs:
           target_branch: develop
           message: Merge ${GITHUB_REF##*/} into develop
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+
+  tags:
+    needs: [test-app-candidate, ci-app-candidate]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: name branch
+        id: name_branch
+        run: echo "NAME_BRANCH=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          append_to_pre_release_tag:
+          custom_tag: 1.9.1-${{ steps.name_branch.outputs.NAME_BRANCH }}

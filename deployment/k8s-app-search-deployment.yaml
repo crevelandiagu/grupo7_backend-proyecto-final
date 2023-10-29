@@ -1,0 +1,65 @@
+###################################
+# app_search_tool
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-tool
+  labels:
+    app: search-tool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-tool
+  template:
+    metadata:
+      labels:
+        app: search-tool
+    spec:
+      containers:
+        - name: search-tool
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/search-tool:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3008
+          env:
+            - name: "SQLALCHEMY_DATABASE_URI"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: uri
+            - name: "DATABASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: DATABASE_URL
+
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: app-search-tool-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3009
+    type: HTTP
+    requestPath: /search-tool/ping
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicio-app-search-tool
+  annotations:
+    cloud.google.com/backend-config: '{"default": "app-search-tool-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: search-tool
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3008
+      nodePort: 31028
+---
