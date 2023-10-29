@@ -108,7 +108,7 @@ jobs:
           gcloud container clusters get-credentials autopilot-abc-jobs-k8s --region us-central1  --project $GOOGLE_PROJECT
           sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-app-search-deployment.yaml
           kubectl apply -f k8s-app-search-deployment.yaml
-          kubectl rollout restart deployment/candidate
+          kubectl rollout restart deployment/search-tool
 
   merge-branch-develop:
     name: Merge-dev
@@ -142,4 +142,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           append_to_pre_release_tag:
-          custom_tag: 1.8.1-${{ steps.name_branch.outputs.NAME_BRANCH }}
+          custom_tag: 1.8.2-${{ steps.name_branch.outputs.NAME_BRANCH }}
