@@ -42,4 +42,6 @@ def get_cv_candidate(request):
     if certificates and code_certificates == 200:
         info_cv.update(certificates)
 
+    if len(info_cv)==0:
+        return info_cv, 401
     return info_cv, 200
