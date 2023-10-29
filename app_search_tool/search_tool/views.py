@@ -6,7 +6,8 @@ from flask import send_from_directory
 
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
-from .core import get_dandidate
+from .search_args import get_dandidate
+from .search_cv import get_cv_candidate
 
 
 search_tool = APIBlueprint('search_tool', __name__, url_prefix='/search-tool')
@@ -17,6 +18,12 @@ search_tool_tag = Tag(name="Search Tool", description="Search candidate")
 @search_tool.get("/search", tags=[search_tool_tag])
 def get_candidate():
     response, status = get_dandidate(request)
+    return response, status
+
+
+@search_tool.get("/search/cv/<int:id_candidate>", tags=[search_tool_tag])
+def get_candidate_cv():
+    response, status = get_cv_candidate(request)
     return response, status
 
 
