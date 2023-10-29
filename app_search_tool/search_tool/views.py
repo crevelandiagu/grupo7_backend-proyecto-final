@@ -1,54 +1,60 @@
+import os
+import time
 from flask import Blueprint
 from flask import request
-import os
-from .core import get_token, create_post_, search_post_, get_post_
+from flask import send_from_directory
+
+from flask_openapi3 import Tag
+from flask_openapi3 import APIBlueprint
+from .search_args import get_dandidate
+from .search_cv import get_cv_candidate
 
 
-publicaciones = Blueprint('company_employees', __name__)
+search_tool = APIBlueprint('search_tool', __name__, url_prefix='/search-tool')
 
-users_ip = os.getenv('USERS_URL', "http://127.0.0.1:3000")
-user_port = os.getenv('USER_PORT',"3000")
-user_endpoint = os.getenv('USER_ENDPOINT',"/app_company/me")
+search_tool_tag = Tag(name="Search Tool", description="Search candidate")
 
-@publicaciones.route('/posts/', methods=['POST'])
-def create_post():
-    headers=request.headers
-    user, status_header = get_token(headers,users_ip, user_port, user_endpoint)
 
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    response, status = create_post_(request, user)
-    return  response, status
-    
-@publicaciones.route('/posts/', methods=['GET'] )
-def search_post():
-    headers=request.headers
-    user, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-    
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    response, status = search_post_(request, user)
-    return  response, status
-
-@publicaciones.route('/posts/<id>', methods=['GET'] )
-def get_post(id):
-    headers=request.headers
-    response_header, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    try:
-        id_post = int(id)
-    except Exception as e:
-        return {"mensaje": f"Id de post invalido, no es un numero"}, 400
-    
-    response, status = get_post_(id_post, response_header)
+@search_tool.get("/search", tags=[search_tool_tag])
+def get_candidate():
+    response, status = get_dandidate(request)
     return response, status
 
 
-@publicaciones.route('/posts/ping', )
-def ping():
+@search_tool.get("/search/cv/<int:id_candidate>", tags=[search_tool_tag])
+def get_candidate_cv():
+    response, status = get_cv_candidate(request)
+    return response, status
+
+
+search_tool_health_tag = Tag(name="Search Tool healtcheck", description="Search Tool candidate")
+
+
+@search_tool.get('/ping', tags=[search_tool_health_tag])
+def root():
+    '''
+    Healt Check
+    :return: pong
+    '''
+
     return 'pong'
+
+
+@search_tool.get('/ping2', tags=[search_tool_health_tag])
+def ping():
+    username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
+    return f'pong12 {username}'
+
+
+@search_tool.route('/coverage')
+def coverage_app():
+    os.system('pytest --cov --cov-report=html:template')
+    return send_from_directory('./template/', 'index.html')
+
+
+@search_tool.route('/<path>/')
+def coverage_app_files(path):
+    return send_from_directory('./template/', path)
 
 
 
