@@ -107,8 +107,8 @@ jobs:
         run: |
           cd deployment
           gcloud container clusters get-credentials autopilot-abc-jobs-k8s --region us-central1  --project $GOOGLE_PROJECT
-          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-app-projects-deployment.yaml
-          kubectl apply -f k8s-app-projects-deployment.yaml
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-app-selection-process-deployment.yaml
+          kubectl apply -f k8s-app-selection-process-deployment.yaml
           kubectl rollout restart deployment/selection-process
 
   merege-branch-develop:
