@@ -8,20 +8,19 @@ url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhos
 def get_dandidate(request):
 
     skill = request.args.get('skill')
-    year_exp = False
+    year_exp = request.args.get('experienceYears')
 
-
-    if skill:
-        return get_candidate_skill(skill)
+    if skill and year_exp:
+        pass
     elif year_exp:
-        pass
-    elif skill and year_exp:
-        pass
+        return get_candidate_year_exp(year_exp)
+    elif skill:
+        return get_candidate_skill(skill)
     else:
         pass
 
 
-def conection_posgres():
+def connection_postgres():
     try:
 
         conn = psycopg2.connect(database="candidate_db",
@@ -38,17 +37,16 @@ def conection_posgres():
 
 
 def run_query(query_user):
-    conection = conection_posgres()
-    if conection[0]:
-        cursor = conection[1]
+    connection = connection_postgres()
+    if connection[0]:
+        cursor = connection[1]
 
         postgreSQL_select_Query = query_user
         cursor.execute(postgreSQL_select_Query)
 
         cv_skill_records = cursor.fetchall()
         return cv_skill_records
-    return conection_posgres()[1]
-
+    return connection[1]
 
 
 def get_candidate_skill(skill):
@@ -59,8 +57,28 @@ def get_candidate_skill(skill):
     if not isinstance(cv_skill_records, dict):
         len_search = len(skills)
         list_candidate = []
-        for candidate in cv_skill_records:
-            if len(skills & set(candidate[1].get('skills'))) >= len_search:
+        if cv_skill_records:
+            for candidate in cv_skill_records:
+                if len(skills & set(candidate[1].get('skills'))) >= len_search:
+                    list_candidate.append({
+                        "name":candidate[3],
+                        "lastName": candidate[4],
+                        "skills": candidate[1],
+                        "years_exp": candidate[2],
+                        "candidateId": candidate[-1],
+                    })
+        return list_candidate, 200
+    return cv_skill_records, 400
+
+def get_candidate_year_exp(year_exp):
+    year_exp = float(year_exp)
+    my_query = f"select * from cv_skills where years_exp >= {year_exp}"
+    cv_skill_records = run_query(my_query)
+
+    if not isinstance(cv_skill_records, dict):
+        list_candidate = []
+        if cv_skill_records:
+            for candidate in cv_skill_records:
                 list_candidate.append({
                     "name":candidate[3],
                     "lastName": candidate[4],
