@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from search_tool import search_tool
-from search_tool.models import db
+# from search_tool.connection_db import db
 from flask_jwt_extended import JWTManager
 from flask_openapi3 import Info
 from flask_openapi3 import OpenAPI
@@ -23,16 +23,16 @@ app.url_map.strict_slashes = False
 dbname = os.getenv('DB_NAME', 'publicaciones_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'frase-secreta'
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
-db.init_app(app)
-
-with app.app_context():
-    db.create_all()
+# db.init_app(app)
+#
+# with app.app_context():
+#     db.create_all()
 
 app_context = app.app_context()
 app_context.push()

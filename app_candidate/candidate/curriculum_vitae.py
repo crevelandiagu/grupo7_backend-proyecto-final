@@ -37,7 +37,7 @@ def build_basicinfo(request):
         basic_info['lastname'] = info_candidate.lastname
         basic_info['full_name'] = f'{name} {lastname}'
 
-        return basic_info, 201
+        return basic_info, 200
 
     elif request.method == 'POST':
         info_candidate.name = request.json.get('name', 'None')
@@ -47,7 +47,7 @@ def build_basicinfo(request):
         info_candidate.phone_number = request.json.get('phone_number')
         info_candidate.number_id = request.json.get('number_id')
         db.session.commit()
-        return {"message": "ok"}, 201
+        return {"message": "ok"}, 200
     return {"message": "No exist "}, 400
 
 def build_experience(request):
@@ -77,7 +77,7 @@ def build_experience(request):
         )
         db.session.add(new_experience)
         db.session.commit()
-        return {"message": "ok"}, 201
+        return {"message": "ok"}, 200
     return {"message": "No exist "}, 400
 
 
@@ -103,7 +103,7 @@ def build_education(request):
         )
         db.session.add(new_education)
         db.session.commit()
-        return {"message": "ok"}, 201
+        return {"message": "ok"}, 200
     return {"message": "No exist "}, 400
 
 
@@ -128,7 +128,7 @@ def build_certificates(request):
         )
         db.session.add(new_certificates)
         db.session.commit()
-        return {"message": "ok"}, 201
+        return {"message": "ok"}, 200
     return {"message": "No exist "}, 400
 
 
