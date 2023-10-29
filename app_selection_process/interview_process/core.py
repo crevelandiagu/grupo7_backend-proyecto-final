@@ -84,3 +84,29 @@ def get_candidate_interviews(request):
 
     return candidateInterviewsList, 200
 
+#@jwt_required
+def evaluate_company_interview(request):
+
+    interviewId = int(request.view_args.get('id_interview', -1))
+    data_interview = dict(request.json)
+    
+    try:
+        data_score = int(data_interview.get("score"))
+    except Exception as e:
+        print(e)
+        return {"message": "Wrong score format"}, 412
+
+    try:
+
+        interview_details = Interview.query.filter(Interview.id == interviewId).first()
+        
+        if interview_details is None:
+            return {"message": "interview not found"}, 404
+        
+        interview_details.score = data_score
+        db.session.commit()
+        return interviewSchema.dump(interview_details), 201
+
+    except Exception as e:
+        print(e)
+        return {"message": f"missing {e}"}, 400

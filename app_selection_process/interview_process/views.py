@@ -41,6 +41,17 @@ def get_interviewsCandidate():
     response, status = get_candidate_interviews(request)
     return response, status
 
+@interviews.post("/score/<int:id_interview>", tags=[interviews_tag])
+def interview_score():
+
+    '''
+    Company can evaluate interviews
+    :return: response
+    '''
+    
+    response, status = evaluate_company_interview(request)
+    return response, status
+
 
 @interviews.get('/ping', tags=[interviews_tag])
 def root():
