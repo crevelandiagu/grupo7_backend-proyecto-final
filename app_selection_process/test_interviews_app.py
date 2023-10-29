@@ -81,15 +81,15 @@ def test_get_interviews_company_200_404():
     assert response_data_200.status_code == 200
     assert len(response_info_200) == 1
 
-    response_data_400 = app.test_client().get('/interviews/company/')
-    assert response_data_400.status_code == 404
+    response_data_404 = app.test_client().get('/interviews/company/')
+    assert response_data_404.status_code == 404
 
 
 
 '''----------- Test get interviews candidate --------------------'''
 
 
-def test_get_projects_200_404():
+def test_get_interviews_candidate_200_404():
 
     data = {
         "dateTime":fake_data.iso8601(),
@@ -111,5 +111,5 @@ def test_get_projects_200_404():
     assert response_data_200.status_code == 200
     assert len(response_info_200) == 1
 
-    response_data_400 = app.test_client().get('/interviews/candidate/')
-    assert response_data_400.status_code == 404
+    response_data_404 = app.test_client().get('/interviews/candidate/')
+    assert response_data_404.status_code == 404
