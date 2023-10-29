@@ -115,7 +115,7 @@ def test_get_interviews_candidate_200_404():
     assert response_data_404.status_code == 404
 
 
-def test_interviews_create_201_412_404():
+def test_interviews_score_201_412_404():
     
     data = {
         "dateTime":fake_data.iso8601(),
