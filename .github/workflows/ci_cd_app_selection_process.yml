@@ -25,7 +25,7 @@ jobs:
       - name: Instalación de app_selection_process
         run: |
           python -m pip install --upgrade pip
-          pip install -r app_selection_process /requirements.txt
+          pip install -r app_selection_process/requirements.txt
 
       - name: Correr pruebas app_selection_process
         id: correr-pruebas-selection_process
