@@ -1,3 +1,3 @@
-from .views import publicaciones
+from .views import search_tool
 
-__all__ = ['publicaciones']
+__all__ = ['search_tool']
