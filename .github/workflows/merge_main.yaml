@@ -1,7 +1,10 @@
-name: Merge Dev
+name: Deploy Master
+run-name: ${{ github.actor }} is Deploy Master 🚀⚗🔮🤖
 on:
   push:
     branches: [develop]
+    paths:
+      - 'setup/**'
 jobs:
   Crear-Release:
     name: Crear-release
@@ -39,7 +42,7 @@ jobs:
       env:
         MENSAJE_MERGE: Se unieron las ramas
 
-  correr-test-funcionalidad:
+  correr-test-backend-apps:
     name: Correr-test
     needs: merege-release-desarrollo
     runs-on: ubuntu-latest
@@ -53,65 +56,78 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Instalación de librerías y dependencias-usuarios
+      - name: postgres test
+        uses: ikalnytskyi/action-setup-postgres@v4
+        with:
+          database: candidate_db
+
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Instalación de app_candidate
         run: |
           python -m pip install --upgrade pip
-          pip install -r users/requirements.txt
-      - name: Correr pruebas usuarios
+          pip install -r app_candidate/requirements.txt
+
+      - name: Correr pruebas app_candidate
         id: correr-pruebas-usuarios
-        if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
+        if: ${{ contains(github.event.head_commit.message, 'app_candidate') }}
         run: |
-          cd users
-          export TEST_APP=True
-          pytest --cov=. -v -s --cov-fail-under=80
+          cd app_candidate
+          pytest --cov=. -v -s --cov-fail-under=70
 
-      - name: Instalación de librerías y dependencias-ofertas
+      - name: Instalación de app_company
         run: |
           python -m pip install --upgrade pip
-          pip install -r offers/requirements.txt
-      - name: Correr pruebas oferas
-        id: correr-pruebas-ofertas
-        if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
-        run: |
-          cd offers
-          export TEST_APP=True
-          pytest --cov=. -v -s --cov-fail-under=80
+          pip install -r app_company/requirements.txt
 
-      - name: Instalación de librerías y dependencias-publicaciones
+      - name: Correr pruebas app_company
+        id: correr-pruebas-usuarios
+        if: ${{ contains(github.event.head_commit.message, 'app_company') }}
+        run: |
+          cd app_company
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=70
+
+      - name: Instalación de app_projects
         run: |
           python -m pip install --upgrade pip
-          pip install -r servicio_publicaciones/requirements.txt
-      - name: Correr pruebas publicaciones
-        id: correr-pruebas-publicaciones
-        if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
-        run: |
-          cd servicio_publicaciones
-          export TEST_APP=True
-          pytest --cov=. -v -s --cov-fail-under=80
+          pip install -r app_project/requirements.txt
 
-      - name: Instalación de librerías y dependencias-trayectos
+      - name: Correr pruebas app_projects
+        id: correr-pruebas-usuarios
+        if: ${{ contains(github.event.head_commit.message, 'app_projects') }}
+        run: |
+          cd app_project
+          export TEST_APP=True
+          pytest --cov=. -v -s --cov-fail-under=70
+
+      - name: Instalación de app_search_tool
         run: |
           python -m pip install --upgrade pip
-          pip install -r servicio_trayectos/requirements.txt
-      - name: Correr pruebas trayectos
-        id: correr-pruebas-trayectos
-        if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
-        run: |
-          cd servicio_trayectos
-          export TEST_APP=True
-          pytest --cov=. -v -s --cov-fail-under=80
+          pip install -r app_search_tool/requirements.txt
 
-      - name: Instalación de librerías y dependencias-public
+      - name: Correr pruebas app_search_tool
+        id: correr-pruebas-usuarios
+        if: ${{ contains(github.event.head_commit.message, 'app_search_tool') }}
+        run: |
+          cd app_search_tool
+          pytest --cov=. -v -s --cov-fail-under=70
+
+      - name: Instalación de app_selection_process
         run: |
           python -m pip install --upgrade pip
-          pip install -r public/requirements.txt
-      - name: Correr pruebas public
-        id: correr-pruebas-public
-        if: ${{ contains(github.event.head_commit.message, 'RELEASE') }}
+          pip install -r app_selection_process/requirements.txt
+
+      - name: Correr pruebas app_selection_process
+        id: correr-pruebas-selection_process
+        if: ${{ contains(github.event.head_commit.message, 'app_selection_process') }}
         run: |
-          cd public
+          cd app_selection_process
           export TEST_APP=True
-          pytest --cov=. -v -s --cov-fail-under=80
+          pytest --cov=. -v -s --cov-fail-under=70
 
       - name: Validar resultado con errores
         if: ${{ failure() }}
@@ -127,7 +143,7 @@ jobs:
 
   merege-release-main:
     name: Merge-main
-    needs: correr-test-funcionalidad
+    needs: correr-test-backend-apps
     runs-on: ubuntu-latest
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
@@ -141,3 +157,27 @@ jobs:
         target-branch: main
       env:
         MENSAJE_MERGE: Merge successful
+
+  tags:
+    needs: [correr-test-backend-apps, merege-release-main, ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: name branch
+        id: name_branch
+        run: echo "NAME_BRANCH=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          append_to_pre_release_tag:
+          custom_tag: 1.12.4-${{ steps.name_branch.outputs.NAME_BRANCH }}
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v1.12.4
+          name: v1.12.4
+          body: Mitad sprint 2

@@ -12,38 +12,45 @@ spec:
   rules:
   - http:
       paths:
-       - pathType: Prefix
-         path: /candidate
-         backend:
-           service:
-             name: servicio-app-candidate
-             port:
-               number: 80
-       - pathType: Prefix
-         path: /projects
-         backend:
-           service:
-             name: servicio-app-projects
-             port:
-               number: 80
-       - pathType: Prefix
-         path: /company
-         backend:
-           service:
-             name: servicio-app-company
-             port:
-               number: 80
-       - pathType: Prefix
-         path: /search-tool
-         backend:
-           service:
-             name: servicio-app-search-tool
-             port:
-               number: 80
-#       - pathType: Prefix
-#         path: /app_selection_process
-#         backend:
-#           service:
-#             name: servicio-publicnew
-#             port:
-#               number: 80
+      - pathType: Prefix
+        path: /candidate
+        backend:
+          service:
+            name: servicio-app-candidate
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /company
+        backend:
+          service:
+            name: servicio-app-company
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /projects
+        backend:
+          service:
+            name: servicio-app-projects
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /search-tool
+        backend:
+          service:
+            name: servicio-app-search-tool
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /interviews
+        backend:
+          service:
+            name: servicio-app-selection-process
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: servicio-frontapp
+            port:
+              number: 80
