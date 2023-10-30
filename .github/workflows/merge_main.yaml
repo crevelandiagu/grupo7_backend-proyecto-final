@@ -72,7 +72,7 @@ jobs:
           pip install -r app_candidate/requirements.txt
 
       - name: Correr pruebas app_candidate
-        id: correr-pruebas-usuarios
+        id: correr-pruebas-app_candidate
         if: ${{ contains(github.event.head_commit.message, 'app_candidate') }}
         run: |
           cd app_candidate
@@ -84,7 +84,7 @@ jobs:
           pip install -r app_company/requirements.txt
 
       - name: Correr pruebas app_company
-        id: correr-pruebas-usuarios
+        id: correr-pruebas-app_company
         if: ${{ contains(github.event.head_commit.message, 'app_company') }}
         run: |
           cd app_company
@@ -97,7 +97,7 @@ jobs:
           pip install -r app_project/requirements.txt
 
       - name: Correr pruebas app_projects
-        id: correr-pruebas-usuarios
+        id: correr-pruebas-app_projects
         if: ${{ contains(github.event.head_commit.message, 'app_projects') }}
         run: |
           cd app_project
@@ -110,7 +110,7 @@ jobs:
           pip install -r app_search_tool/requirements.txt
 
       - name: Correr pruebas app_search_tool
-        id: correr-pruebas-usuarios
+        id: correr-pruebas-app_search_tool
         if: ${{ contains(github.event.head_commit.message, 'app_search_tool') }}
         run: |
           cd app_search_tool

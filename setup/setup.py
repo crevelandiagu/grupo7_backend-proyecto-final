@@ -6,7 +6,7 @@ setup(name='BackEnd-Abc-Jobs-Grupo7',
       version='1.12.4',
       description='Some description',
       classifiers=[
-        'Development Status :: 1 - Betha',
+        'Development Status :: 2 - Betha',
         'Programming Language :: Python :: 3.10',
       ],
       keywords='setup',
