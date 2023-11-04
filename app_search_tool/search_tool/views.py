@@ -8,6 +8,7 @@ from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 from .search_args import get_dandidate
 from .search_cv import get_cv_candidate
+from .start_process import chosen_one_candidate
 from .serializer import (
     SearchQuery,
     RESPONSE_SEARCH,
@@ -30,6 +31,11 @@ def get_candidate(query: SearchQuery):
 def get_candidate_cv(path: SearchPath):
     print(path)
     response, status = get_cv_candidate(request)
+    return response, status
+
+@search_tool.post("/search/cv/chosen-one", tags=[search_tool_tag], responses=RESPONSE_SEARCH_CV)
+def post_candidate_chosen_one():
+    response, status = chosen_one_candidate(request)
     return response, status
 
 
@@ -57,7 +63,6 @@ def ping():
 
 @search_tool.route('/coverage')
 def coverage_app():
-    os.system('pytest --cov --cov-report=html:template')
     return send_from_directory('./template/', 'index.html')
 
 
