@@ -157,11 +157,13 @@ services:
   app_search_tool:
     build: app_search_tool/
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db_postgres:5432/
+      DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/
     ports:
       - "3008:3008"
     expose:
       - "3008"
+    volumes:
+      - ./app_search_tool:/python-docker
     networks:
       - web_global
 
