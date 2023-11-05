@@ -1,4 +1,4 @@
-# Descripcion estructura componente publicaciones
+# Descripcion estructura componente company employees
 
 En este proyecto se encuentra el código de ejemplo para ejecutar un pipeline de github que valida que el código esté cubierto en un mínimo de 80% en pruebas.
 
