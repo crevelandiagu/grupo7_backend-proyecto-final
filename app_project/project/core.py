@@ -1,8 +1,10 @@
 import secrets
 import hashlib
-from .models import Projects, db, ProjectsSchema
 import requests
 import datetime
+
+from .models import Projects, db, ProjectsSchema
+
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 
