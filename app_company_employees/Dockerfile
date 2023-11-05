@@ -10,6 +10,6 @@ ENV USER_ENDPOINT default
 ENV DATABASE_URL default
 
 COPY . .
-RUN pytest --cov --cov-report=html:template
+#RUN pytest --cov --cov-report=html:template
 
 CMD ["gunicorn","--reload", "wsgi:app", "--bind", "0.0.0.0:3002", "--log-level", "debug"]
