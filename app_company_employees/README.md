@@ -1,4 +1,4 @@
-# Descripcion estructura componente publicaciones
+# Descripcion estructura componente company employees
 
 En este proyecto se encuentra el código de ejemplo para ejecutar un pipeline de github que valida que el código esté cubierto en un mínimo de 80% en pruebas.
 
@@ -59,6 +59,7 @@ pytest --cov=src -v -s --cov-fail-under=80
 
 1. Construir imagen
 2. Ejecutar contenedor
+
 
 ```
 cd ./servicio_publicaciones/

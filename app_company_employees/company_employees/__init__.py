@@ -1,3 +1,3 @@
-from .views import publicaciones
+from .views import company_employees
 
-__all__ = ['publicaciones']
+__all__ = ['company_employees']
