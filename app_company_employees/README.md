@@ -60,6 +60,7 @@ pytest --cov=src -v -s --cov-fail-under=80
 1. Construir imagen
 2. Ejecutar contenedor
 
+
 ```
 cd ./servicio_publicaciones/
 docker build -t publicaciones ./
