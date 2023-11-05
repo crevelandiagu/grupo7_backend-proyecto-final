@@ -1,54 +1,58 @@
+import os
 from flask import Blueprint
 from flask import request
-import os
-from .core import get_token, create_post_, search_post_, get_post_
+from flask import send_from_directory
+
+from flask_openapi3 import Tag
+from flask_openapi3 import APIBlueprint
+from .core import creacion_usuario
 
 
-publicaciones = Blueprint('company_employees', __name__)
+company_employees = APIBlueprint('company_employees', __name__, url_prefix='/company-employees')
 
-users_ip = os.getenv('USERS_URL', "http://127.0.0.1:3000")
-user_port = os.getenv('USER_PORT',"3000")
-user_endpoint = os.getenv('USER_ENDPOINT',"/app_company/me")
+company_employees_tag = Tag(name="Search Tool", description="Search candidate")
 
-@publicaciones.route('/posts/', methods=['POST'])
+
+@company_employees.post('/create-employee/', tags=[company_employees_tag])
 def create_post():
-    headers=request.headers
-    user, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    response, status = create_post_(request, user)
-    return  response, status
-    
-@publicaciones.route('/posts/', methods=['GET'] )
-def search_post():
-    headers=request.headers
-    user, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-    
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    response, status = search_post_(request, user)
-    return  response, status
-
-@publicaciones.route('/posts/<id>', methods=['GET'] )
-def get_post(id):
-    headers=request.headers
-    response_header, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    try:
-        id_post = int(id)
-    except Exception as e:
-        return {"mensaje": f"Id de post invalido, no es un numero"}, 400
-    
-    response, status = get_post_(id_post, response_header)
+    '''
+    candidate can register
+    :return: response
+    '''
+    response, status = creacion_usuario(request)
     return response, status
 
 
-@publicaciones.route('/posts/ping', )
-def ping():
+company_employees_health_tag = Tag(name="Search Tool healtcheck", description="Search Tool candidate")
+
+
+@company_employees.get('/ping', tags=[company_employees_health_tag])
+def root():
+    '''
+    Healt Check
+    :return: pong
+    '''
     return 'pong'
+
+
+@company_employees.get('/ping2', tags=[company_employees_health_tag])
+def ping():
+    """
+    Get ping health check
+    """
+    username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
+    return f'pong12 {username}'
+
+
+@company_employees.route('/coverage')
+def coverage_app():
+    return send_from_directory('./template/', 'index.html')
+
+
+@company_employees.route('/<path>/')
+def coverage_app_files(path):
+    return send_from_directory('./template/', path)
+
 
 
 
