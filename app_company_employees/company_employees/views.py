@@ -5,7 +5,10 @@ from flask import send_from_directory
 
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
-from .core import creacion_usuario
+from .core import (
+    creacion_usuario,
+    get_employees
+)
 
 
 company_employees = APIBlueprint('company_employees', __name__, url_prefix='/company-employees')
@@ -14,12 +17,22 @@ company_employees_tag = Tag(name="Search Tool", description="Search candidate")
 
 
 @company_employees.post('/create-employee/', tags=[company_employees_tag])
-def create_post():
+def create_employe():
     '''
     candidate can register
     :return: response
     '''
     response, status = creacion_usuario(request)
+    return response, status
+
+
+@company_employees.get('/employee/<int:id_company>', tags=[company_employees_tag])
+def get_employe():
+    '''
+    candidate can register
+    :return: response
+    '''
+    response, status = get_employees(request)
     return response, status
 
 

@@ -12,7 +12,7 @@ class EmployeeCompany(db.Model):
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name: str = db.Column(db.String(150), nullable=True)
     seniority: str = db.Column(db.String(150), nullable=True)
-    company_id: int = db.Column(db.Integer, nullable=True)
+    company_id: int = db.Column(db.Integer)
     company_project_id: int = db.Column(db.Integer, nullable=True)
 
     project_interview_id = db.relationship('ProjectInterview', cascade='all, delete, delete-orphan')
