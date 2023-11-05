@@ -22,6 +22,7 @@ def creacion_usuario(request):
       email=request.json["email"],
       password=hashlib.sha256(password.encode()).hexdigest(),
       salt=salt,
+      company_id=request.json["companyId"]
     )
     db.session.add(nuevo_usuario)
     db.session.commit()
@@ -33,6 +34,19 @@ def creacion_usuario(request):
   except Exception as e:
     print(e)
     return {"message": f"Missing: {e}"}, 400
+
+
+def get_employees(request):
+    id_company = request.view_args.get('id_company', -1)
+    info_company_employees = EmployeeCompany.query.filter(EmployeeCompany.company_id == id_company).all()
+    list_employee=[]
+    for employee in info_company_employees:
+        list_employee.append({
+            'employeeId': employee.id,
+            'email': employee.email,
+            'companyId': employee.company_id
+        })
+    return list_employee, 200
 
 
 def is_valid_email(email):

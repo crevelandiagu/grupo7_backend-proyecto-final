@@ -3,12 +3,19 @@ import hashlib
 import requests
 import datetime
 
-from .models import Projects, db, ProjectsSchema
+from .models import (
+    Projects,
+    db,
+    ProjectsSchema,
+    ProjectEmployeesCompanie
+)
+from .utils_gcp.gcp_pub_sub import GCP
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 
 projectsSchema = ProjectsSchema()
+
 
 #@jwt_required
 def create_company_project(request):
@@ -26,9 +33,10 @@ def create_company_project(request):
         return {"message": "Wrong company id value"}, 412
 
     new_project = Projects(
-        projectName = projectName,
-        description = description,
-        companyId = companyId
+        projectName=projectName,
+        description=description,
+        companyId=companyId,
+        status="BASE"
     )
     try:
         db.session.add(new_project)
@@ -38,6 +46,7 @@ def create_company_project(request):
         return {"message": "Internal server error"}, 500
     
     return {"message": f"Project {projectName} successfully created"}, 201
+
 
 #@jwt_required
 def get_company_projects(request):
@@ -59,4 +68,18 @@ def get_company_projects(request):
 
     return projectsList, 200
 
+def relate_employee_projects(request):
+
+    new_project = ProjectEmployeesCompanie(
+        project_id=request.json["projectId"],
+        employees_id=request.json["employeeId"]
+    )
+    db.session.add(new_project)
+    db.session.commit()
+    try:
+        publicar = GCP()
+        publicar.publisher_message({"A": 1, "C": 9})
+    except Exception as e:
+        print(e)
+    return {"message": f"employe was link with the project"}, 201
 
