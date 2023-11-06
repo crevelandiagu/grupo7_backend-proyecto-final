@@ -180,4 +180,4 @@ jobs:
         with:
           tag: v2.14.4
           name: v2.14.4
-          body: Mitad sprint 2
+          body: Cierre sprint 2
