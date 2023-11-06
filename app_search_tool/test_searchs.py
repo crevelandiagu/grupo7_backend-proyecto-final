@@ -5,6 +5,10 @@ from unittest.mock import patch
 from search_tool import connection_db
 import json
 
+import os, sys
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+
 fake = Faker()
 
 '----------------------------test ping -----------------------------------------------'

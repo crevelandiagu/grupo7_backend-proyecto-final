@@ -20,7 +20,7 @@ app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
 
-dbname = os.getenv('DB_NAME', 'publicaciones_db')
+dbname = os.getenv('DB_NAME', 'search_tool_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'

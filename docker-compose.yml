@@ -1,8 +1,30 @@
 version: '3'
 services:
-# -----------------------Servicio candidate -----------------------------
+#candidate_db, company_db, company_employees_db, project_db, search_tool_db, interviews_db
+## -----------------------Servicio data bases -----------------------------
+#  db_postgres:
+#    image: "postgres:11.5-alpine"
+#    restart: always
+#    environment:
+#      POSTGRES_MULTIPLE_DATABASES: candidate_db, company_db, company_employees_db, project_db, search_tool_db, interviews_db
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+#      interval: 2s
+#      timeout: 5s
+#      retries: 5
+#    ports:
+#      - "5432:5432"
+#    expose:
+#      - "5432"
+#    volumes:
+#      - ./setup:/docker-entrypoint-initdb.d
+#    networks:
+#      - web_global
+## -----------------------Servicio candidate -----------------------------
   db_candidate:
-    image: postgres
+    image: "postgres:11.5-alpine"
     restart: always
     environment:
       POSTGRES_DB: candidate_db
@@ -13,17 +35,17 @@ services:
     expose:
       - "5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 2s
       timeout: 5s
       retries: 5
     networks:
-      - service_candidate
+      - web_global
 
   app_candidate:
     build: app_candidate/
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/
+      DATABASE_URL:  postgresql://postgres:postgres@db_candidate:5432/
     ports:
       - "3000:3000"
     expose:
@@ -34,24 +56,24 @@ services:
     volumes:
       - ./app_candidate:/python-docker
     networks:
-      - service_candidate
       - web_global
 
-# -----------------------Servicio company -----------------------------
+## -----------------------Servicio company -----------------------------
   db_company:
-    image: postgres
+    image: "postgres:11.5-alpine"
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=company_db
+      POSTGRES_DB: company_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 2s
       timeout: 5s
       retries: 5
     networks:
-      - service_company
+      - web_global
 
   app_company:
     build: app_company/
@@ -65,26 +87,59 @@ services:
       db_company:
         condition: service_healthy
     networks:
-      - service_company
       - web_global
 
-## -----------------------Servicio project -----------------------------
-  db_project:
-    image: postgres
+## -----------------------Servicio company employees -----------------------------
+
+  db_company_employees:
+    image: "postgres:11.5-alpine"
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=project_db
+      POSTGRES_DB: company_employees_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 2s
       timeout: 5s
       retries: 5
     networks:
-      - service_project
+      - web_global
 
-  app_trayectos:
+  app_company_employees:
+    build: app_company_employees/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_company_employees:5432/
+    ports:
+      - "3002:3002"
+    expose:
+      - "3002"
+    depends_on:
+      db_company_employees:
+        condition: service_healthy
+    networks:
+      - web_global
+
+## -----------------------Servicio project -----------------------------
+
+  db_project:
+    image: "postgres:11.5-alpine"
+    restart: always
+    environment:
+      POSTGRES_DB: project_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web_global
+
+  app_project:
     build: app_project/
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db_project:5432/
@@ -96,62 +151,53 @@ services:
       db_project:
         condition: service_healthy
     networks:
-      - service_project
       - web_global
-### -----------------------Servicio candidate -----------------------------
-#  db_usuarios:
-#    image: postgres
-#    environment:
-#      POSTGRES_DB: usuarios_db
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-#      interval: 2s
-#      timeout: 5s
-#      retries: 5
-#    networks:
-#      - service_usuarios
-#
-#  users:
-#    build: app_company/
-#    environment:
-#      DB_NAME: usuarios_db
-#      DB_HOST: db_usuarios
-#      DB_PORT: 5432
-#      DB_USER: postgres
-#      DB_PASSWORD: postgres
-#    ports:
-#      - "3000:3000"
-#    expose:
-#      - "3000"
-#    networks:
-#      - service_usuarios
-#      - web_global
-#    depends_on:
-#      db_usuarios:
-#        condition: service_healthy
-#
-### -----------------------Servicio new-service -----------------------------
-#
-#  new-service:
-#    build: app_selection_process/
-#    environment:
-#      OFFERS_URL: http://app_ofertas:3003/
-#      USERS_URL: http://users:3000/
-#      POSTS_URL: http://app_publicaciones:3001/
-#      ROUTES_URL: http://app_trayectos:3002/
-#    ports:
-#      - "3010:3010"
-#    expose:
-#      - "3010"
-#    networks:
-#      - web_global
+
+## -----------------------Servicio app_search_tool -----------------------------
+  app_search_tool:
+    build: app_search_tool/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/
+    ports:
+      - "3008:3008"
+    expose:
+      - "3008"
+    volumes:
+      - ./app_search_tool:/python-docker
+    networks:
+      - web_global
+
+## -----------------------Servicio app_selection_process -----------------------------
+  db_interviews:
+    image: "postgres:11.5-alpine"
+    restart: always
+    environment:
+      POSTGRES_DB: interviews_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web_global
+
+  app_selection_process:
+    build: app_selection_process/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_interviews:5432/
+    ports:
+      - "3010:3010"
+    expose:
+      - "3010"
+    depends_on:
+      db_interviews:
+        condition: service_healthy
+    networks:
+      - web_global
 
 networks:
-  service_candidate:
-  service_company:
-  service_project:
   web_global:
 
 
