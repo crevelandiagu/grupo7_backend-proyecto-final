@@ -13,7 +13,9 @@ from .serializer import (
     SearchQuery,
     RESPONSE_SEARCH,
     SearchPath,
-    RESPONSE_SEARCH_CV
+    RESPONSE_SEARCH_CV,
+    ProjectChosenOne,
+    RESPONSE_CHOSEN_ONE
 )
 
 search_tool = APIBlueprint('search_tool', __name__, url_prefix='/search-tool')
@@ -33,8 +35,9 @@ def get_candidate_cv(path: SearchPath):
     response, status = get_cv_candidate(request)
     return response, status
 
-@search_tool.post("/search/cv/chosen-one", tags=[search_tool_tag], responses=RESPONSE_SEARCH_CV)
-def post_candidate_chosen_one():
+
+@search_tool.post("/search/cv/chosen-one", tags=[search_tool_tag], responses=RESPONSE_CHOSEN_ONE)
+def post_candidate_chosen_one(body: ProjectChosenOne):
     response, status = chosen_one_candidate(request)
     return response, status
 
@@ -44,11 +47,10 @@ search_tool_health_tag = Tag(name="Search Tool healtcheck", description="Search 
 
 @search_tool.get('/ping', tags=[search_tool_health_tag])
 def root():
-    '''
+    """
     Healt Check
     :return: pong
-    '''
-
+    """
     return 'pong'
 
 

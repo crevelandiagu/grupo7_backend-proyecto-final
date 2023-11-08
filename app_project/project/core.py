@@ -61,14 +61,14 @@ def get_company_projects(request):
     except Exception as e:
         return {"message": "Internal server error"}, 500
 
-    if (len(companyProjects) == 0):
-        return {"message": "No projects found"}, 404
+    # if (len(companyProjects) == 0):
+    #     return {"message": "No projects found"}, 404
     
     projectsList = [projectsSchema.dump(proj) for proj in companyProjects]
 
     return projectsList, 200
 
-def relate_employee_projects(request):
+def associate_employee_projects(request):
 
     new_project = ProjectEmployeesCompanie(
         project_id=request.json["projectId"],
@@ -81,5 +81,5 @@ def relate_employee_projects(request):
         publicar.publisher_message({"A": 1, "C": 9})
     except Exception as e:
         print(e)
-    return {"message": f"employe was link with the project"}, 201
+    return {"message": f"employee was link with the project"}, 200
 

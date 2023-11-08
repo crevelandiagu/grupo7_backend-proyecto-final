@@ -7,53 +7,49 @@ from .core import (creacion_usuario,
                    self_information)
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
+from .serializer import (
+    SignUp,
+    RESPONSE_SIGNUP,
+    RESPONSE_LOGIN
+)
 
-
-company_tag = Tag(name="company", description="Some company")
 company = APIBlueprint('company', __name__, url_prefix='/company')
 
+company_tag = Tag(name="company", description="Some company")
 
-@company.post("/signup",  tags=[company_tag])
-def register_users():
-    '''
+@company.post("/signup",  tags=[company_tag], responses=RESPONSE_SIGNUP)
+def register_users(body: SignUp):
+    """
     user company can do a acount
     :return: response, status
-    '''
+    """
     response, status = creacion_usuario(request)
     return response, status
 
 
-@company.post("/login", tags=[company_tag])
-def information_user():
-    '''
-    :return:
-    '''
+@company.post("/login", tags=[company_tag], responses=RESPONSE_LOGIN)
+def information_user(body: SignUp):
+    """
+    user company can login
+    :return: response, status
+    """
     response, status = autenticar_usuario(request)
     return response, status
 
 
-@company.get("/profile", tags=[company_tag])
-def get_token_user():
-    response, status = {}, 200
-    return response, status
+company_health_tag = Tag(name="Company healtcheck", description="Some company")
 
 
-@company.post("/profile", tags=[company_tag])
-def post_token_user():
-    response, status = {}, 200
-    return response, status
-
-
-@company.get('/ping', tags=[company_tag])
+@company.get('/ping', tags=[company_health_tag])
 def root():
-    '''
+    """
     Healt Check
     :return: pong
-    '''
+    """
     return 'pong'
 
 
-@company.get('/ping2', tags=[company_tag])
+@company.get('/ping2', tags=[company_health_tag])
 def ping():
     username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
     return f'pong12 {username}'

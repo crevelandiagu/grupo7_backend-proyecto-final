@@ -76,8 +76,23 @@ class SearchResponseCv(BaseModel):
     }], description="experience candidate")
 
 
-
 RESPONSE_SEARCH_CV = {
     200: SearchResponseCv,
+    400: Error400,
+    }
+
+
+class ProjectChosenOne(BaseModel):
+    candidateId: int = Field(..., description='Skills', example=1)
+    projectId: int = Field(..., description='Skills', example=1)
+    companyId: int = Field(..., description='Skills', example=1)
+
+
+class ProjectChosenOneResponse(BaseModel):
+    createdAt: str = Field('Candidate has started the process', description="name candidate")
+
+
+RESPONSE_CHOSEN_ONE = {
+    200: ProjectChosenOneResponse,
     400: Error400,
     }
