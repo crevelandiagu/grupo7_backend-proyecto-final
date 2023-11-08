@@ -157,7 +157,7 @@ jobs:
           IMAGE_NAME: company-employees
           IMAGE_TAG: ${{ github.run_number }}
         run: |
-          cd app_company
+          cd app_company_employees
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t $IMAGE_NAME:latest .
           docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
