@@ -33,6 +33,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'frase-secreta'
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
+
 db.init_app(app)
 
 with app.app_context():
@@ -48,7 +49,3 @@ for url, blueprint in ACTIVATE_ENDPOINTS:
     app.register_api(blueprint)
 
 jwt = JWTManager(app)
-
-
-
-

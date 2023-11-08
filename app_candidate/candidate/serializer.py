@@ -43,7 +43,7 @@ RESPONSE_LOGIN = {
 class BasicInfo(BaseModel):
     name: str = Field(None, description='email valid', example='usertest')
     lastname: str = Field(None, description='email valid', example='test2')
-    birthdate: str = Field(None, description='email valid', example='01/01/1999')
+    birthdate: str = Field(None, description='email valid', example='2023-11-08')
     nacionality: str = Field(None, description='email valid', example='COL')
     phone_number: str = Field(None, description='email valid', example='123456789')
     numberId: str = Field(None, description='email valid', example='C.C.123456789')
@@ -64,10 +64,10 @@ RESPONSE_BASICINFO = {
 class BasicInfoExperience(BaseModel):
     position: str = Field(None, description='email valid', example='Junior')
     company_name: str = Field(None, description='email valid', example='MIT')
-    start_date: str = Field(None, description='email valid', example='01/01/1999')
-    end_date: str = Field(None, description='email valid', example='01/12/1999')
+    start_date: str = Field(None, description='email valid', example='2020-11-08')
+    end_date: str = Field(None, description='email valid', example='2023-11-08')
     place: str = Field(None, description='email valid', example='COL')
-    skills: str = Field(None, description='email valid', example='["Python", "Java"]')
+    skills:  List[str] = Field(None, description="skills candidate", example=["Python", "Java"])
 
 
 class BasicInfoExperienceResponse(BaseModel):
@@ -83,10 +83,9 @@ RESPONSE_BASICINFO_EXPERIENCE = {
 class BasicInfoEducation(BaseModel):
     university: str = Field(None, description='email valid', example='MIT')
     subject: str = Field(None, description='email valid', example='Computer Science')
-    start_date: str = Field(None, description='email valid', example='01/01/1999')
-    end_date: str = Field(None, description='email valid', example='01/12/1999')
-    skills: str = Field(None, description='email valid', example='["Python", "Java"]')
-
+    start_date: str = Field(None, description='email valid', example='2020-11-08')
+    end_date: str = Field(None, description='email valid', example='2023-11-08')
+    skills:  List[str] = Field(None, description="skills candidate", example=["Python", "Java"])
 
 class BasicInfooEducationResponse(BaseModel):
     __root__: List[BasicInfoEducation]
@@ -101,8 +100,8 @@ RESPONSE_BASICINFO_EDUCATION = {
 class BasicInfoCertificates(BaseModel):
     name_certificate: str = Field(None, description='email valid', example='OOP')
     company: str = Field(None, description='email valid', example='MIT')
-    expedition_date: str = Field(None, description='email valid', example='01/01/1999')
-    date_expiry: str = Field(None, description='email valid', example='01/12/1999')
+    expedition_date: str = Field(None, description='email valid', example='2020-11-08')
+    date_expiry: str = Field(None, description='email valid', example='2023-11-08')
 
 class BasicInfoCertificatesResponse(BaseModel):
     __root__: List[BasicInfoCertificates]

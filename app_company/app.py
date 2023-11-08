@@ -20,6 +20,7 @@ app.secret_key = 'dev'
 
 app.url_map.strict_slashes = False
 
+
 dbname = os.getenv('DB_NAME', 'company_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
@@ -48,5 +49,3 @@ for url, blueprint in ACTIVATE_ENDPOINTS:
     app.register_api(blueprint)
 
 jwt = JWTManager(app)
-
-

@@ -5,8 +5,6 @@ WORKDIR /python-docker
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 ENV USERS_URL default
-ENV USER_PORT default
-ENV USER_ENDPOINT default
 ENV DATABASE_URL default
 
 COPY . .
