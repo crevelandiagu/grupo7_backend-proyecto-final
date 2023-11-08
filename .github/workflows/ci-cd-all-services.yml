@@ -358,7 +358,7 @@ jobs:
 
   cd-app-selection_process:
     name: Deploy to GCP k8s
-    needs: [ test-app-selection_process, ci-app-selection_process ]
+    needs: [ ci-app-selection_process ]
     runs-on: ubuntu-latest
 
     outputs:
