@@ -91,35 +91,35 @@ services:
 
 ## -----------------------Servicio company employees -----------------------------
 
-#  db_company_employees:
-#    image: "postgres:11.5-alpine"
-#    restart: always
-#    environment:
-#      POSTGRES_DB: company_employees_db
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-#      interval: 2s
-#      timeout: 5s
-#      retries: 5
-#    networks:
-#      - web_global
-#
-#  app_company_employees:
-#    build: app_company_employees/
-#    environment:
-#      DATABASE_URL: postgresql://postgres:postgres@db_company_employees:5432/
-#    ports:
-#      - "3002:3002"
-#    expose:
-#      - "3002"
-#    depends_on:
-#      db_company_employees:
-#        condition: service_healthy
-#    networks:
-#      - web_global
+  db_company_employees:
+    image: "postgres:11.5-alpine"
+    restart: always
+    environment:
+      POSTGRES_DB: company_employees_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web_global
+
+  app_company_employees:
+    build: app_company_employees/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_company_employees:5432/
+    ports:
+      - "3002:3002"
+    expose:
+      - "3002"
+    depends_on:
+      db_company_employees:
+        condition: service_healthy
+    networks:
+      - web_global
 
 ## -----------------------Servicio project -----------------------------
 
