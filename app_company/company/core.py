@@ -30,7 +30,7 @@ def creacion_usuario(request):
                 "id": nuevo_usuario.id,
                 "email": nuevo_usuario.email,
                 "createdAt": datetime.now().isoformat()
-                }, 201
+                }, 200
     except Exception as e:
         print(e)
         return {"message": f"Missing: {e}"}, 400

@@ -1,8 +1,3 @@
-import secrets
-import hashlib
-import requests
-import datetime
-
 from .models import (
     Projects,
     db,
@@ -11,8 +6,6 @@ from .models import (
 )
 from .utils_gcp.gcp_pub_sub import GCP
 
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import jwt_required
 
 projectsSchema = ProjectsSchema()
 
@@ -61,25 +54,31 @@ def get_company_projects(request):
     except Exception as e:
         return {"message": "Internal server error"}, 500
 
-    if (len(companyProjects) == 0):
-        return {"message": "No projects found"}, 404
+    # if (len(companyProjects) == 0):
+    #     return {"message": "No projects found"}, 404
     
     projectsList = [projectsSchema.dump(proj) for proj in companyProjects]
 
     return projectsList, 200
 
-def relate_employee_projects(request):
+def associate_employee_projects(request):
 
     new_project = ProjectEmployeesCompanie(
         project_id=request.json["projectId"],
-        employees_id=request.json["employeeId"]
+        employees_id=request.json["employeeId"],
     )
     db.session.add(new_project)
     db.session.commit()
     try:
         publicar = GCP()
-        publicar.publisher_message({"A": 1, "C": 9})
+        publicar.publisher_message(
+            {
+                "where": "employee-projects",
+                "project_id": request.json["projectId"],
+                "employees_id": request.json["employeeId"]
+            }
+        )
     except Exception as e:
         print(e)
-    return {"message": f"employe was link with the project"}, 201
+    return {"message": f"employee was link with the project"}, 200
 

@@ -158,6 +158,7 @@ services:
     build: app_search_tool/
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/
+      GCP_JSON: ''
     ports:
       - "3008:3008"
     expose:

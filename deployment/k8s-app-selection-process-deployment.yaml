@@ -46,7 +46,7 @@ spec:
     checkIntervalSec: 30
     port: 3010
     type: HTTP
-    requestPath: /selection-process/ping
+    requestPath: /interviews/ping
 ---
 kind: Service
 apiVersion: v1

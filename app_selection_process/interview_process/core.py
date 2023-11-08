@@ -7,13 +7,14 @@ from datetime import datetime
 
 interviewSchema = InterviewSchema()
 
+
 #@jwt_required
 def create_company_interview(request):
 
     data_interview = dict(request.json)
     interview_dateTime = data_interview.get('dateTime', "")
     candidate_name = data_interview.get('candidateName', "")
-    interview_status=data_interview.get('interviewStatus', "")
+    interview_status = data_interview.get('interviewStatus', "")
 
 
     try:
@@ -31,13 +32,13 @@ def create_company_interview(request):
         return {"message": "Parameters candidateId, companyId, companyEmployeeId, projectId must be integer"}, 412
 
     newInterview = Interview(
-        date_interview = interview_date,
-        candidate_name = candidate_name,
-        candidate_id = candidate_id,
-        company_id = company_id,
-        company_employee_id = company_employee_id,
-        project_id = project_id,
-        status =interview_status
+        date_interview=interview_date,
+        candidate_name=candidate_name,
+        candidate_id=candidate_id,
+        company_id=company_id,
+        company_employee_id=company_employee_id,
+        project_id=project_id,
+        status=interview_status
     )
     try:
         db.session.add(newInterview)
@@ -46,7 +47,8 @@ def create_company_interview(request):
         print(e)
         return {"message": "Internal server error"}, 500
     
-    return {"message": f"Interview successfully created"}, 201
+    return {"message": f"Interview successfully created"}, 200
+
 
 #@jwt_required
 def get_company_interviews(request):
@@ -84,6 +86,7 @@ def get_candidate_interviews(request):
 
     return candidateInterviewsList, 200
 
+
 #@jwt_required
 def evaluate_company_interview(request):
 
@@ -105,7 +108,7 @@ def evaluate_company_interview(request):
         
         interview_details.score = data_score
         db.session.commit()
-        return interviewSchema.dump(interview_details), 201
+        return interviewSchema.dump(interview_details), 200
 
     except Exception as e:
         print(e)

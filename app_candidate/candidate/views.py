@@ -13,25 +13,39 @@ from .curriculum_vitae import (build_basicinfo,
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 
-
+from .serializer import (
+    SearchPath,
+    RESPONSE_BASICINFO_CV,
+    SignUp,
+    RESPONSE_SIGNUP,
+    RESPONSE_LOGIN,
+    BasicInfo,
+    RESPONSE_BASICINFO,
+    BasicInfoExperience,
+    RESPONSE_BASICINFO_EXPERIENCE,
+    BasicInfoEducation,
+    RESPONSE_BASICINFO_EDUCATION,
+    BasicInfoCertificates,
+    RESPONSE_BASICINFO_CERTIFICATES
+)
 
 candidate = APIBlueprint('candidate', __name__, url_prefix='/candidate')
 
 candidate_tag = Tag(name="Candidate auth", description="Some candidate")
 
 
-@candidate.post("/signup", tags=[candidate_tag])
-def register_users():
-    '''
+@candidate.post("/signup", tags=[candidate_tag], responses=RESPONSE_SIGNUP)
+def register_users(body: SignUp):
+    """
     candidate can register
     :return: response
-    '''
+    """
     response, status = creacion_usuario(request)
     return response, status
 
 
-@candidate.post("/login", tags=[candidate_tag])
-def information_user():
+@candidate.post("/login", tags=[candidate_tag], responses=RESPONSE_LOGIN)
+def information_user(body: SignUp):
     '''
     Candidate can login
     :return: respone
@@ -43,50 +57,50 @@ def information_user():
 candidate_cv_tag = Tag(name="Candidate CV", description="Some candidate")
 
 
-@candidate.get("/profile/basicinfo/<int:id_candidate>/", tags=[candidate_cv_tag])
-def get_basic_info_user():
+@candidate.get("/profile/basicinfo/<int:id_candidate>/", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO)
+def get_basic_info_user(path: SearchPath):
     response, status = build_basicinfo(request)
     return response, status
 
 
-@candidate.post("/profile/basicinfo/<int:id_candidate>/", tags=[candidate_cv_tag])
-def post_basic_info_user():
+@candidate.post("/profile/basicinfo/<int:id_candidate>/", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_CV)
+def post_basic_info_user(body: BasicInfo, path: SearchPath):
     response, status = build_basicinfo(request)
     return response, status
 
 
-@candidate.get("/profile/experience/<id_candidate>", tags=[candidate_cv_tag])
-def get_experience_user():
+@candidate.get("/profile/experience/<id_candidate>", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_EXPERIENCE)
+def get_experience_user(path: SearchPath):
     response, status = build_experience(request)
     return response, status
 
 
-@candidate.post("/profile/experience/<id_candidate>", tags=[candidate_cv_tag])
-def post_experience_user():
+@candidate.post("/profile/experience/<id_candidate>", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_CV)
+def post_experience_user(path: SearchPath, body: BasicInfoExperience):
     response, status = build_experience(request)
     return response, status
 
 
-@candidate.get("/profile/education/<id_candidate>", tags=[candidate_cv_tag])
-def get_education_user():
+@candidate.get("/profile/education/<id_candidate>", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_EDUCATION)
+def get_education_user(path: SearchPath):
     response, status = build_education(request)
     return response, status
 
 
-@candidate.post("/profile/education/<id_candidate>", tags=[candidate_cv_tag])
-def post_education_user():
+@candidate.post("/profile/education/<id_candidate>", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_CV)
+def post_education_user(path: SearchPath, body: BasicInfoEducation):
     response, status = build_education(request)
     return response, status
 
 
-@candidate.get("/profile/certificates/<id_candidate>", tags=[candidate_cv_tag])
-def get_certificates_user():
+@candidate.get("/profile/certificates/<id_candidate>", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_CERTIFICATES)
+def get_certificates_user(path: SearchPath):
     response, status = build_certificates(request)
     return response, status
 
 
-@candidate.post("/profile/certificates/<id_candidate>", tags=[candidate_cv_tag])
-def post_certificates_user():
+@candidate.post("/profile/certificates/<id_candidate>", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_CV)
+def post_certificates_user(path: SearchPath, body: BasicInfoCertificates):
     response, status = build_certificates(request)
     return response, status
 
@@ -96,10 +110,10 @@ candidate_health_tag = Tag(name="Candidate healtcheck", description="Some candid
 
 @candidate.get('/ping', tags=[candidate_health_tag])
 def root():
-    '''
+    """
     Healt Check
     :return: pong
-    '''
+    """
     return 'pong'
 
 
