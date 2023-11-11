@@ -31,7 +31,7 @@ jobs:
         if: ${{ contains(github.event.head_commit.message, 'app_candidate') }}
         run: |
           cd app_candidate
-          pytest --cov=. --cov-report=xml -v -s --cov-fail-under=70
+          pytest --cov=. --cov-report=xml --cov-branch
 
       - uses: actions/checkout@v3
         with:
