@@ -31,7 +31,7 @@ jobs:
         id: correr-pruebas-usuarios
         run: |
           cd app_candidate
-          pytest --cov=. --cov-report=xml --cov-branch
+          pytest --cov --cov-report=xml 
 
       - uses: actions/checkout@v3
         with:
