@@ -26,11 +26,16 @@ class ProjectQuery(BaseModel):
     companyId: int = Field(..., description='Skills', example=1)
 
 
-class ProjectResponse(BaseModel):
-    root: CreateProject
+class Project(CreateProject):
+    candidate_project_id = []
+    project_employees_companie_id = []
     id: int = Field(1, description="last name candidate")
     status: str = Field('BASE', description="name candidate")
     createdAt: str = Field('2023-11-07T02:54:33.098514', description="name candidate")
+
+
+class ProjectResponse(BaseModel):
+    __root__: List[Project]
 
 
 RESPONSE_PROJECT = {

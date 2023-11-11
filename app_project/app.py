@@ -1,7 +1,7 @@
 import os
-from flask import Flask
+from flask import Flask, Response
 from flask_cors import CORS
-from project import projects
+from project import projects, subscriber_message
 from project.models import db
 from flask_jwt_extended import JWTManager
 from flask_openapi3 import Info
@@ -23,7 +23,7 @@ app.url_map.strict_slashes = False
 dbname = os.getenv('DB_NAME', 'project_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-if os.getenv('TEST_APP'):
+if os.getenv('TEST_APP', True):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = f"{url_posgres}{dbname}"
@@ -48,6 +48,10 @@ for url, blueprint in ACTIVATE_ENDPOINTS:
 
 jwt = JWTManager(app)
 
+@app.route('/stream')
+def stream():
+    return Response(subscriber_message(app),
+                          mimetype="text/event-stream")
 
 
 

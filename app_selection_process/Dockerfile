@@ -6,6 +6,7 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 ENV USERS_URL default
 ENV DATABASE_URL default
+ENV GCP_JSON default
 
 COPY . .
 

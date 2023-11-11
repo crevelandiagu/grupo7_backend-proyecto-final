@@ -2,7 +2,8 @@ from .models import (
     Projects,
     db,
     ProjectsSchema,
-    ProjectEmployeesCompanie
+    ProjectEmployeesCompanie,
+    CandidateProject
 )
 from .utils_gcp.gcp_pub_sub import GCP
 
@@ -58,6 +59,12 @@ def get_company_projects(request):
     #     return {"message": "No projects found"}, 404
     
     projectsList = [projectsSchema.dump(proj) for proj in companyProjects]
+    for proj in projectsList:
+        list_id_candidate = proj.get('candidate_project_id')
+        if list_id_candidate:
+            companyProjects = CandidateProject.query.filter(CandidateProject.project_id == list_id_candidate[0]).all()
+
+        pass
 
     return projectsList, 200
 
@@ -65,7 +72,7 @@ def associate_employee_projects(request):
 
     new_project = ProjectEmployeesCompanie(
         project_id=request.json["projectId"],
-        employees_id=request.json["employeeId"],
+        employees_id=request.json["employeeId"]
     )
     db.session.add(new_project)
     db.session.commit()

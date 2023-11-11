@@ -12,7 +12,7 @@ def get_dandidate(query):
     elif skill:
         return get_candidate_general(skill=skill)
     else:
-        return [{}], 200
+        return get_candidate_general()
 
 
 def get_candidate_general(skill=[], year_exp=0):
