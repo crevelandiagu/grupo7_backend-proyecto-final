@@ -1,3 +1,5 @@
+name: TEST SONAR
+run-name:  ${{ github.actor }} TEST SONAR is Build ALL SERVICES 🚀⚗🔮🤖
 on:
   push:
     branches: [fix/FIX**]
