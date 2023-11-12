@@ -79,7 +79,9 @@ def get_candidate_interviews(request):
     
     try:
         candidateInterviews = Interview.query.filter(Interview.candidate_id == candidateId).all()
+
     except Exception as e:
+        
         return {"message": "Internal server error"}, 500
     
     candidateInterviewsList = [interviewSchema.dump(inter) for inter in candidateInterviews]
