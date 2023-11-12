@@ -1,4 +1,5 @@
 import logging
+import json
 from .models import (
     Projects,
     db,
@@ -24,7 +25,7 @@ def add_candidate_project(value):
             new_candidate = CandidateProject(
                 project_id=value.get('projectId', -1),
                 candidate_id=value.get('candidateId', -1),
-                data=f'{value.get("basicinfo")}'
+                data=json.dumps(value.get("basicinfo"))
             )
             db.session.add(new_candidate)
             db.session.commit()
