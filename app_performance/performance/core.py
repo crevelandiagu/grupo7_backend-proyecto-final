@@ -47,3 +47,11 @@ def get_performance_candidate(request):
     list_performance = Performance.query.filter(Performance.candidateId == id_candidate).all()
     projectsList = [projectsSchema.dump(performance) for performance in list_performance]
     return projectsList, 200
+
+
+def get_performance_company(request):
+    projectsSchema = PerformanceaSchema()
+    id_company = request.view_args.get('id_company', -1)
+    list_performance = Performance.query.filter(Performance.companyId == id_company).all()
+    projectsList = [projectsSchema.dump(performance) for performance in list_performance]
+    return projectsList, 200
