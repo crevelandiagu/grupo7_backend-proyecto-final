@@ -19,6 +19,7 @@ def make_evaluation_performance(request):
             company_id=request.json["companyId"],
             project_id=request.json["projectId"],
             score=request.json["score"],
+            employee_id=request.json.get('employeeId', 0),
             feedback=feedback,
             metrics=metrics
         )

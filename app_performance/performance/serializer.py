@@ -14,6 +14,7 @@ class MakeEvaluation(BaseModel):
     candidateId: int = Field(..., description='candidate Id ', example=1)
     companyId: int = Field(..., description='company Id', example=1)
     projectId: int = Field(..., description='project Id', example=1)
+    employeeId: int = Field(None, description='employee Id', example=1)
     score: int = Field(..., description='score', example=1)
 
 
