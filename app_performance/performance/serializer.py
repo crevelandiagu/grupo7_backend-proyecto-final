@@ -10,20 +10,21 @@ class Error400(BaseModel):
     message: str = Field("Bad Request", description='none')
 
 
-class SignUp(BaseModel):
-    email: str = Field(..., description='email valid', example='usertest@gmail.com')
-    password: str = Field(..., description='password valid 8 caracteres', example='Adec123^&*ede#')
+class MakeEvaluation(BaseModel):
+    candidateId: int = Field(..., description='candidate Id ', example=1)
+    companyId: int = Field(..., description='company Id', example=1)
+    projectId: int = Field(..., description='project Id', example=1)
+    score: int = Field(..., description='score', example=1)
 
 
-class SignUpResponse(BaseModel):
-    message:  str = Field('User successfully added', description="name candidate")
+class MakeEvaluationResponse(BaseModel):
+    message:  str = Field('Performance successfully added', description="name candidate")
     id:  int = Field(1, description="last name candidate")
-    email:  str = Field('usertest@gmail.com', description="skills candidate")
     createdAt:  str = Field('2023-11-07T02:54:33.098514', description="years experience candidate")
 
 
-RESPONSE_SIGNUP = {
-    200: SignUpResponse,
+RESPONSE_MAKEEVALUATION = {
+    200: MakeEvaluationResponse,
     400: Error400,
     }
 
@@ -72,53 +73,4 @@ class BasicInfoExperience(BaseModel):
 
 class BasicInfoExperienceResponse(BaseModel):
     __root__: List[BasicInfoExperience]
-
-
-RESPONSE_BASICINFO_EXPERIENCE = {
-    200: BasicInfoExperienceResponse,
-    400: Error400,
-    }
-
-
-class BasicInfoEducation(BaseModel):
-    university: str = Field(None, description='email valid', example='MIT')
-    subject: str = Field(None, description='email valid', example='Computer Science')
-    start_date: str = Field(None, description='email valid', example='01/01/1999')
-    end_date: str = Field(None, description='email valid', example='01/12/1999')
-    skills: str = Field(None, description='email valid', example='["Python", "Java"]')
-
-
-class BasicInfooEducationResponse(BaseModel):
-    __root__: List[BasicInfoEducation]
-
-
-RESPONSE_BASICINFO_EDUCATION = {
-    200: BasicInfooEducationResponse,
-    400: Error400,
-    }
-
-
-class BasicInfoCertificates(BaseModel):
-    name_certificate: str = Field(None, description='email valid', example='OOP')
-    company: str = Field(None, description='email valid', example='MIT')
-    expedition_date: str = Field(None, description='email valid', example='01/01/1999')
-    date_expiry: str = Field(None, description='email valid', example='01/12/1999')
-
-class BasicInfoCertificatesResponse(BaseModel):
-    __root__: List[BasicInfoCertificates]
-
-
-RESPONSE_BASICINFO_CERTIFICATES = {
-    200: BasicInfoCertificatesResponse,
-    400: Error400,
-    }
-
-class CvInfoCreateResponse(BaseModel):
-    message: str = Field("OK", description='none')
-
-
-RESPONSE_BASICINFO_CV = {
-    200: CvInfoCreateResponse,
-    400: Error400,
-    }
 

@@ -1,3 +1,3 @@
-from .views import ofertas
+from .views import performance
 
-__all__ = ['ofertas']
+__all__ = ['performance']
