@@ -47,7 +47,7 @@ def create_company_interview(request):
         print(e)
         return {"message": "Internal server error"}, 500
     
-    return {"message": f"Interview successfully created"}, 200
+    return {"message": f"Interview successfully created"}, 201
 
 
 #@jwt_required
@@ -79,7 +79,9 @@ def get_candidate_interviews(request):
     
     try:
         candidateInterviews = Interview.query.filter(Interview.candidate_id == candidateId).all()
+
     except Exception as e:
+
         return {"message": "Internal server error"}, 500
     
     candidateInterviewsList = [interviewSchema.dump(inter) for inter in candidateInterviews]
@@ -96,7 +98,6 @@ def evaluate_company_interview(request):
     try:
         data_score = int(data_interview.get("score"))
     except Exception as e:
-        print(e)
         return {"message": "Wrong score format"}, 412
 
     try:
@@ -108,7 +109,7 @@ def evaluate_company_interview(request):
         
         interview_details.score = data_score
         db.session.commit()
-        return interviewSchema.dump(interview_details), 200
+        return interviewSchema.dump(interview_details), 201
 
     except Exception as e:
         print(e)
