@@ -13,6 +13,7 @@ class Performance(db.Model):
     candidate_id: int = db.Column(db.Integer)
     company_id: int = db.Column(db.Integer)
     project_id: int = db.Column(db.Integer)
+    employee_id = int = db.Column(db.Integer, nullable=True)
     score: int = db.Column(db.Integer, nullable=True)
     feedback: str = db.Column(db.String(150), nullable=True)
     metrics: str = db.Column(db.String(150), nullable=True)

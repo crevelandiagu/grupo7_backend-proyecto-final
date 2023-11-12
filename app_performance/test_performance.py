@@ -19,10 +19,11 @@ def test_ping():
 
 def test_create_offer_200():
     data = {
-          "candidateId": fake_data.random_int(1, 10),
-          "companyId": fake_data.random_int(1, 10),
-          "projectId": fake_data.random_int(1, 10),
-          "score": fake_data.random_int(1, 10)
+        "candidateId": fake_data.random_int(1, 10),
+        "companyId": fake_data.random_int(1, 10),
+        "projectId": fake_data.random_int(1, 10),
+        "employeeId": fake_data.random_int(1, 10),
+        "score": fake_data.random_int(1, 10)
         }
 
 
