@@ -10,10 +10,10 @@ class Performance(db.Model):
 
     __tablename__ = 'performance'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    candidate_id: int = db.Column(db.Integer)
-    company_id: int = db.Column(db.Integer)
-    project_id: int = db.Column(db.Integer)
-    employee_id = int = db.Column(db.Integer, nullable=True)
+    candidateId: int = db.Column(db.Integer)
+    companyId: int = db.Column(db.Integer)
+    projectId: int = db.Column(db.Integer)
+    employeeId: int = db.Column(db.Integer, nullable=True)
     score: int = db.Column(db.Integer, nullable=True)
     feedback: str = db.Column(db.String(150), nullable=True)
     metrics: str = db.Column(db.String(150), nullable=True)
@@ -22,5 +22,4 @@ class Performance(db.Model):
 class PerformanceaSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Performance
-    offer = fields.String()
-    createdAt = fields.String()
+

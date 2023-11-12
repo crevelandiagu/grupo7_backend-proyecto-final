@@ -4,11 +4,14 @@ from flask import send_from_directory
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 from .core import (
-    make_evaluation_performance
+    make_evaluation_performance,
+    get_performance_candidate
 )
 from .serializer import (
     MakeEvaluation,
     RESPONSE_MAKEEVALUATION,
+    SearchPathCandidate,
+    RESPONSE_EVALUATION_GET
 )
 
 performance = APIBlueprint('performan', __name__, url_prefix='/performance')
@@ -25,7 +28,7 @@ def make_evaluation(body: MakeEvaluation):
     return response, status
 
 
-@performance.get("/evaluation/company",  tags=[performance_tag])
+@performance.get("/company/<int:id_company>/evaluation",  tags=[performance_tag])
 def get_evaluations_company():
     """
     user Performance can do a acount
@@ -35,13 +38,13 @@ def get_evaluations_company():
     return response, status
 
 
-@performance.get("/evaluation/candidate",  tags=[performance_tag], )
-def get_evaluations_candiate():
+@performance.get("/candidate/<int:id_candidate>/evaluation",  tags=[performance_tag], responses=RESPONSE_EVALUATION_GET)
+def get_evaluations_candiate(path: SearchPathCandidate):
     """
     user Performance can do a acount
     :return: response, status
     """
-    response, status = {}, 200
+    response, status = get_performance_candidate(request)
     return response, status
 
 

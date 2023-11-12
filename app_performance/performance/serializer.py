@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 
 
-class SearchPath(BaseModel):
+class SearchPathCandidate(BaseModel):
     id_candidate: int = Field(..., description='Candidate id', example=1)
 
 
@@ -30,48 +30,18 @@ RESPONSE_MAKEEVALUATION = {
     }
 
 
-class LogInResponse(BaseModel):
+class EvaluationAll(MakeEvaluation):
+    createdAt:  str = Field("2023-11-13", description="name candidate")
+    feedback:  str = Field("good job", description="name candidate")
     id: int = Field(1, description="last name candidate")
-    message:  str = Field("Inicio de sesión exitoso", description="name candidate")
-    token: str = Field('token', description="name candidate")
+    metrics:  str = Field("{\"communication\": \"80/100\", \"company values\": \"80/100\", \"leadership\": \"70/100\", \"overall performance\": \"60/100\"}", description="name candidate")
 
 
-RESPONSE_LOGIN = {
-    200: LogInResponse,
+class EvaluationAllResponse(BaseModel):
+    __root__: List[EvaluationAll]
+
+
+RESPONSE_EVALUATION_GET = {
+    200: EvaluationAllResponse,
     400: Error400,
     }
-
-
-class BasicInfo(BaseModel):
-    name: str = Field(None, description='email valid', example='usertest')
-    lastname: str = Field(None, description='email valid', example='test2')
-    birthdate: str = Field(None, description='email valid', example='01/01/1999')
-    nacionality: str = Field(None, description='email valid', example='COL')
-    phone_number: str = Field(None, description='email valid', example='123456789')
-    numberId: str = Field(None, description='email valid', example='C.C.123456789')
-
-
-class BasicInfoResponse(BasicInfo):
-    email:  str = Field('usertest@gmail.com', description='email valid')
-    initialLatter: str = Field("UT", description='email valid')
-    full_name:  str = Field('usertest test2', description='email valid')
-
-
-RESPONSE_BASICINFO = {
-    200: BasicInfoResponse,
-    400: Error400,
-    }
-
-
-class BasicInfoExperience(BaseModel):
-    position: str = Field(None, description='email valid', example='Junior')
-    company_name: str = Field(None, description='email valid', example='MIT')
-    start_date: str = Field(None, description='email valid', example='01/01/1999')
-    end_date: str = Field(None, description='email valid', example='01/12/1999')
-    place: str = Field(None, description='email valid', example='COL')
-    skills: str = Field(None, description='email valid', example='["Python", "Java"]')
-
-
-class BasicInfoExperienceResponse(BaseModel):
-    __root__: List[BasicInfoExperience]
-
