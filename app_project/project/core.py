@@ -1,8 +1,10 @@
+import json
 from .models import (
     Projects,
     db,
     ProjectsSchema,
-    ProjectEmployeesCompanie
+    ProjectEmployeesCompanie,
+    CandidateProject
 )
 from .utils_gcp.gcp_pub_sub import GCP
 
@@ -56,8 +58,19 @@ def get_company_projects(request):
 
     # if (len(companyProjects) == 0):
     #     return {"message": "No projects found"}, 404
-    
+
     projectsList = [projectsSchema.dump(proj) for proj in companyProjects]
+
+    for projects_list in projectsList:
+        project_com = dict(projects_list)
+        list_candi = project_com.get('candidate_project_id')
+        list_a = []
+        for j in list_candi:
+            inf_candidate = CandidateProject.query.filter(CandidateProject.project_id == j).first()
+            data_candidate = json.loads(inf_candidate.data)
+            data_candidate['candidate_id'] = inf_candidate.candidate_id
+            list_a.append(data_candidate)
+        projects_list.update({'candidate_project_id': list_a})
 
     return projectsList, 200
 
@@ -65,7 +78,7 @@ def associate_employee_projects(request):
 
     new_project = ProjectEmployeesCompanie(
         project_id=request.json["projectId"],
-        employees_id=request.json["employeeId"],
+        employees_id=request.json["employeeId"]
     )
     db.session.add(new_project)
     db.session.commit()

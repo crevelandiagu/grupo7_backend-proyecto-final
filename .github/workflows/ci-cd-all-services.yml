@@ -32,10 +32,10 @@ jobs:
         cd app_candidate
         gcloud auth configure-docker us-central1-docker.pkg.dev
         docker build -t $IMAGE_NAME:latest .
-        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
+        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
 
 
   cd-app-candidate:
@@ -97,10 +97,10 @@ jobs:
           cd app_company
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t $IMAGE_NAME:latest .
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
 
 
   cd-app-company:
@@ -160,10 +160,10 @@ jobs:
           cd app_company_employees
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t $IMAGE_NAME:latest .
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
 
 
   cd-app-company-employees:
@@ -224,10 +224,10 @@ jobs:
         cd app_project
         gcloud auth configure-docker us-central1-docker.pkg.dev
         docker build -t $IMAGE_NAME:latest .
-        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
+        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
 
 
   cd-app-projects:
@@ -287,10 +287,10 @@ jobs:
           cd app_search_tool
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t $IMAGE_NAME:latest .
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
 
 
   cd-app-search-tool:
@@ -350,10 +350,10 @@ jobs:
           cd app_selection_process
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t $IMAGE_NAME:latest .
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest 
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG 
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:latest
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/abc-jobs-dockers/$IMAGE_NAME:$IMAGE_TAG
 
 
   cd-app-selection_process:

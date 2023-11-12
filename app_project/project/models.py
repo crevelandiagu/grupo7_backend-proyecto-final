@@ -27,6 +27,7 @@ class CandidateProject(db.Model):
 
     project_id: int = db.Column(db.Integer, db.ForeignKey('project.id'))
     candidate_id: int = db.Column(db.Integer)
+    data: str = db.Column(db.String(500),  unique=False, nullable=True)
 
     createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
     updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
@@ -39,6 +40,7 @@ class ProjectEmployeesCompanie(db.Model):
 
     project_id: int = db.Column(db.Integer, db.ForeignKey('project.id'))
     employees_id: int = db.Column(db.Integer)
+    data: str = db.Column(db.String(500),  unique=False, nullable=True)
 
     createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
     updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)

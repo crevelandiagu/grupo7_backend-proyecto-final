@@ -34,6 +34,7 @@ para acceder a la documentacion de plantea lo siguiente
 ### docuemntacion coverage
 /url-proyecto/coverage para los test de la api. ejemplo candidate/coverage/
 
+https://sonarcloud.io/project/overview?id=crevelandiagu_grupo7_frontend-proyecto-final
 
 ## Hipotesis 1
 

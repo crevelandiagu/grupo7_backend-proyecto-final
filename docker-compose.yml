@@ -57,6 +57,8 @@ services:
       - ./app_candidate:/python-docker
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio company -----------------------------
   db_company:
@@ -88,6 +90,8 @@ services:
         condition: service_healthy
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio company employees -----------------------------
 
@@ -120,6 +124,8 @@ services:
         condition: service_healthy
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio project -----------------------------
 
@@ -150,21 +156,26 @@ services:
     depends_on:
       db_project:
         condition: service_healthy
+    volumes:
+      - ./app_project:/python-docker
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio app_search_tool -----------------------------
   app_search_tool:
     build: app_search_tool/
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/
-      GCP_JSON: ''
     ports:
       - "3008:3008"
     expose:
       - "3008"
     volumes:
       - ./app_search_tool:/python-docker
+    env_file:
+      - ./.env
     networks:
       - web_global
 
@@ -197,6 +208,8 @@ services:
         condition: service_healthy
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 networks:
   web_global:
