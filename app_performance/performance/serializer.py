@@ -6,6 +6,9 @@ class SearchPathCandidate(BaseModel):
     id_candidate: int = Field(..., description='Candidate id', example=1)
 
 
+class SearchPathCompany(BaseModel):
+    id_company: int = Field(..., description='company id', example=1)
+
 class Error400(BaseModel):
     message: str = Field("Bad Request", description='none')
 
