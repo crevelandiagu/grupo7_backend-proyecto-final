@@ -1,6 +1,6 @@
 # Servicios de selección de candidatos
 
-En esta carpeta se encuentra el código de public el cual utiliza el patron saga. Este microservicio ofrece un punto de acceso al sistema y hace una sola petición web por cada requerimiento y no una secuencia.
+En esta carpeta se encuentra el código del proceso de selección. E
 
 
 Este proyecto hace uso de pipenv para gestión de dependencias y pytest para el framework de pruebas.
@@ -8,20 +8,19 @@ Este proyecto hace uso de pipenv para gestión de dependencias y pytest para el 
 # Estructura
 
 ````
-├── public                   # Archivos de la aplicación de public 
-|   ├── publico              # Código que contiene la logica de la aplicación
-|   |    ├── __init__.py     # Inicia las rutas para acceder a las urls
-|   |    ├── core.py         # Contiene las validaciones y logica de public
-|   |    ├── handlers.py     # Contiene funciones de logica de public
-|   |    ├── views.py        # Contiene las vistas de las diferentes funcionalidades 
-|   ├── app.py               # Inio de la aplicacion de flask y su configuracion
-|   ├── Dockerfile           # Archivo de configuracion de la imagen de la aplicación
-|   ├── README.md            # Estás aquí
-|   ├── requirements.txt     # Dependencias de la aplicación
-|   ├── test_public_posts.py # Paquete de pruebas publicaciones
-|   ├── test_rf004.py        # Paquete de pruebas ofertas
-|   ├── test_rf005.py        # Paquete de pruebas ofertas
-|   └── wsgi.py              # Punto de inicio de la aplicacion con gunicorn 
+├── app_selection_process                  # Archivos de la aplicación de proceso de selección 
+|   ├── interview_process           # Código que contiene la logica de la aplicación
+|   |    ├── __init__.py   # Inicia las rutas para acceder a las urls
+|   |    ├── core.py       # Contiene las validaciones y logica de usuarios
+|   |    ├── models.py     # Contiene el modelo de la base de datos de usuarios
+|   |    ├── views.py      # Contiene las vistas de las diferentes funcionalidades 
+|   |    ├── serializer.py      # formato de la data
+|   ├── app.py             # Inio de la aplicacion de flask y su configuracion
+|   ├── Dockerfile         # Archivo de configuracion de la imagne de la aplicaicon
+|   ├── README.md          # Estás aquí
+|   ├── requirements.txt   # Dependencias de la aplicación
+|   ├── test_interviews_app.py # Paquete de pruebas
+|   └── wsgi.py            # Punto de inicio de la aplicacion con gunicorn 
 ````
 
 ## Despliegue local de la aplicación

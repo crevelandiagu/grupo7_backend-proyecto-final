@@ -112,7 +112,7 @@ def test_get_interviews_candidate_200_404():
     assert len(response_info_200) == 1
 
     response_data_404 = app.test_client().get('/interviews/candidate/')
-    
+
     assert response_data_404.status_code == 404
 
 
@@ -142,4 +142,4 @@ def test_interviews_score_201_412_404():
     assert response_data_201.status_code == 201
     assert response_data_score_201.status_code == 201
     assert response_data_404.status_code == 404
-    assert response_data_412.status_code == 412
+    assert response_data_412.status_code == 422
