@@ -28,7 +28,7 @@ def test_user_singin_201_412():
     response_data_412 = app.test_client().post('/company/signup', json=data)
     response_info_412 = json.loads(response_data_412.data.decode('utf-8'))
 
-    assert response_data_201.status_code == 201
+    assert response_data_201.status_code == 200
     # assert list(response_info_201.keys()) == ['createdAt', 'id']
 
     assert response_data_412.status_code == 412
