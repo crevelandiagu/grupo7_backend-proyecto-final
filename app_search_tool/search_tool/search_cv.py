@@ -13,11 +13,11 @@ def request_app(url):
 def get_cv_candidate(request):
     id_candidate = request.view_args.get('id_candidate', -1)
 
-    CANDIDATE_URI = os.getenv('CANDIDATE_URL', "http://127.0.0.1:3000")
-    candidate_path_basicinfo = "/candidate/profile/basicinfo/"
-    candidate_path_experience = "/candidate/profile/experience/"
-    candidate_path_education = "/candidate/profile/education/"
-    candidate_path_certificates = "/candidate/profile/certificates/"
+    CANDIDATE_URI = os.getenv('CANDIDATE_URL', "http://127.0.0.1:3000/")
+    candidate_path_basicinfo = "candidate/profile/basicinfo/"
+    candidate_path_experience = "candidate/profile/experience/"
+    candidate_path_education = "candidate/profile/education/"
+    candidate_path_certificates = "candidate/profile/certificates/"
 
     url_basicinfo = f"{CANDIDATE_URI}{candidate_path_basicinfo}{id_candidate}"
     url_experience = f"{CANDIDATE_URI}{candidate_path_experience}{id_candidate}"

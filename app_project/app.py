@@ -1,7 +1,7 @@
 import os
-from flask import Flask
+from flask import Flask, Response
 from flask_cors import CORS
-from project import projects
+from project import projects, subscriber_message
 from project.models import db
 from flask_jwt_extended import JWTManager
 from flask_openapi3 import Info
@@ -9,7 +9,7 @@ from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', projects),)
 
-info = Info(title="Candidate API", version="0.2.2")
+info = Info(title="Projects API", version="0.2.2")
 
 app = OpenAPI(__name__,
               info=info,
@@ -48,6 +48,10 @@ for url, blueprint in ACTIVATE_ENDPOINTS:
 
 jwt = JWTManager(app)
 
+@app.route('/stream')
+def stream():
+    return Response(subscriber_message(app),
+                          mimetype="text/event-stream")
 
 
 

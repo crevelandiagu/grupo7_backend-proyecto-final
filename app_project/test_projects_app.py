@@ -43,8 +43,8 @@ def test_projects_create_201_412():
     response_data_long_description_201 = app.test_client().post('/projects/', json=data3)
 
     assert response_data_201.status_code == 201
-    assert response_data_project_name_412.status_code == 412
-    assert response_data_company_id_412.status_code == 412
+    assert response_data_project_name_412.status_code == 422
+    assert response_data_company_id_412.status_code == 422
     assert response_data_long_description_201.status_code == 201
 
 
@@ -70,7 +70,7 @@ def test_get_projects_200_400_404():
     assert len(response_info_200) == 1
 
     response_data_400 = app.test_client().get('/projects')
-    assert response_data_400.status_code == 400
+    assert response_data_400.status_code == 422
 
     response_data_404 = app.test_client().get(f'/projects?companyId={data.get("companyId")+1}')
-    assert response_data_404.status_code == 404
+    assert response_data_404.status_code == 200

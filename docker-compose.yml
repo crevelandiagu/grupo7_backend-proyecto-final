@@ -57,6 +57,8 @@ services:
       - ./app_candidate:/python-docker
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio company -----------------------------
   db_company:
@@ -88,6 +90,8 @@ services:
         condition: service_healthy
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio company employees -----------------------------
 
@@ -120,6 +124,8 @@ services:
         condition: service_healthy
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio project -----------------------------
 
@@ -150,8 +156,12 @@ services:
     depends_on:
       db_project:
         condition: service_healthy
+    volumes:
+      - ./app_project:/python-docker
     networks:
       - web_global
+    env_file:
+      - ./.env
 
 ## -----------------------Servicio app_search_tool -----------------------------
   app_search_tool:
@@ -164,6 +174,8 @@ services:
       - "3008"
     volumes:
       - ./app_search_tool:/python-docker
+    env_file:
+      - ./.env
     networks:
       - web_global
 
@@ -196,6 +208,40 @@ services:
         condition: service_healthy
     networks:
       - web_global
+    env_file:
+      - ./.env
+
+## -----------------------Servicio app_selection_process -----------------------------
+  db_performance:
+    image: "postgres:11.5-alpine"
+    restart: always
+    environment:
+      POSTGRES_DB: performance_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web_global
+
+  app_performance:
+    build: app_performance/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_performance:5432/
+    ports:
+      - "3006:3006"
+    expose:
+      - "3006"
+    depends_on:
+      db_performance:
+        condition: service_healthy
+    networks:
+      - web_global
+    env_file:
+      - ./.env
 
 networks:
   web_global:

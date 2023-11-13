@@ -9,15 +9,20 @@ from .core import (
     creacion_usuario,
     get_employees
 )
-
+from .serializer import (
+    CreateEmployee,
+    RESPONSE_SIGNUP,
+    SearchPath,
+    RESPONSE_EMPLOYEE
+)
 
 company_employees = APIBlueprint('company_employees', __name__, url_prefix='/company-employees')
 
 company_employees_tag = Tag(name="Search Tool", description="Search candidate")
 
 
-@company_employees.post('/create-employee/', tags=[company_employees_tag])
-def create_employe():
+@company_employees.post('/create-employee/', tags=[company_employees_tag], responses=RESPONSE_SIGNUP)
+def create_employe(body: CreateEmployee):
     '''
     candidate can register
     :return: response
@@ -26,8 +31,8 @@ def create_employe():
     return response, status
 
 
-@company_employees.get('/employee/<int:id_company>', tags=[company_employees_tag])
-def get_employe():
+@company_employees.get('/employee/<int:id_company>', tags=[company_employees_tag], responses=RESPONSE_EMPLOYEE)
+def get_employe(path: SearchPath):
     '''
     candidate can register
     :return: response

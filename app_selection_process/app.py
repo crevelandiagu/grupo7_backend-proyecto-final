@@ -9,7 +9,7 @@ from flask_openapi3 import OpenAPI
 
 ACTIVATE_ENDPOINTS = (('/', interviews),)
 
-info = Info(title="Candidate API", version="0.2.2")
+info = Info(title="Selection Process API", version="0.2.2")
 
 app = OpenAPI(__name__,
               info=info,
@@ -23,7 +23,7 @@ app.url_map.strict_slashes = False
 dbname = os.getenv('DB_NAME', 'interviews_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-if os.getenv('TEST_APP', "True") == 'True':
+if os.getenv('TEST_APP'):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = f"{url_posgres}{dbname}"

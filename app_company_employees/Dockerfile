@@ -5,9 +5,8 @@ WORKDIR /python-docker
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 ENV USERS_URL default
-ENV USER_PORT default
-ENV USER_ENDPOINT default
 ENV DATABASE_URL default
+ENV GCP_JSON default
 
 COPY . .
 #RUN pytest --cov --cov-report=html:template

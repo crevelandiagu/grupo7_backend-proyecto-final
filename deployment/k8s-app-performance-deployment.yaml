@@ -1,28 +1,28 @@
 ###################################
-# app_selection_process
+# app_candidate
 ###################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selection-process
+  name: performance
   labels:
-    app: selection-process
+    app: performance
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: selection-process
+      app: performance
   template:
     metadata:
       labels:
-        app: selection-process
+        app: performance
     spec:
       containers:
-        - name: selection-process
-          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/selection-process:latest
+        - name: performance
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/performance:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 3010
+            - containerPort: 3006
           env:
             - name: "SQLALCHEMY_DATABASE_URI"
               valueFrom:
@@ -34,33 +34,32 @@ spec:
                 secretKeyRef:
                   name: secretdb
                   key: DATABASE_URL
-            
 
 ---
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: app-selection-process-config
+  name: app-performance-config
 spec:
   healthCheck:
     checkIntervalSec: 30
-    port: 3010
+    port: 3006
     type: HTTP
-    requestPath: /interviews/ping
+    requestPath: /performance/ping
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: servicio-app-selection-process
+  name: servicio-app-performance
   annotations:
-    cloud.google.com/backend-config: '{"default": "app-selection-process-config"}'
+    cloud.google.com/backend-config: '{"default": "app-performance-config"}'
 spec:
   type: NodePort
   selector:
-    app: selection-process
+    app: performance
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3010
-      nodePort: 31030
+      targetPort: 3006
+      nodePort: 31026
 ---

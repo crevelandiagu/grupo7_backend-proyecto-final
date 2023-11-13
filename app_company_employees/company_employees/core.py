@@ -30,7 +30,7 @@ def creacion_usuario(request):
             "id": nuevo_usuario.id,
             "email": nuevo_usuario.email,
             "createdAt": datetime.now().isoformat()
-            }, 201
+            }, 200
   except Exception as e:
     print(e)
     return {"message": f"Missing: {e}"}, 400
@@ -44,7 +44,8 @@ def get_employees(request):
         list_employee.append({
             'employeeId': employee.id,
             'email': employee.email,
-            'companyId': employee.company_id
+            'companyId': employee.company_id,
+            'companyProjectId': employee.company_project_id
         })
     return list_employee, 200
 

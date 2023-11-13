@@ -14,7 +14,7 @@ class SearchQuery(BaseModel):
 class SearchResponse(BaseModel):
     name:  str = Field('name', description="name candidate")
     lastName:  str = Field('last_name', description="last name candidate")
-    skills:  list = Field(['Python', 'Java'], description="skills candidate")
+    skills:  List[str] = Field(["Python", "Java"], description="skills candidate")
     years_exp:  float = Field(1, description="years experience candidate")
     candidateId:  int = Field(0, description="id candidate")
 
@@ -76,8 +76,23 @@ class SearchResponseCv(BaseModel):
     }], description="experience candidate")
 
 
-
 RESPONSE_SEARCH_CV = {
     200: SearchResponseCv,
+    400: Error400,
+    }
+
+
+class ProjectChosenOne(BaseModel):
+    candidateId: int = Field(..., description='Skills', example=1)
+    projectId: int = Field(..., description='Skills', example=1)
+    companyId: int = Field(..., description='Skills', example=1)
+
+
+class ProjectChosenOneResponse(BaseModel):
+    createdAt: str = Field('Candidate has started the process', description="name candidate")
+
+
+RESPONSE_CHOSEN_ONE = {
+    200: ProjectChosenOneResponse,
     400: Error400,
     }
