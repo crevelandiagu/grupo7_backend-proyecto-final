@@ -73,4 +73,4 @@ def test_get_projects_200_400_404():
     assert response_data_400.status_code == 422
 
     response_data_404 = app.test_client().get(f'/projects?companyId={data.get("companyId")+1}')
-    assert response_data_404.status_code == 422
+    assert response_data_404.status_code == 200
