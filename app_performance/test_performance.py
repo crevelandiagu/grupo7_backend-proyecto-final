@@ -66,7 +66,6 @@ def test_get_performance_candidate_200():
     response_info = json.loads(response.data.decode('utf-8'))
 
     assert response.status_code == 200
-    assert len(response_info) >= 0
 
 
 def test_get_performance_candidate_400():
