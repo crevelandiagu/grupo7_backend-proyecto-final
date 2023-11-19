@@ -1,9 +1,6 @@
-import secrets
-import hashlib
-from .models import Assement, db
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import jwt_required
-from datetime import datetime
+# from .models import Assement, AssementSchema
+# from app_selection_process.interview_process.models import Assement, db
+from .models import Assement
 from .exam import tecnical_test, logic_test
 
 
@@ -29,8 +26,20 @@ def take_exam_candidate(request):
 
 #@jwt_required
 def get_candidate_assements(request):
+    try:
+        candidateId = int(request.view_args.get('id_candidate', -1))
+    except:
+        return {"message": "Company Id missing"}, 400
+    # candidate_assements = Assement.query.filter(Assement.company_id == candidateId).all()
+    try:
+        candidate_assements = Assement.query.filter(Assement.company_id == candidateId).all()
+    except Exception as e:
+        return {"message": f"Internal server error {e}"}, 500
 
-    return {}, 200
+    companyInterviewsList =[]#= [AssementSchema.dump(inter) for inter in candidate_assements]
+
+    return companyInterviewsList, 200
+
 
 
 #@jwt_required

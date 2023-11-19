@@ -15,7 +15,7 @@ from .serializer import (
     RESPONSE_EVALUATE_INTERVIEW
 )
 
-interviews = APIBlueprint('interviews', __name__,url_prefix='/interviews')
+interviews = APIBlueprint('interviews', __name__, url_prefix='/interviews')
 
 interviews_tag = Tag(name="interviews", description="manage inteviews")
 
