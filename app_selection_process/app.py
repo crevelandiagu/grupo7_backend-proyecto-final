@@ -2,12 +2,13 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from interview_process import interviews
+from tecnical_process import tecnical
 from interview_process.models import db
 from flask_jwt_extended import JWTManager
 from flask_openapi3 import Info
 from flask_openapi3 import OpenAPI
 
-ACTIVATE_ENDPOINTS = (('/', interviews),)
+ACTIVATE_ENDPOINTS = (('/', interviews), ('/', tecnical),)
 
 info = Info(title="Selection Process API", version="0.2.2")
 
