@@ -24,6 +24,8 @@ def get_info_candidate(candidateId):
 
 def chosen_one_candidate(request):
 
+    # comunicarse con proyect
+    # comunicarse con selection process
     message_start_process = {
         "where": "candidate-chosen-one",
         "candidateId": request.json['candidateId'],
