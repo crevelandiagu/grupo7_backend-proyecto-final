@@ -1,13 +1,13 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from interview_process import interviews
+from interview_process import interviews, tecnical
 from interview_process.models import db
 from flask_jwt_extended import JWTManager
 from flask_openapi3 import Info
 from flask_openapi3 import OpenAPI
 
-ACTIVATE_ENDPOINTS = (('/', interviews),)
+ACTIVATE_ENDPOINTS = (('/', interviews), ('/', tecnical),)
 
 info = Info(title="Selection Process API", version="0.2.2")
 
@@ -23,7 +23,7 @@ app.url_map.strict_slashes = False
 dbname = os.getenv('DB_NAME', 'interviews_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-if os.getenv('TEST_APP'):
+if os.getenv('TEST_APP', True):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = f"{url_posgres}{dbname}"
