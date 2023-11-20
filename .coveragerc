@@ -1,13 +1,4 @@
 [run]
-source =
-    app_candidate
-dynamic_context = test_function
-omit =
-    app_search_tool/**
-    app_company/**
-    app_company_employees/**
-    app_contract/**
-    app_performance/**
-    app_project/**
-    app_search_tool/**
-    app_selection_process/**
+omit = app_search_tool/**,app_company/*.py,app_company_employees/**,app_contract/**,app_performance/**,app_project/**,app_search_tool/**,app_selection_process/**
+[report]
+omit = app_search_tool/**,app_company/*.py,app_company_employees/**,app_contract/**,app_performance/**,app_project/**,app_search_tool/**,app_selection_process/**
