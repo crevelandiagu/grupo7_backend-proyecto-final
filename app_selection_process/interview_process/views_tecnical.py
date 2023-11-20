@@ -1,13 +1,14 @@
 import os
 from flask import Blueprint, request
 from flask import send_from_directory
-from .core import *
+from .core_tecnical import *
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
-from .serializer import (
+from .serializer_tecnical import (
     TakeExamCandidateBody,
     RESPONSE_TAKE_EXAM,
-    SearchPath
+    SearchPath,
+    SearchPathCandidate
 )
 
 # assement/company/1
@@ -40,7 +41,7 @@ def get_interviews_company():
 
 
 @tecnical.get("/candidate/<int:id_candidate>", tags=[tecnical_tag],)
-def get_interviews_candidate():
+def get_interviews_candidate(path: SearchPathCandidate):
     """
     Candidate can get all their interviews
     :return: response
@@ -77,14 +78,3 @@ def root():
 def ping():
     username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
     return f'pong11 {username}'
-
-
-@tecnical.route('/coverage')
-def coverage_app():
-    os.system('pytest --cov --cov-report=html:template')
-    return send_from_directory('./template/', 'index.html')
-
-
-@tecnical.route('/<path>/')
-def coverage_app_files(path):
-    return send_from_directory('./template/', path)

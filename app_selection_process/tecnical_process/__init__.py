@@ -1,3 +1,3 @@
-from .views import tecnical
-
-__all__ = ['tecnical']
+# from .views import tecnical
+#
+# __all__ = ['tecnical']
