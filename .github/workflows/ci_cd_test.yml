@@ -1,10 +1,9 @@
+name: test sonarcloud
+run-name: ${{ github.actor }} is test sonarcloud App Web 🚀
 on:
-  # Trigger analysis when pushing in master or pull requests, and when creating
-  # a pull request.
   push:
   pull_request:
 
-name: Main Workflow
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
