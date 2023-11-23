@@ -1,5 +1,5 @@
 name: test sonarcloud
-run-name: ${{ github.actor }} is test sonarcloud App Web 🚀
+run-name: ${{ github.actor }} is test codecov App Web 🚀
 on:
   push:
 
@@ -28,8 +28,7 @@ jobs:
       - name: Correr pruebas app_candidate
         id: correr-pruebas-usuarios
         run: |
-          cd app_candidate
-          pytest --cov
+          pytest --cov=app_candidate app_candidate/test_candidate_app.py --cov-report=xml
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
