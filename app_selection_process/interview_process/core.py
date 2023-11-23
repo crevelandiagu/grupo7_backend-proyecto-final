@@ -1,9 +1,12 @@
-import secrets
-import hashlib
-from .models import Interview, db, InterviewSchema
+import os
+import logging
+from .models import Interview, db, InterviewSchema, SelectionProcess
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from datetime import datetime
+
+from .utils_gcp.gcp_pub_sub import GCP
+
 
 interviewSchema = InterviewSchema()
 
@@ -109,8 +112,34 @@ def evaluate_company_interview(request):
         
         interview_details.score = data_score
         db.session.commit()
+        start_sign_contract(request)
         return interviewSchema.dump(interview_details), 201
 
     except Exception as e:
         print(e)
         return {"message": f"missing {e}"}, 400
+
+
+def get_selection_process(request):
+    companyId = int(request.view_args.get('id_company', -1))
+    company_process = SelectionProcess.query.filter(SelectionProcess.company_id == companyId).all()
+    pass
+
+
+def start_sign_contract(request):
+    message_start_process = {
+        "where": "contract",
+        "candidateId": request.json['candidateId'],
+        "projectId": request.json['projectId'],
+        "companyId": request.json['companyId'],
+    }
+
+    logging.warning(f'Watch! selection process')
+    try:
+        logging.warning(f'Watch! send')
+        publicar = GCP()
+        publicar.publisher_message(message_start_process)
+    except Exception as e:
+        logging.warning(f'Watch! NO SEND {e}')
+        print({"message": f"{e}"})
+    return {"message": "Candidate has started the process"}, 200

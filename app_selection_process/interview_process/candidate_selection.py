@@ -4,6 +4,7 @@ import random
 from .models import (
     Assement,
     db,
+    SelectionProcess
 )
 
 
@@ -23,6 +24,7 @@ def add_candidate_project(value):
             Assement.company_id == value.get('companyId', -1)
         ).first()
         if projectId >= 1 and not companyProjects:
+            add_selection_process(value)
             new_candidate_assement = Assement(
                 candidate_id=value.get('candidateId', -1),
                 company_id=value.get('companyId', -1),
@@ -33,3 +35,15 @@ def add_candidate_project(value):
             db.session.add(new_candidate_assement)
             db.session.commit()
     pass
+
+def add_selection_process(value):
+    new_process = SelectionProcess(
+        pogress_status="tecnical_test",
+        company_id=value.get('companyId', -1),
+        candidate_id=value.get('candidateId', -1),
+        proyect=value.get('projectId', -1),
+        score=0
+    )
+    db.session.add(new_process)
+    db.session.commit()
+

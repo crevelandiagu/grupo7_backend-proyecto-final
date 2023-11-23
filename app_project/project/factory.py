@@ -23,14 +23,12 @@ def get_company(companyId):
     if basicinfo and code_basicinfo == 200:
         info_cv['basicinfo'] = basicinfo
 
-    if len(info_cv) == 0:
-        return info_cv, 401
-    return info_cv, 200
+    return info_cv
 
 
-def get_employees(companyId):
+def get_employees(companyId, employeeId):
     EMPLOYEE_URI = os.getenv('EMPLOYEE_URI', "http://127.0.0.1:3002/")
-    employee_path_basicinfo = f"company-employees/employee/{companyId}"
+    employee_path_basicinfo = f"company-employees/employee/{employeeId}/company/{companyId}"
 
     url_basicinfo = f"{EMPLOYEE_URI}{employee_path_basicinfo}"
 
@@ -40,6 +38,4 @@ def get_employees(companyId):
     if basicinfo and code_basicinfo == 200:
         info_cv['basicinfo'] = basicinfo
 
-    if len(info_cv) == 0:
-        return info_cv, 401
-    return info_cv, 200
+    return info_cv

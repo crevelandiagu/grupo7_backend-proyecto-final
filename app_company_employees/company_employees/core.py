@@ -50,6 +50,22 @@ def get_employees(request):
     return list_employee, 200
 
 
+def get_employees_one(request):
+    id_company = request.view_args.get('id_company', -1)
+    id_employee = request.view_args.get('id_employee', -1)
+    info_company_employees = EmployeeCompany.query.filter(
+        EmployeeCompany.company_id == id_company,
+        EmployeeCompany.id == id_employee
+    ).first()
+    employee = {
+        'employeeId': info_company_employees.id,
+        'email': info_company_employees.email,
+        'companyId': info_company_employees.company_id,
+        'companyProjectId': info_company_employees.company_project_id
+    }
+    return employee, 200
+
+
 def is_valid_email(email):
     regular_expression_email = r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'
     regex = re.compile(regular_expression_email)

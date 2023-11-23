@@ -63,6 +63,22 @@ def interview_score(path: EvaluateInterviewPath, body: EvaluateInterview):
     return response, status
 
 
+selection_process = APIBlueprint('selection process', __name__, url_prefix='/selection-process')
+
+selection_process_tag = Tag(name="selection process", description="manage selection process")
+
+
+@selection_process.get("/company/<int:id_company>", tags=[selection_process_tag], responses=RESPONSE_INTERVIEW)
+def get_selection_process_company(path: CompanyInterviewPath):
+    """
+    Candidate can get all their interviews
+    :return: response
+    """
+
+    response, status = get_selection_process(request)
+    return response, status
+
+
 interviews_health_tag = Tag(name="Interviews healtcheck", description="Some interviews")
 
 

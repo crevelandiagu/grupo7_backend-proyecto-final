@@ -5,6 +5,17 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 db = SQLAlchemy()
 
+class SelectionProcess(db.Model):
+
+    __tablename__ = 'selection_process'
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pogress_status: str = db.Column(db.String(150))
+    proyect: str = db.Column(db.String(150))
+    candidate_id: int = db.Column(db.Integer)
+    company_id: int = db.Column(db.Integer)
+    score: str = db.Column(db.String(5), nullable=True)
+    createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
+
 
 class Interview(db.Model):
 

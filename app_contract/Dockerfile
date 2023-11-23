@@ -11,4 +11,4 @@ ENV DATABASE_URL postgresql://admin:admin@34.135.18.78/terminus_db
 
 COPY . .
 
-CMD ["gunicorn","--reload", "wsgi:app", "--bind", "0.0.0.0:3001", "--log-level", "debug"]
+CMD ["gunicorn","--reload", "wsgi:app", "--bind", "0.0.0.0:3003", "--log-level", "debug"]

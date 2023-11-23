@@ -14,7 +14,6 @@ jobs:
         uses: ikalnytskyi/action-setup-postgres@v4
         with:
           database: candidate_db
-
       - name: Configuración de entorno de python
         uses: actions/setup-python@v2
         with:

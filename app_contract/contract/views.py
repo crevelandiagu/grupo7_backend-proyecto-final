@@ -1,54 +1,77 @@
-from flask import Blueprint
-from flask import request
 import os
-from .core import get_token, create_post_, search_post_, get_post_
+from flask import Blueprint, request
+from flask import send_from_directory
+from .core import *
+from flask_openapi3 import Tag
+from flask_openapi3 import APIBlueprint
+from .serializer import (
+    SearchPathCandidate,
+    SearchPathCompany,
+    RESPONSE_SIGN
+)
+
+sign_contract = APIBlueprint('Contract', __name__, url_prefix='/contracts')
+
+sign_contract_tag = Tag(name="Contract", description="manage Contract")
 
 
-publicaciones = Blueprint('company_employees', __name__)
+@sign_contract.post("/company/<int:id_company>", tags=[sign_contract_tag], responses=RESPONSE_SIGN)
+def sign_contract_company(path: SearchPathCompany):
+    """
+    Company can create interviews
+    :return: response
+    """
 
-users_ip = os.getenv('USERS_URL', "http://127.0.0.1:3000")
-user_port = os.getenv('USER_PORT',"3000")
-user_endpoint = os.getenv('USER_ENDPOINT',"/app_company/me")
-
-@publicaciones.route('/posts/', methods=['POST'])
-def create_post():
-    headers=request.headers
-    user, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    response, status = create_post_(request, user)
-    return  response, status
-    
-@publicaciones.route('/posts/', methods=['GET'] )
-def search_post():
-    headers=request.headers
-    user, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-    
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    response, status = search_post_(request, user)
-    return  response, status
-
-@publicaciones.route('/posts/<id>', methods=['GET'] )
-def get_post(id):
-    headers=request.headers
-    response_header, status_header = get_token(headers,users_ip, user_port, user_endpoint)
-
-    if status_header != 200:
-        return "El token no es válido o está vencido.", 401
-    try:
-        id_post = int(id)
-    except Exception as e:
-        return {"mensaje": f"Id de post invalido, no es un numero"}, 400
-    
-    response, status = get_post_(id_post, response_header)
+    response, status = sign_contract_user(request)
     return response, status
 
 
-@publicaciones.route('/posts/ping', )
-def ping():
+@sign_contract.get("/company/<int:id_company>", tags=[sign_contract_tag], )
+def get_contract_text_company(path: SearchPathCompany):
+    """
+    Company can get all its interviews
+    :return: response
+    """
+    response, status = get_contract_text(request)
+    return response, status
+
+
+@sign_contract.post("/candidate/<int:id_candidate>", tags=[sign_contract_tag],responses=RESPONSE_SIGN)
+def sign_contract_candidate(path: SearchPathCandidate):
+    """
+    Company can create interviews
+    :return: response
+    """
+
+    response, status = sign_contract_user(request)
+    return response, status
+
+
+@sign_contract.get("/candidate/<int:id_candidate>", tags=[sign_contract_tag], )
+def get_contract_text_candidate(path: SearchPathCandidate):
+    """
+    Company can get all its interviews
+    :return: response
+    """
+    response, status = get_contract_text(request)
+    return response, status
+
+
+sign_contract_health_tag = Tag(name="Contract healtcheck", description="Some Contract")
+
+
+@sign_contract.get('/ping', tags=[sign_contract_health_tag])
+def root():
+    """
+    Healt Check
+    :return: pong
+    """
     return 'pong'
 
+
+@sign_contract.get('/ping2', tags=[sign_contract_health_tag])
+def ping():
+    username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
+    return f'pong11 {username}'
 
 

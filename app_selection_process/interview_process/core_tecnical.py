@@ -1,6 +1,5 @@
 
-from app_selection_process.interview_process.models import Assement, db, AssementSchema
-from .models import Assement
+from .models import Assement, db, AssementSchema, SelectionProcess
 from .exam import tecnical_test, logic_test
 
 
@@ -28,6 +27,7 @@ def take_exam_candidate(request):
     info_cv_candidate.score = score
     info_cv_candidate.status = approve
     db.session.commit()
+
 
     return {"score": f"{score}",
             "approve": approve

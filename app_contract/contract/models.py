@@ -11,12 +11,13 @@ class Publicacion(db.Model):
 
     __tablename__ = 'company_employees'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    routeId: int = db.Column(db.Integer)
-    userId: int = db.Column(db.Integer)
-    plannedStartDate: datetime = db.Column(db.DateTime)
-    plannedEndDate: datetime = db.Column(db.DateTime)
+    candidateId: int = db.Column(db.Integer)
+    projectId: int = db.Column(db.Integer)
+    companyId: int = db.Column(db.Integer)
+    data: str = db.Column(db.String(500), unique=False, nullable=True)
     createdAt: datetime = db.Column(db.DateTime, default=datetime.now())
 
 class PublicacionSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Publicacion
+
