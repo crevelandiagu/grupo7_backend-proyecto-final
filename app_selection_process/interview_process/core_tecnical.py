@@ -1,17 +1,20 @@
-# from .models import Assement, AssementSchema
-# from app_selection_process.interview_process.models import Assement, db
+
+from app_selection_process.interview_process.models import Assement, db, AssementSchema
 from .models import Assement
 from .exam import tecnical_test, logic_test
 
 
 #@jwt_required
 def take_exam_candidate(request):
-    # [{id: 1, answer: "2"}]
+    assementId = request.view_args.get('assementId', -1)
+    info_cv_candidate = Assement.query.filter(Assement.id == assementId).first()
+    id_test = info_cv_candidate.assement_id
+
     dict_assement = {
         1: tecnical_test,
         2: logic_test
     }
-    assement = dict_assement[request.view_args.get('id_test', 1)]
+    assement = dict_assement[id_test]
     score = 0
     for answer in request.json:
         id = answer.get('id')
@@ -19,9 +22,31 @@ def take_exam_candidate(request):
         if answer.get('answer') == result.get('answer'):
             score += 1
 
+    approve = True if score > 3 else False
+
+    info_cv_candidate = Assement.query.filter(Assement.id == request.json.get("assementId")).first()
+    info_cv_candidate.score = score
+    info_cv_candidate.status = approve
+    db.session.commit()
+
     return {"score": f"{score}",
-            "approve": True if score > 3 else False
+            "approve": approve
             }, 201
+
+
+def get_exam_candidate(request):
+    assementId = request.view_args.get('assementId', -1)
+    info_cv_candidate = Assement.query.filter(Assement.id == assementId).first()
+    id_test = info_cv_candidate.assement_id
+    dict_assement = {
+        1: tecnical_test,
+        2: logic_test
+    }
+    assement = []
+    for exam in dict_assement[int(id_test)]:
+        exam.pop("answer")
+        assement.append(exam)
+    return assement, 200
 
 
 #@jwt_required
@@ -32,14 +57,19 @@ def get_candidate_assements(request):
         return {"message": "Company Id missing"}, 400
     # candidate_assements = Assement.query.filter(Assement.company_id == candidateId).all()
     try:
-        candidate_assements = Assement.query.filter(Assement.company_id == candidateId).all()
+        candidate_assements = Assement.query.filter(Assement.candidate_id == candidateId).all()
     except Exception as e:
         return {"message": f"Internal server error {e}"}, 500
 
-    companyInterviewsList =[]#= [AssementSchema.dump(inter) for inter in candidate_assements]
+    companyInterviewsList =[{"id": inter.id,
+                             "candidate_id": inter.candidate_id,
+                             "company_id": inter.company_id,
+                             "project_id": inter.project_id,
+                             "score": inter.score,
+                             "status": inter.status,
+                             } for inter in candidate_assements]
 
     return companyInterviewsList, 200
-
 
 
 #@jwt_required

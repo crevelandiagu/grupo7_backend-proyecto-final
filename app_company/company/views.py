@@ -4,13 +4,17 @@ from flask import request
 from flask import send_from_directory
 from .core import (creacion_usuario,
                    autenticar_usuario,
-                   self_information)
+                   build_basicinfo)
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 from .serializer import (
     SignUp,
     RESPONSE_SIGNUP,
-    RESPONSE_LOGIN
+    RESPONSE_LOGIN,
+    RESPONSE_INFO,
+    RESPONSE_BASICINFO,
+    SearchPath,
+    BasicInfo
 )
 
 company = APIBlueprint('company', __name__, url_prefix='/company')
@@ -34,6 +38,18 @@ def information_user(body: SignUp):
     :return: response, status
     """
     response, status = autenticar_usuario(request)
+    return response, status
+
+
+@company.get("/profile/basicinfo/<int:id_company>/", tags=[company_tag], responses=RESPONSE_INFO)
+def get_basic_info_user(path: SearchPath):
+    response, status = build_basicinfo(request)
+    return response, status
+
+
+@company.post("/profile/basicinfo/<int:id_company>/", tags=[company_tag], responses=RESPONSE_BASICINFO)
+def post_basic_info_user(body: BasicInfo, path: SearchPath):
+    response, status = build_basicinfo(request)
     return response, status
 
 

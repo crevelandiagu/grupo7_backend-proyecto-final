@@ -7,7 +7,7 @@ class Error400(BaseModel):
 
 
 class SearchPath(BaseModel):
-    id_test: int = Field(..., description='test id', example=2)
+    assementId: int = Field(..., description='assement id', example=1)
 
 
 class SearchPathCandidate(BaseModel):

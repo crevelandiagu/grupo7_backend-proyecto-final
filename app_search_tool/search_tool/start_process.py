@@ -22,10 +22,26 @@ def get_info_candidate(candidateId):
         return info_cv, 401
     return info_cv, 200
 
+def get_info_project(companyId):
+   
+    CANDIDATE_URI = os.getenv('CANDIDATE_URL', "http://127.0.0.1:3007/")
+    candidate_path_basicinfo = f"projects/?companyId={companyId}"
+
+    url_basicinfo = f"{CANDIDATE_URI}{candidate_path_basicinfo}"
+
+    basicinfo, code_basicinfo = request_app(url_basicinfo)
+
+    info_cv = {}
+    if basicinfo and code_basicinfo == 200:
+        info_cv['basicinfo'] = basicinfo
+
+    if len(info_cv) == 0:
+        return info_cv, 401
+    return info_cv, 200
+
+
 def chosen_one_candidate(request):
 
-    # comunicarse con proyect
-    # comunicarse con selection process
     message_start_process = {
         "where": "candidate-chosen-one",
         "candidateId": request.json['candidateId'],

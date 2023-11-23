@@ -2,18 +2,33 @@ name: test sonarcloud
 run-name: ${{ github.actor }} is test sonarcloud App Web 🚀
 on:
   push:
-  pull_request:
 
 jobs:
-  sonarcloud:
+  codecov:
+    name: upload coverage codecov
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+      - name: postgres test
+        uses: ikalnytskyi/action-setup-postgres@v4
+        with:
+          database: candidate_db
+
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Instalación de app_candidate
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r app_candidate/requirements.txt
+
+      - name: Correr pruebas app_candidate
+        id: correr-pruebas-usuarios
+        run: |
+          cd app_candidate
+          pytest --cov=. -v -s --cov-fail-under=70
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3

@@ -19,14 +19,25 @@ tecnical = APIBlueprint('tecnical', __name__,url_prefix='/assement')
 tecnical_tag = Tag(name="tecnical", description="manage tecnical process")
 
 
-@tecnical.post("/take-exam/<int:id_test>/candidate", tags=[tecnical_tag], responses=RESPONSE_TAKE_EXAM)
-def take_exam(body: TakeExamCandidateBody, path:SearchPath):
+@tecnical.post("/take-exam/<int:assementId>/candidate", tags=[tecnical_tag], responses=RESPONSE_TAKE_EXAM)
+def post_take_exam(body: TakeExamCandidateBody, path:SearchPath):
     """
     Company can create interviews
     :return: response
     """
     
     response, status = take_exam_candidate(request)
+    return response, status
+
+
+@tecnical.get("/take-exam/<int:assementId>/candidate", tags=[tecnical_tag])
+def get_take_exam(path: SearchPath):
+    """
+    Company can create interviews
+    :return: response
+    """
+
+    response, status = get_exam_candidate(request)
     return response, status
 
 
@@ -48,17 +59,6 @@ def get_interviews_candidate(path: SearchPathCandidate):
     """
     
     response, status = get_candidate_assements(request)
-    return response, status
-
-
-@tecnical.post("/candidate/<int:id_candidate>", tags=[tecnical_tag], )
-def create_candidate_assements():
-    """
-    Company can evaluate interviews
-    :return: response
-    """
-    
-    response, status = candidate_assements(request)
     return response, status
 
 
