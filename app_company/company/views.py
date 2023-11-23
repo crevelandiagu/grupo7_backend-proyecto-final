@@ -73,7 +73,7 @@ def ping():
 
 @company.route('/coverage')
 def coverage_app():
-    os.system('pytest --cov --cov-report=html:template')
+
     return send_from_directory('./template/', 'index.html')
 
 

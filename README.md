@@ -32,9 +32,8 @@ para acceder a la documentacion de plantea lo siguiente
 /url-proyecto/docs para la docuemntacion de la api. ejemplo candidate/docs/
 
 ### docuemntacion coverage
-/url-proyecto/coverage para los test de la api. ejemplo candidate/coverage/
-
-https://sonarcloud.io/project/overview?id=crevelandiagu_grupo7_frontend-proyecto-final
+se ingresa por cada aplicacion y se tendria todos los coverage por app
+https://app.codecov.io/gh/crevelandiagu/grupo7_backend-proyecto-final/tree/fix%2FFIX-integration
 
 ## Hipotesis 1
 
