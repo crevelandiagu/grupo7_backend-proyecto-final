@@ -1,4 +1,4 @@
-
+from .models import Contract, db
 CONTRACT = '''
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sapien metus, consequat malesuada dolor vitae, tincidunt pellentesque urna. Suspendisse potenti. Pellentesque sit amet sapien consequat, porttitor odio nec, finibus sapien. Suspendisse sed nisi turpis. Nam ornare malesuada velit, a placerat dui molestie in. Suspendisse eu urna congue leo aliquam euismod. In faucibus odio at sapien ultricies tempor. Nunc fringilla commodo euismod. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec egestas massa ligula, at ultricies sem tincidunt eget.
 
@@ -12,11 +12,34 @@ Cras consequat, nibh nec tempus feugiat, diam nibh feugiat ligula, lacinia pulvi
 '''
 
 
-def get_contract_text(request):
-    return {"contract": CONTRACT}, 200
+def get_contract_text(request, user):
+    candidateId = request.view_args.get('id_candidate', -1)
+    companyId = request.view_args.get('id_company', -1)
+
+    if user == 'candidate':
+        progress_status = Contract.query.filter(
+            Contract.candidateId == candidateId
+        ).first()
+        if progress_status:
+            return {"contract": CONTRACT}, 200
+    elif user == 'company':
+        progress_status = Contract.query.filter(
+            Contract.companyId == companyId
+        ).first()
+        if progress_status:
+            return {"contract": CONTRACT}, 200
 
 
 def sign_contract_user(request):
 
     return {"message": "The contract was signed successfully"}, 200
 
+def create_contract_user(request):
+    new_contract = Contract(
+        candidateId=request.json.get('candidateId'),
+        projectId=request.json.get('projectId'),
+        companyId=request.json.get('companyId')
+    )
+    db.session.add(new_contract)
+    db.session.commit()
+    return {"message": "Contract made"}, 200

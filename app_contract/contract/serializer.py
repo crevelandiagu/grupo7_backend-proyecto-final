@@ -23,5 +23,9 @@ RESPONSE_SIGN = {
     400: Error400,
     }
 
+class CreateContract(BaseModel):
+    candidateId: int = Field(..., description='candidateId', example=1)
+    projectId: int = Field(..., description='projectId valid', example=1)
+    companyId: int = Field(..., description='companyId valid', example=1)
 
 

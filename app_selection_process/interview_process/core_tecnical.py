@@ -7,7 +7,7 @@ from .exam import tecnical_test, logic_test
 def take_exam_candidate(request):
     assementId = request.view_args.get('assementId', -1)
     info_cv_candidate = Assement.query.filter(Assement.id == assementId).first()
-    id_test = info_cv_candidate.assement_id
+    id_test = info_cv_candidate.test_id
 
     dict_assement = {
         1: tecnical_test,
@@ -21,13 +21,18 @@ def take_exam_candidate(request):
         if answer.get('answer') == result.get('answer'):
             score += 1
 
-    approve = True if score > 3 else False
+    approve = 'Technical Interview' if score > 3 else "Rejected"
 
-    info_cv_candidate = Assement.query.filter(Assement.id == request.json.get("assementId")).first()
     info_cv_candidate.score = score
     info_cv_candidate.status = approve
     db.session.commit()
 
+    progress_status = SelectionProcess.query.filter(
+        SelectionProcess.candidate_id == info_cv_candidate.candidate_id).first()
+    if progress_status:
+        progress_status.score = score
+        progress_status.pogress_status = approve
+        db.session.commit()
 
     return {"score": f"{score}",
             "approve": approve
@@ -37,7 +42,7 @@ def take_exam_candidate(request):
 def get_exam_candidate(request):
     assementId = request.view_args.get('assementId', -1)
     info_cv_candidate = Assement.query.filter(Assement.id == assementId).first()
-    id_test = info_cv_candidate.assement_id
+    id_test = info_cv_candidate.test_id
     dict_assement = {
         1: tecnical_test,
         2: logic_test
@@ -61,24 +66,17 @@ def get_candidate_assements(request):
     except Exception as e:
         return {"message": f"Internal server error {e}"}, 500
 
-    companyInterviewsList =[{"id": inter.id,
-                             "candidate_id": inter.candidate_id,
-                             "company_id": inter.company_id,
-                             "project_id": inter.project_id,
-                             "score": inter.score,
-                             "status": inter.status,
+    companyInterviewsList =[{
+                            "id": inter.id,
+                            'candidate_id': inter.candidate_id,
+                            'candidate_name': inter.candidate_name,
+                            'project_id': inter.project_id,
+                            'project_name': inter.project_name,
+                            'company_id': inter.company_id,
+                            'company_name': inter.company_name,
+                            'score': inter.score,
+                            'status': inter.status,
+                            'typeTest': "Technical Test"
                              } for inter in candidate_assements]
 
     return companyInterviewsList, 200
-
-
-#@jwt_required
-def candidate_assements(request):
-
-    return {}, 200
-
-
-#@jwt_required
-def evaluate_company_interview(request):
-
-    return {"message": f""}, 200

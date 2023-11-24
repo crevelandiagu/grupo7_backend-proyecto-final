@@ -7,7 +7,8 @@ from flask_openapi3 import APIBlueprint
 from .serializer import (
     SearchPathCandidate,
     SearchPathCompany,
-    RESPONSE_SIGN
+    RESPONSE_SIGN,
+    CreateContract
 )
 
 sign_contract = APIBlueprint('Contract', __name__, url_prefix='/contracts')
@@ -32,7 +33,7 @@ def get_contract_text_company(path: SearchPathCompany):
     Company can get all its interviews
     :return: response
     """
-    response, status = get_contract_text(request)
+    response, status = get_contract_text(request, "company")
     return response, status
 
 
@@ -53,7 +54,17 @@ def get_contract_text_candidate(path: SearchPathCandidate):
     Company can get all its interviews
     :return: response
     """
-    response, status = get_contract_text(request)
+    response, status = get_contract_text(request, "candidate")
+    return response, status
+
+
+@sign_contract.post("/company/contract-made", tags=[sign_contract_tag], )
+def post_create_contract_user(body: CreateContract):
+    """
+    Company can get all its interviews
+    :return: response
+    """
+    response, status = create_contract_user(request)
     return response, status
 
 

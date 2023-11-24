@@ -41,40 +41,12 @@ def get_take_exam(path: SearchPath):
     return response, status
 
 
-@tecnical.get("/company/<int:id_company>", tags=[tecnical_tag], )
-def get_interviews_company():
-    """
-    Company can get all its interviews
-    :return: response
-    """
-    response, status = {}, 200
-    return response, status
-
-
 @tecnical.get("/candidate/<int:id_candidate>", tags=[tecnical_tag],)
-def get_interviews_candidate(path: SearchPathCandidate):
+def get_assements_candidate(path: SearchPathCandidate):
     """
     Candidate can get all their interviews
     :return: response
     """
-    
     response, status = get_candidate_assements(request)
     return response, status
 
-
-tecnical_health_tag = Tag(name="Tecnical healtcheck", description="Some tecnical")
-
-
-@tecnical.get('/ping', tags=[tecnical_health_tag])
-def root():
-    """
-    Healt Check
-    :return: pong
-    """
-    return 'pong'
-
-
-@tecnical.get('/ping2', tags=[tecnical_health_tag])
-def ping():
-    username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
-    return f'pong11 {username}'

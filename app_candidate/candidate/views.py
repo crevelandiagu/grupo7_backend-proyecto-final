@@ -9,7 +9,8 @@ from .core import (creacion_usuario,
 from .curriculum_vitae import (build_basicinfo,
                                build_experience,
                                build_education,
-                               build_certificates)
+                               build_certificates,
+                               selection_process_user)
 from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 
@@ -26,7 +27,8 @@ from .serializer import (
     BasicInfoEducation,
     RESPONSE_BASICINFO_EDUCATION,
     BasicInfoCertificates,
-    RESPONSE_BASICINFO_CERTIFICATES
+    RESPONSE_BASICINFO_CERTIFICATES,
+    CandidateChoseOne
 )
 
 candidate = APIBlueprint('candidate', __name__, url_prefix='/candidate')
@@ -102,6 +104,12 @@ def get_certificates_user(path: SearchPath):
 @candidate.post("/profile/certificates/<id_candidate>", tags=[candidate_cv_tag], responses=RESPONSE_BASICINFO_CV)
 def post_certificates_user(path: SearchPath, body: BasicInfoCertificates):
     response, status = build_certificates(request)
+    return response, status
+
+
+@candidate.post("/process/<id_candidate>", tags=[candidate_cv_tag])
+def post_selection_process_user(path: SearchPath, body: CandidateChoseOne):
+    response, status = selection_process_user(request)
     return response, status
 
 
