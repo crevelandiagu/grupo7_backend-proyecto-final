@@ -9,6 +9,7 @@ ENV DATABASE_URL default
 ENV GCP_JSON default
 ENV PROJECT_URI default
 ENV CONTRACT_URI default
+ENV PERFORMANCE_URI default
 
 COPY . .
 

@@ -6,7 +6,9 @@ from flask_openapi3 import APIBlueprint
 from .core import (
     make_evaluation_performance,
     get_performance_candidate,
-    get_performance_company
+    get_performance_company,
+    get_make_evaluation_performance,
+    candidate_evaluate
 )
 from .serializer import (
     MakeEvaluation,
@@ -28,6 +30,17 @@ def make_evaluation(body: MakeEvaluation):
     """
     response, status = make_evaluation_performance(request)
     return response, status
+
+
+@performance.get("/make-evaluation/<int:id_company>",  tags=[performance_tag], responses=RESPONSE_MAKEEVALUATION)
+def get_make_evaluation(body: MakeEvaluation):
+    """
+    user Performance can do a acount
+    :return: response, status
+    """
+    response, status = get_make_evaluation_performance(request)
+    return response, status
+
 
 
 @performance.get("/company/<int:id_company>/evaluation",  tags=[performance_tag], responses=RESPONSE_EVALUATION_GET)
@@ -57,6 +70,16 @@ def employee_evaluator():
     :return: response, status
     """
     response, status = {}, 200
+    return response, status
+
+
+@performance.post("/candidate-evaluate", tags=[performance_tag])
+def post_candidate_evaluate():
+    """
+    user Performan can
+    :return: response, status
+    """
+    response, status = candidate_evaluate(request)
     return response, status
 
 

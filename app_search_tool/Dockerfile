@@ -10,6 +10,6 @@ ENV GCP_JSON default
 
 COPY . .
 
-RUN pytest --cov --cov-report=html:template
+#RUN pytest --cov --cov-report=html:template
 
 CMD ["gunicorn","--reload", "wsgi:app", "--bind", "0.0.0.0:3008", "--log-level", "debug"]

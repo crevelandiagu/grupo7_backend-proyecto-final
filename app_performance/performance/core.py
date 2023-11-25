@@ -55,3 +55,22 @@ def get_performance_company(request):
     list_performance = Performance.query.filter(Performance.companyId == id_company).all()
     projectsList = [projectsSchema.dump(performance) for performance in list_performance]
     return projectsList, 200
+
+
+def get_make_evaluation_performance(request):
+    projectsSchema = PerformanceaSchema()
+    id_company = request.view_args.get('id_company', -1)
+    list_performance = Performance.query.filter(Performance.companyId == id_company).all()
+    projectsList = [projectsSchema.dump(performance) for performance in list_performance]
+    return projectsList, 200
+
+
+def candidate_evaluate(request):
+    new_candidate_evaluate = Performance(
+        candidateId=request.json.get('candidateId'),
+        projectId=request.json.get('projectId'),
+        companyId=request.json.get('companyId')
+    )
+    db.session.add(new_candidate_evaluate)
+    db.session.commit()
+    return {"message": "Contract made"}, 200

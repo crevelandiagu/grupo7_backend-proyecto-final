@@ -167,10 +167,14 @@ def sign_contract_process(request):
     }
     CONTRACT_URI = os.getenv('CONTRACT_URI', "http://127.0.0.1:3003/")
     project_path_basicinfo = f"contracts/company/contract-made"
+    url_contrac = f"{CONTRACT_URI}{project_path_basicinfo}"
 
-    url_basicinfo = f"{CONTRACT_URI}{project_path_basicinfo}"
+    PERFORMANCE_URI = os.getenv('PERFORMANCE_URI', "http://127.0.0.1:3006/")
+    performance_path_basicinfo = f"performance/candidate-evaluate"
+    url_performance = f"{PERFORMANCE_URI}{performance_path_basicinfo}"
     try:
-        response_token = requests.post(url=url_basicinfo, json=data)
+        response_performance = requests.post(url=url_performance, json=data)
+        response_token = requests.post(url=url_contrac, json=data)
         return response_token.json(), 200
     except Exception as e:
         return e, 401
