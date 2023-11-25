@@ -54,4 +54,10 @@ def stream():
                           mimetype="text/event-stream")
 
 
+import threading
 
+def funcion_1():
+    app.test_client().get('/stream')
+
+threading_emails = threading.Thread(target=funcion_1)
+threading_emails.start()
