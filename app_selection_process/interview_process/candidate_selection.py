@@ -21,11 +21,7 @@ def add_candidate_project(value):
     logging.warning(f'SAVE CANDIDATE ASSASMENT!')
     if value.get('where') == 'candidate-chosen-one':
         projectId = value.get('projectId', -1)
-        companyProjects = Assement.query.filter(
-            Assement.project_id == projectId,
-            Assement.company_id == value.get('companyId', -1)
-        ).first()
-        if projectId >= 1 and not companyProjects:
+        if projectId >= 1 and value.get('basicinfo'):
             add_selection_process(value)
     pass
 

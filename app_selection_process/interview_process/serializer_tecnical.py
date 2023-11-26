@@ -11,7 +11,7 @@ class SearchPath(BaseModel):
 
 
 class SearchPathCandidate(BaseModel):
-    id_candidate: int = Field(..., description='test id', example=1)
+    id_candidate: int = Field(..., description='candidate id', example=1)
 
 class TakeExamCandidate(BaseModel):
     # [{id: 1, answer: "2"}]

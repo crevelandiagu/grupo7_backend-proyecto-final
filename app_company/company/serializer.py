@@ -11,7 +11,7 @@ class SearchPath(BaseModel):
 
 
 class SignUp(BaseModel):
-    email: str = Field(..., description='email valid', example='usertest@gmail.com')
+    email: str = Field(..., description='email valid', example='company_test@gmail.com')
     password: str = Field(..., description='password valid 8 caracteres', example='Adec123^&*ede#')
 
 
