@@ -10,6 +10,8 @@ from .factory import get_project
 from itertools import groupby
 from operator import itemgetter
 import logging
+
+
 def make_evaluation_performance(request):
     metrics = json.dumps(
         {"communication": "80/100",

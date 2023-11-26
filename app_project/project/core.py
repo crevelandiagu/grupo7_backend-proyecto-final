@@ -70,7 +70,8 @@ def get_company_projects(request):
         list_a = []
         for candi in list_candi:
             inf_candidate = CandidateProject.query.filter(CandidateProject.project_id == candi).first()
-            data_candidate = json.loads(inf_candidate.data)
+            if inf_candidate.data:
+                data_candidate = json.loads(inf_candidate.data)
             data_candidate['candidate_id'] = inf_candidate.candidate_id
             list_a.append(data_candidate)
         projects_list.update({'candidate_project': list_a})

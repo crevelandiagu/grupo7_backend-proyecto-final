@@ -15,11 +15,14 @@ def take_exam_candidate(request):
     }
     assement = dict_assement[id_test]
     score = 0
-    for answer in request.json:
-        id = answer.get('id')
-        result = assement[id]
-        if answer.get('answer') == result.get('answer'):
-            score += 1
+    if request.json.get("score"):
+        score = int(request.json.get("score"))
+    else:
+        for answer in request.json:
+            id = answer.get('id')
+            result = assement[id]
+            if answer.get('answer') == result.get('answer'):
+                score += 1
 
     approve = 'Technical Interview' if score > 3 else "Rejected"
 
@@ -49,8 +52,9 @@ def get_exam_candidate(request):
     }
     assement = []
     for exam in dict_assement[int(id_test)]:
-        exam.pop("answer")
-        assement.append(exam)
+        exam_front = exam.copy()
+        exam_front.pop("answer")
+        assement.append(exam_front)
     return assement, 200
 
 
