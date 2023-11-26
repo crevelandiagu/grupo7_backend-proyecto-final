@@ -26,6 +26,8 @@ def get_project(companyId, projectId, candidateId):
             if int(project.get('id')) == int(projectId):
                 info_process['projectName'] = project.get('projectName')
                 info_process['companyName'] = project.get('companyData', {}).get("name", 'company_name')
+                info_process['project_employees_companie'] = project.get('project_employees_companie', {})
+
                 candidate_info = [i for i in project.get('candidate_project')
                                   if int(i.get('candidate_id')) == int(candidateId)]
                 if candidate_info:
