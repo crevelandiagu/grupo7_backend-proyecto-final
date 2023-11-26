@@ -4,12 +4,12 @@ on:
   push:
 
 jobs:
-  Crear-rama-test:
-    name: Crear-rama-test
+  codecov:
+    name: upload coverage codecov
     runs-on: ubuntu-latest
-    outputs:
-      salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
       - name: postgres test
         uses: ikalnytskyi/action-setup-postgres@v4
         with:
