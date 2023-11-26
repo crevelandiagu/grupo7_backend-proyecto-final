@@ -4,12 +4,23 @@ on:
   push:
 
 jobs:
-  codecov:
-    name: upload coverage codecov
+  Crear-rama-test:
+    name: Crear-rama-test
     runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
       - name: Checkout de repositorio
         uses: actions/checkout@v2
+      - name: Crear rama
+        id: crear-rama
+        env:
+          MENSAJE_RELEASE: Se creo la rama release
+        run: |
+          git checkout -b app-test/app_candidate
+          git push -f -u origin app-test/app_candidate
+          echo "::set-output name=respuesta::${MENSAJE_RELEASE}"
+
       - name: postgres test
         uses: ikalnytskyi/action-setup-postgres@v4
         with:
