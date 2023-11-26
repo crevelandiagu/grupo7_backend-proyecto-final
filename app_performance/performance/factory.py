@@ -14,7 +14,7 @@ def request_app(url):
 
 def get_project(companyId, projectId, candidateId):
     PROJECT_URI = os.getenv('PROJECT_URI', "http://127.0.0.1:3007/")
-    project_path_basicinfo = f"/projects/?companyId={companyId}"
+    project_path_basicinfo = f"projects/?companyId={companyId}"
 
     url_basicinfo = f"{PROJECT_URI}{project_path_basicinfo}"
 
