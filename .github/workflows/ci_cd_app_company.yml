@@ -169,6 +169,7 @@ jobs:
       - name: Correr pruebas app_company
         id: correr-pruebas-usuarios
         run: |
+          export TEST_APP=True
           pytest --cov=app_company app_company/test_company_app.py --cov-report=xml
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
