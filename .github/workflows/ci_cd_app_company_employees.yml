@@ -147,7 +147,6 @@ jobs:
 
   codecov:
     name: upload coverage codecov
-    needs: test-app-company-employees
     runs-on: ubuntu-latest
     steps:
       - name: Checkout de repositorio

@@ -33,7 +33,8 @@ para acceder a la documentacion de plantea lo siguiente
 
 ### docuemntacion coverage
 se ingresa por cada aplicacion y se tendria todos los coverage por app
-https://app.codecov.io/gh/crevelandiagu/grupo7_backend-proyecto-final/tree/fix%2FFIX-integration
+
+[![codecov](https://codecov.io/gh/{{REPOSITORY}}/branch/main/graph/badge.svg)](https://app.codecov.io/gh/crevelandiagu/grupo7_backend-proyecto-final/tree/fix%2FFIX-integration)
 
 ## Hipotesis 1
 
