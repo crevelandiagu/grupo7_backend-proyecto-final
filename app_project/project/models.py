@@ -14,6 +14,7 @@ class Projects(db.Model):
     description: str = db.Column(db.String(400), unique=False, nullable=True)
     status: str = db.Column(db.String(100), unique=False, nullable=True)
     companyId: int = db.Column(db.Integer, nullable=False)
+    companyData: str = db.Column(db.String(500), unique=False, nullable=True)
     createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
 
     candidate_project_id = db.relationship('CandidateProject', cascade='all, delete, delete-orphan')

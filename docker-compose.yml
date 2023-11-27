@@ -6,7 +6,7 @@ services:
 #    image: "postgres:11.5-alpine"
 #    restart: always
 #    environment:
-#      POSTGRES_MULTIPLE_DATABASES: candidate_db, company_db, company_employees_db, project_db, search_tool_db, interviews_db
+#      POSTGRES_MULTIPLE_DATABASES: candidate_db, company_db, company_employees_db, contract_db, performance_db, project_db, selection_process_db
 #      POSTGRES_USER: postgres
 #      POSTGRES_PASSWORD: postgres
 #    healthcheck:
@@ -127,6 +127,53 @@ services:
     env_file:
       - ./.env
 
+## -----------------------Servicio app_contract -----------------------------
+
+  app_contract:
+    build: app_contract/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_performance:5432/
+    ports:
+      - "3003:3003"
+    expose:
+      - "3003"
+    networks:
+      - web_global
+
+## -----------------------Servicio app_performance -----------------------------
+
+  db_performance:
+    image: "postgres:11.5-alpine"
+    restart: always
+    environment:
+      POSTGRES_DB: performance_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web_global
+
+  app_performance:
+    build: app_performance/
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db_performance:5432/
+      PROJECT_URI: http://app_project:3007/
+    ports:
+      - "3006:3006"
+    expose:
+      - "3006"
+    depends_on:
+      db_performance:
+        condition: service_healthy
+    networks:
+      - web_global
+    env_file:
+      - ./.env
+
 ## -----------------------Servicio project -----------------------------
 
   db_project:
@@ -149,6 +196,8 @@ services:
     build: app_project/
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db_project:5432/
+      COMPANY_URI: http://app_company:3001/
+      EMPLOYEE_URI: http://app_company_employees:3002/
     ports:
       - "3007:3007"
     expose:
@@ -164,10 +213,12 @@ services:
       - ./.env
 
 ## -----------------------Servicio app_search_tool -----------------------------
+
   app_search_tool:
     build: app_search_tool/
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db_candidate:5432/
+      CANDIDATE_URL: http://app_candidate:3000/
     ports:
       - "3008:3008"
     expose:
@@ -180,11 +231,12 @@ services:
       - web_global
 
 ## -----------------------Servicio app_selection_process -----------------------------
+
   db_interviews:
     image: "postgres:11.5-alpine"
     restart: always
     environment:
-      POSTGRES_DB: interviews_db
+      POSTGRES_DB: selection_process_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     healthcheck:
@@ -199,44 +251,15 @@ services:
     build: app_selection_process/
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db_interviews:5432/
+      PERFORMANCE_URI: http://app_performance:3006/
+      CONTRACT_URI: http://app_contract:3003/
+      PROJECT_URI: http://app_project:3007/
     ports:
       - "3010:3010"
     expose:
       - "3010"
     depends_on:
       db_interviews:
-        condition: service_healthy
-    networks:
-      - web_global
-    env_file:
-      - ./.env
-
-## -----------------------Servicio app_selection_process -----------------------------
-  db_performance:
-    image: "postgres:11.5-alpine"
-    restart: always
-    environment:
-      POSTGRES_DB: performance_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 2s
-      timeout: 5s
-      retries: 5
-    networks:
-      - web_global
-
-  app_performance:
-    build: app_performance/
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@db_performance:5432/
-    ports:
-      - "3006:3006"
-    expose:
-      - "3006"
-    depends_on:
-      db_performance:
         condition: service_healthy
     networks:
       - web_global

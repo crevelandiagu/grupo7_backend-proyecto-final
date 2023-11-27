@@ -31,14 +31,15 @@ def get_candidate_general(skill=[], year_exp=0):
         list_candidate = []
         if cv_skill_records:
             for candidate in cv_skill_records:
-                if len(skills & set(candidate[1].get('skills'))) >= len_search:
-                    list_candidate.append({
-                        "name":candidate[3],
-                        "lastName": candidate[4],
-                        "skills": candidate[1],
-                        "years_exp": candidate[2],
-                        "candidateId": candidate[-1],
-                    })
+                if not candidate[5]:
+                    if len(skills & set(candidate[1].get('skills'))) >= len_search:
+                        list_candidate.append({
+                            "name":candidate[3],
+                            "lastName": candidate[4],
+                            "skills": candidate[1],
+                            "years_exp": candidate[2],
+                            "candidateId": candidate[-1],
+                        })
         return list_candidate, 200
     return cv_skill_records, 400
 

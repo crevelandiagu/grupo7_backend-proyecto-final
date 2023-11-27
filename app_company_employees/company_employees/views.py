@@ -7,13 +7,15 @@ from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 from .core import (
     creacion_usuario,
-    get_employees
+    get_employees,
+    get_employees_one
 )
 from .serializer import (
     CreateEmployee,
     RESPONSE_SIGNUP,
     SearchPath,
-    RESPONSE_EMPLOYEE
+    RESPONSE_EMPLOYEE,
+SearchPathOne
 )
 
 company_employees = APIBlueprint('company_employees', __name__, url_prefix='/company-employees')
@@ -32,7 +34,7 @@ def create_employe(body: CreateEmployee):
 
 
 @company_employees.get('/employee/<int:id_company>', tags=[company_employees_tag], responses=RESPONSE_EMPLOYEE)
-def get_employe(path: SearchPath):
+def get_employes(path: SearchPath):
     '''
     candidate can register
     :return: response
@@ -40,6 +42,15 @@ def get_employe(path: SearchPath):
     response, status = get_employees(request)
     return response, status
 
+
+@company_employees.get('/employee/<int:id_employee>/company/<int:id_company>', tags=[company_employees_tag], responses=RESPONSE_EMPLOYEE)
+def get_employe_company(path: SearchPathOne):
+    '''
+    candidate can register
+    :return: response
+    '''
+    response, status = get_employees_one(request)
+    return response, status
 
 company_employees_health_tag = Tag(name="Search Tool healtcheck", description="Search Tool candidate")
 

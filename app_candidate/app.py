@@ -45,4 +45,3 @@ for url, blueprint in ACTIVATE_ENDPOINTS:
 
 jwt = JWTManager(app)
 
-

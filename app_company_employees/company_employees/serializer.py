@@ -29,6 +29,10 @@ class SearchPath(BaseModel):
     id_company: int = Field(..., description='Company id', example=1)
 
 
+class SearchPathOne(SearchPath):
+    id_employee: int = Field(..., description='employee id', example=1)
+
+
 class Employee(BaseModel):
     employeeId: str = Field(1, description='email valid', example=1)
     email: str = Field('employeetest@gmail.com', description='email valid', example='employeetest@gmail.com')

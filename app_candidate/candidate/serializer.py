@@ -121,3 +121,5 @@ RESPONSE_BASICINFO_CV = {
     400: Error400,
     }
 
+class CandidateChoseOne(BaseModel):
+    chooseOne: str = Field(None, description='none', example='True')

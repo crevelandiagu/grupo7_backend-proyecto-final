@@ -1,5 +1,6 @@
 import secrets
 import hashlib
+import random
 from datetime import timedelta, datetime
 from .models import Companies, db
 from .utils import is_validate_password, is_valid_email
@@ -64,11 +65,34 @@ def autenticar_usuario(request):
         return {"mensaje": f"falta {e}"}, 400
 
 
-@jwt_required()
-def self_information(request):
+# @jwt_required()
+def build_basicinfo(request):
+    id_company = request.view_args.get('id_company', -1)
+    info_company = Companies.query.filter(Companies.id == id_company).first()
 
-    return {"id": 'id',
-            "username": 'username',
-            "email": 'email'}, 200
+    if request.method == 'GET':
+
+        basic_info = {
+            'name': info_company.name,
+            'nit': info_company.nit,
+            'email': info_company.email,
+            'number_employees': info_company.number_employees,
+            'core': info_company.core,
+            'senority': info_company.senority,
+        }
+
+        return basic_info, 200
+
+    elif request.method == 'POST':
+        name = info_company.email.split('@')[0]
+        info_company.name = f'company {name}'
+        info_company.nit = random.randint(100000000, 900000000)
+        info_company.number_employees = random.randint(50, 1000)
+        info_company.core = ['fintech', 'e-commerce', 'bank', 'browser'][random.randint(0, 3)]
+        info_company.senority = random.randint(3, 50)
+        db.session.commit()
+        return {"message": "Company add info basic successfully"}, 200
+    return {"message": "No exist "}, 400
+
 
 
