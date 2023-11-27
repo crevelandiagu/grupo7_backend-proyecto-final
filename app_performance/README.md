@@ -66,3 +66,4 @@ cd ./offers/
 docker build -t ofertas ./
 docker run -d ofertas -p 3003:3003
 ```
+
