@@ -2,7 +2,7 @@ name: App Selection Process
 run-name: ${{ github.actor }} is deploying App Selection Process 
 on:
   push:
-    branches: [feature/PROY**, fix/FIX**]
+    branches: [feature/PROY**, fix/FIX**, app-test/**]
     paths:
       - 'app_selection_process/**'
 jobs:

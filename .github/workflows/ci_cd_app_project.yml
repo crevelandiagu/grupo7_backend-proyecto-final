@@ -2,7 +2,7 @@ name: App Projects
 run-name: ${{ github.actor }} is deploying App Projects 🚀
 on:
   push:
-    branches: [feature/PROY**, fix/FIX**]
+    branches: [feature/PROY**, fix/FIX**, app-test/**]
     paths:
       - 'app_project/**'
 jobs:

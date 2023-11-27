@@ -78,13 +78,13 @@ def get_make_evaluation_performance(request):
         for info_proj in value:
             dic_cand = dict((k, info_proj[k]) for k in ('candidateId', 'candidate_name', "id",) if k in info_proj)
             list_cand.append(dic_cand)
-        print(info_proj)
+
         logging.warning(f'PROJECT! {info_proj}')
         dict_project = {
             "projectId": key,
             'project_name': info_proj.get('project_name'),
             'candidateContract': list_cand,
-            "project_employees_companie": json.loads(info_proj.get('employees')),
+            "project_employees_companie": json.loads(info_proj.get('employees', '{}')),
         }
         list_performance.append(dict_project)
 
