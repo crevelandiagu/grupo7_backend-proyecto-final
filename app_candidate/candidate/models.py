@@ -73,9 +73,10 @@ class CvSkills(db.Model):
     __tablename__ = 'cv_skills'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     skills = db.Column(JSONB, nullable=True)
-    years_exp: float = db.Column(db.Numeric, nullable=True,default=0)
+    years_exp: float = db.Column(db.Numeric, nullable=True, default=0)
     name: str = db.Column(db.String(150), nullable=True)
     lastname: str = db.Column(db.String(150), nullable=True)
+    choose_one: str = db.Column(db.Boolean, default=False, nullable=True)
     createdAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
     updatedAt: datetime = db.Column(db.DateTime, default=datetime.datetime.now)
 

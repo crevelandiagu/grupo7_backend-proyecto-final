@@ -3,7 +3,7 @@ from setuptools import setup
 print("Started!")
 
 setup(name='BackEnd-Abc-Jobs-Grupo7',
-      version='3.21.4',
+      version='4.29.9',
       description='Some description',
       classifiers=[
         'Development Status :: 2 - Betha',

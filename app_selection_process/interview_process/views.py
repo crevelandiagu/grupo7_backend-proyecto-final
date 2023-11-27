@@ -12,7 +12,8 @@ from .serializer import (
     CandidateInterviewPath,
     EvaluateInterviewPath,
     EvaluateInterview,
-    RESPONSE_EVALUATE_INTERVIEW
+    RESPONSE_EVALUATE_INTERVIEW,
+    CreateContract
 )
 
 interviews = APIBlueprint('interviews', __name__, url_prefix='/interviews')
@@ -60,6 +61,33 @@ def interview_score(path: EvaluateInterviewPath, body: EvaluateInterview):
     """
     
     response, status = evaluate_company_interview(request)
+    return response, status
+
+
+selection_process = APIBlueprint('selection process', __name__, url_prefix='/selection-process')
+
+selection_process_tag = Tag(name="selection process", description="manage selection process")
+
+
+@selection_process.get("/company/<int:id_company>", tags=[selection_process_tag], responses=RESPONSE_INTERVIEW)
+def get_selection_process_company(path: CompanyInterviewPath):
+    """
+    Candidate can get all their interviews
+    :return: response
+    """
+
+    response, status = get_selection_process(request)
+    return response, status
+
+
+@selection_process.post("/sign-contract/", tags=[selection_process_tag])
+def post_sign_contract_process(body: CreateContract):
+    """
+    Candidate can get all their interviews
+    :return: response
+    """
+
+    response, status = sign_contract_process(request)
     return response, status
 
 

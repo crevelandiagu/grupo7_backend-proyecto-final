@@ -5,8 +5,9 @@ from flask_openapi3 import Tag
 from flask_openapi3 import APIBlueprint
 from .core import (
     make_evaluation_performance,
-    get_performance_candidate,
-    get_performance_company
+    get_performance,
+    get_make_evaluation_performance,
+    candidate_evaluate
 )
 from .serializer import (
     MakeEvaluation,
@@ -14,6 +15,8 @@ from .serializer import (
     SearchPathCandidate,
     RESPONSE_EVALUATION_GET,
     SearchPathCompany,
+    RESPONSE_EVALUATION_GET_MAKE,
+    BodyMakeEvaluation
 )
 
 performance = APIBlueprint('performan', __name__, url_prefix='/performance')
@@ -23,40 +26,51 @@ performance_tag = Tag(name="Performance", description="Some Performance")
 @performance.post("/make-evaluation",  tags=[performance_tag], responses=RESPONSE_MAKEEVALUATION)
 def make_evaluation(body: MakeEvaluation):
     """
-    user Performance can do a acount
+    Do a performances for a candidate
     :return: response, status
     """
     response, status = make_evaluation_performance(request)
     return response, status
 
 
+@performance.get("/make-evaluation/<int:id_company>",  tags=[performance_tag], responses=RESPONSE_EVALUATION_GET_MAKE)
+def get_make_evaluation(path: SearchPathCompany):
+    """
+    Get all the candidates that can be performed
+    :return: response, status
+    """
+    response, status = get_make_evaluation_performance(request)
+    return response, status
+
+
+
 @performance.get("/company/<int:id_company>/evaluation",  tags=[performance_tag], responses=RESPONSE_EVALUATION_GET)
 def get_evaluations_company(path: SearchPathCompany):
     """
-    user Performance can do a acount
+    Get all performances by do for a company
     :return: response, status
     """
-    response, status = get_performance_company(request)
+    response, status = get_performance(request)
     return response, status
 
 
 @performance.get("/candidate/<int:id_candidate>/evaluation",  tags=[performance_tag], responses=RESPONSE_EVALUATION_GET)
 def get_evaluations_candiate(path: SearchPathCandidate):
     """
-    user Performance can do a acount
+    Gets all the performances done for the candidates
     :return: response, status
     """
-    response, status = get_performance_candidate(request)
+    response, status = get_performance(request)
     return response, status
 
 
-@performance.post("/employee-evaluator", tags=[performance_tag])
-def employee_evaluator():
+@performance.post("/candidate-evaluate", tags=[performance_tag])
+def post_candidate_evaluate(body: BodyMakeEvaluation):
     """
-    user Performan can
+    Create the candidate when sign contract
     :return: response, status
     """
-    response, status = {}, 200
+    response, status = candidate_evaluate(request)
     return response, status
 
 
@@ -77,13 +91,3 @@ def ping():
     username = os.getenv('SQLALCHEMY_DATABASE_URI', 'admin')
     return f'pong12 {username}'
 
-
-@performance.route('/coverage')
-def coverage_app():
-    os.system('pytest --cov --cov-report=html:template')
-    return send_from_directory('./template/', 'index.html')
-
-
-@performance.route('/<path>/')
-def coverage_app_files(path):
-    return send_from_directory('./template/', path)

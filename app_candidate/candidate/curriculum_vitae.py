@@ -177,3 +177,15 @@ def subtract_date(fecha_cad1='2020-11-08', fecha_cad2='2023-11-08'):
 
     dias = round((fecha2 - fecha1) / timedelta(days=365), 2)
     return dias
+
+
+def selection_process_user(request):
+    id_candidate = request.view_args.get('id_candidate', -1)
+    info_cv_candidate = CvSkills.query.filter(CvSkills.candidate_id == id_candidate).first()
+
+    if request.json.get('chooseOne'):
+        info_cv_candidate.choose_one = request.json.get('chooseOne')
+        db.session.commit()
+        return {"message": "User start process"}, 200
+    info_cv_candidate.choose_one = False
+    return {"message": "User end process"}, 200

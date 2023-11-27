@@ -1,28 +1,28 @@
 ###################################
-# app_projects
+# app_candidate
 ###################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: projects
+  name: contracts
   labels:
-    app: projects
+    app: contracts
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: projects
+      app: contracts
   template:
     metadata:
       labels:
-        app: projects
+        app: contracts
     spec:
       containers:
-        - name: projects
-          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/projects:latest
+        - name: contract
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/abc-jobs-dockers/contract:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 3007
+            - containerPort: 3003
           env:
             - name: "SQLALCHEMY_DATABASE_URI"
               valueFrom:
@@ -34,42 +34,32 @@ spec:
                 secretKeyRef:
                   name: secretdb
                   key: DATABASE_URL
-            - name: "GCP_JSON"
-              valueFrom:
-                secretKeyRef:
-                  name: secretdb
-                  key: GCP_JSON
-            - name: COMPANY_URI
-              value: http://servicio-app-company/
-            - name: EMPLOYEE_URI
-              value: http://servicio-app-company-employees/
-            
 
 ---
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: app-projects-config
+  name: app-contracts-config
 spec:
   healthCheck:
     checkIntervalSec: 30
-    port: 3007
+    port: 3003
     type: HTTP
-    requestPath: /projects/ping
+    requestPath: /contracts/ping
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: servicio-app-projects
+  name: servicio-app-contracts
   annotations:
-    cloud.google.com/backend-config: '{"default": "app-projects-config"}'
+    cloud.google.com/backend-config: '{"default": "app-contracts-config"}'
 spec:
   type: NodePort
   selector:
-    app: projects
+    app: contracts
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3007
-      nodePort: 31027
+      targetPort: 3003
+      nodePort: 31023
 ---

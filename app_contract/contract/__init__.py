@@ -1,3 +1,3 @@
-from .views import publicaciones
+from .views import sign_contract
 
-__all__ = ['publicaciones']
+__all__ = ['sign_contract']

@@ -1,2 +1,2 @@
 [run]
-omit = project/utils_gcp/**
+omit = project/utils_gcp/**, project/factory.py

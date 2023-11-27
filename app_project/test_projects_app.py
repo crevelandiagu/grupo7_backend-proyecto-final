@@ -33,7 +33,7 @@ def test_projects_create_201_412():
     }
     data3 = {
         "projectName": fake_data.word(),
-        "description": fake_data.text(max_nb_chars=500),
+        "description": fake_data.text(max_nb_chars=400),
         "companyId": fake_data.random_int()
     }
 
@@ -74,3 +74,14 @@ def test_get_projects_200_400_404():
 
     response_data_404 = app.test_client().get(f'/projects?companyId={data.get("companyId")+1}')
     assert response_data_404.status_code == 200
+
+def test_candidate_project():
+    from project.candidate_project import add_candidate_project
+    message_start_process = {
+        "where": "candidate-chosen-one",
+        "candidateId": 1,
+        "projectId": 1,
+        "companyId": 1,
+
+    }
+    data = add_candidate_project(message_start_process)

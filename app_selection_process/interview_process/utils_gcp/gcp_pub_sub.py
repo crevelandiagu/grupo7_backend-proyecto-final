@@ -2,7 +2,7 @@ import os
 import json
 from google.auth import jwt
 from google.cloud import pubsub_v1
-from ..candidate_project import flow_selection_process
+from ..candidate_selection import flow_selection_process
 
 class GCP:
     def __init__(self):
@@ -38,7 +38,7 @@ class GCP:
     def subscriber_message(self, app):
         credentials_pub = self.auth_gcp(self.publisher_audience, self.audience)
         subscriber = pubsub_v1.SubscriberClient(credentials=credentials_pub)
-        subscription_path = subscriber.subscription_path(self.PROJECT_ID, "project-sub")
+        subscription_path = subscriber.subscription_path(self.PROJECT_ID, "selection_process")
 
         def callback(message: pubsub_v1.subscriber.message.Message) -> None:
             print("message:")

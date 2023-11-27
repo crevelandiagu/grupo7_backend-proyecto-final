@@ -68,3 +68,7 @@ docker build -t trayectos ./
 docker run -d trayectos -p 5002:5002
 
 ```
+
+
+
+

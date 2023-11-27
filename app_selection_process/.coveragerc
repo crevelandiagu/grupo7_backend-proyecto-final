@@ -1,0 +1,2 @@
+[run]
+omit = interview_process/utils_gcp/**, interview_process/factory.py

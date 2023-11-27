@@ -2,7 +2,7 @@ name: App Candidate
 run-name: ${{ github.actor }} is deploy ALL SERVICES 🚀⚗🔮🤖
 on:
   push:
-    branches: [fix/FIX**]
+    branches: [fixx/FIXx**]
 
 jobs:
 
