@@ -65,3 +65,5 @@ cd ./servicio_publicaciones/
 docker build -t publicaciones ./
 docker run -d publicaciones -p 5001:5001
 ```
+
+
