@@ -2,7 +2,7 @@ name: App Candidate
 run-name: ${{ github.actor }} is deploy App Candidate 🚀
 on:
   push:
-    branches: [feature/PROY**, fix/FIX**]
+    branches: [feature/PROY**, fix/FIX**, app-test/**]
     paths:
       - 'app_candidate/**'
 jobs:
