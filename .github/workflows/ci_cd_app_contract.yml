@@ -113,7 +113,7 @@ jobs:
 
   merge-branch-develop:
     name: Merge-dev
-    needs: [test-app-candidate, ci-app-candidate]
+    needs: [test-app-contract, ci-app-contract]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
