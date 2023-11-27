@@ -164,7 +164,7 @@ jobs:
       - name: Instalación de app_projects
         run: |
           python -m pip install --upgrade pip
-          pip install -r app_projects/requirements.txt
+          pip install -r app_project/requirements.txt
 
       - name: Correr pruebas app_projects
         id: correr-pruebas-usuarios
