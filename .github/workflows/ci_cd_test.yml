@@ -2,6 +2,7 @@ name: test sonarcloud
 run-name: ${{ github.actor }} is test codecov App Web 🚀
 on:
   push:
+    branches: [FIX**]
 
 jobs:
   codecov:
