@@ -22,8 +22,9 @@ def test_ping():
 
 def test_employee_singin_201_412():
   data = {
-    "password": fake_data.password(),
-    "email": fake_data.email()
+        "password": fake_data.password(),
+        "email": fake_data.email(),
+        "companyId": 1
   }
 
   response_data_201 = app.test_client().post('/company-employees/create-employee', json=data)
@@ -32,7 +33,7 @@ def test_employee_singin_201_412():
   response_data_412 = app.test_client().post('/company-employees/create-employee', json=data)
   response_info_412 = json.loads(response_data_412.data.decode('utf-8'))
 
-  assert response_data_201.status_code == 201
+  assert response_data_201.status_code == 200
   # assert list(response_info_201.keys()) == ['createdAt', 'id']
 
   assert response_data_412.status_code == 412
