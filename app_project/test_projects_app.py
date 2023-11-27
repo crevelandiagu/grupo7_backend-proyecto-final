@@ -84,4 +84,4 @@ def test_candidate_project():
         "companyId": 1,
 
     }
-    data = add_candidate_project()
+    data = add_candidate_project(message_start_process)
