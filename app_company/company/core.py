@@ -24,11 +24,17 @@ def creacion_usuario(request):
             email=request.json["email"],
             password=hashlib.sha256(password.encode()).hexdigest(),
             salt=salt,
+            name=request.json["name"],
+            nit=random.randint(100000000, 900000000),
+            number_employees=random.randint(50, 1000),
+            core=['fintech', 'e-commerce', 'bank', 'browser'][random.randint(0, 3)],
+            senority=random.randint(3, 50)
         )
         db.session.add(nuevo_usuario)
         db.session.commit()
         return {"message": "User successfully added",
                 "id": nuevo_usuario.id,
+                "name": nuevo_usuario.name,
                 "email": nuevo_usuario.email,
                 "createdAt": datetime.now().isoformat()
                 }, 200
@@ -58,6 +64,7 @@ def autenticar_usuario(request):
         return {"mensaje": "Inicio de sesión exitoso",
                 "id": usuario_auth.id,
                 "token": token_user,
+                "name": usuario_auth.name,
                 }, 200
 
     except Exception as e:
@@ -84,8 +91,6 @@ def build_basicinfo(request):
         return basic_info, 200
 
     elif request.method == 'POST':
-        name = info_company.email.split('@')[0]
-        info_company.name = f'company {name}'
         info_company.nit = random.randint(100000000, 900000000)
         info_company.number_employees = random.randint(50, 1000)
         info_company.core = ['fintech', 'e-commerce', 'bank', 'browser'][random.randint(0, 3)]

@@ -76,7 +76,7 @@ class Assement(db.Model):
     company_id: int = db.Column(db.Integer)
     company_name: str = db.Column(db.String(150))
 
-    score: int = db.Column(db.Integer, nullable=True)
+    score: int = db.Column(db.Integer)
     status: str = db.Column(db.String(150), nullable=True)
     test_id: int = db.Column(db.Integer)
 

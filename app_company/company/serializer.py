@@ -13,12 +13,14 @@ class SearchPath(BaseModel):
 class SignUp(BaseModel):
     email: str = Field(..., description='email valid', example='company_test@gmail.com')
     password: str = Field(..., description='password valid 8 caracteres', example='Adec123^&*ede#')
+    name: str = Field(..., description='email valid', example='Company Umbrella')
 
 
 class SignUpResponse(BaseModel):
     message:  str = Field('User successfully added', description="name candidate")
     id:  int = Field(1, description="last name candidate")
     email:  str = Field('usertest@gmail.com', description="skills candidate")
+    name: str = Field("Company Umbrella", description='email valid')
     createdAt:  str = Field('2023-11-07T02:54:33.098514', description="years experience candidate")
 
 
@@ -31,6 +33,7 @@ RESPONSE_SIGNUP = {
 class LogInResponse(BaseModel):
     id: int = Field(1, description="last name candidate")
     message:  str = Field("Inicio de sesión exitoso", description="name candidate")
+    name: str = Field("Company Umbrella", description='email valid')
     token: str = Field('token', description="name candidate")
 
 

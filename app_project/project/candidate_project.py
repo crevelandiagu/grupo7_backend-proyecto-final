@@ -20,8 +20,7 @@ def add_candidate_project(value):
     logging.warning(f'SAVE CANDIDATE PROJECT!')
     if value.get('where') == 'candidate-chosen-one':
         projectId = value.get('projectId', -1)
-        companyProjects = Projects.query.filter(Projects.id == projectId).first()
-        if projectId >= 1 and companyProjects:
+        if projectId >= 1 and value.get('basicinfo'):
             new_candidate = CandidateProject(
                 project_id=value.get('projectId', -1),
                 candidate_id=value.get('candidateId', -1),

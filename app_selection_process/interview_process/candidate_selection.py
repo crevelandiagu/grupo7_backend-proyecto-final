@@ -29,7 +29,7 @@ def add_candidate_project(value):
 def add_selection_process(value):
 
     logging.warning(f'SAVE DATABASES!')
-    time.sleep(3)
+    time.sleep(5)
     candidateId = value.get('candidateId', -1)
     projectId = value.get('projectId', -1)
     companyId = value.get('companyId', -1)
@@ -43,7 +43,8 @@ def add_selection_process(value):
         company_id=companyId,
         company_name=data_proyect.get('companyName', 'none'),
         test_id=random.randint(1, 2),
-        status="tecnical_test"
+        status="tecnical_test",
+        score=0
     )
     db.session.add(new_candidate_assement)
     db.session.commit()
