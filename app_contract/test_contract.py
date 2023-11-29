@@ -17,7 +17,10 @@ def test_meke_contract_201_412():
     data = {
         "candidateId": fake_data.random_int(),
         "projectId": fake_data.random_int(),
-        "companyId": fake_data.random_int()
+        "companyId": fake_data.random_int(),
+        "candidate_name": fake_data.name(),
+        "project_name": fake_data.color_name(),
+        "company_name": fake_data.company(),
     }
 
     response_data_201= app.test_client().post('/contracts/company/contract-made', json=data)
