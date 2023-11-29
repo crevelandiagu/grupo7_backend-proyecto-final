@@ -20,8 +20,8 @@ class Performance(db.Model):
 
     employees: str = db.Column(db.String(600))
     score: int = db.Column(db.Integer, nullable=True)
-    feedback: str = db.Column(db.String(150), nullable=True)
-    metrics: str = db.Column(db.String(150), nullable=True)
+    feedback: str = db.Column(db.String(450), nullable=True)
+    metrics: str = db.Column(db.String(450), nullable=True)
     createdAt: str = db.Column(db.Date, default=date.today())
 
 class PerformanceaSchema(SQLAlchemyAutoSchema):

@@ -173,8 +173,13 @@ def sign_contract_process(request):
     performance_path_basicinfo = f"performance/candidate-evaluate"
     url_performance = f"{PERFORMANCE_URI}{performance_path_basicinfo}"
     try:
-        response_performance = requests.post(url=url_performance, json=data)
+        requests.post(url=url_performance, json=data)
         response_token = requests.post(url=url_contrac, json=data)
         return response_token.json(), 200
     except Exception as e:
         return e, 401
+
+
+def stop_process(request):
+    return {"message": "The candidate does not continue in the process"}, 200
+
