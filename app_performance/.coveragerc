@@ -1,0 +1,2 @@
+[run]
+omit = performance/factory.py

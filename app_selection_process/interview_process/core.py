@@ -177,7 +177,7 @@ def sign_contract_process(request):
     }
 
 
-    CONTRACT_URI = os.getenv('CONTRACT_', "http://127.0.0.1:3003/")
+    CONTRACT_URI = os.getenv('CONTRACT_URI', "http://127.0.0.1:3003/")
     project_path_basicinfo = f"contracts/company/contract-made"
     url_contrac = f"{CONTRACT_URI}{project_path_basicinfo}"
 
