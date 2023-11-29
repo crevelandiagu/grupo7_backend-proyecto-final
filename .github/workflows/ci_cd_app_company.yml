@@ -143,11 +143,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           append_to_pre_release_tag:
-          custom_tag: 3.28.7-${{ steps.name_branch.outputs.NAME_BRANCH }}
+          custom_tag: 3.28.8-${{ steps.name_branch.outputs.NAME_BRANCH }}
 
   codecov:
     name: upload coverage codecov
-    needs: test-app-company
     runs-on: ubuntu-latest
     steps:
       - name: Checkout de repositorio
