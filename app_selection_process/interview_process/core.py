@@ -181,5 +181,20 @@ def sign_contract_process(request):
 
 
 def stop_process(request):
+    message_start_process = {
+        "where": "candidate-stop-process",
+        "candidateId": request.json['candidateId'],
+        "projectId": request.json['projectId'],
+        "companyId": request.json['companyId'],
+    }
+
+    logging.warning(f'Watch! DELETE')
+    try:
+        logging.warning(f'Watch! send DELETE')
+        publicar = GCP()
+        publicar.publisher_message(message_start_process)
+    except Exception as e:
+        logging.warning(f'Watch! NO SEND {e}')
+        print({"message": f"{e}"})
     return {"message": "The candidate does not continue in the process"}, 200
 

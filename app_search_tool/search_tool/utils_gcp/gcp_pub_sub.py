@@ -25,7 +25,7 @@ class GCP:
     def publisher_message(self, message: dict):
         credentials_pub = self.auth_gcp(self.audience, self.publisher_audience)
         publisher = pubsub_v1.PublisherClient(credentials=credentials_pub)
-        topic_path = publisher.topic_path(self.PROJECT_ID, "test1")
+        topic_path = publisher.topic_path(self.PROJECT_ID, "test-back")
 
         # The message must be a bytestrin and dict
         data = message
@@ -38,7 +38,7 @@ class GCP:
     def subscriber_message(self):
         credentials_pub = self.auth_gcp(self.publisher_audience, self.audience)
         subscriber = pubsub_v1.SubscriberClient(credentials=credentials_pub)
-        subscription_path = subscriber.subscription_path(self.PROJECT_ID, "test1-sub")
+        subscription_path = subscriber.subscription_path(self.PROJECT_ID, "selection_process_back")
 
         def callback(message: pubsub_v1.subscriber.message.Message) -> None:
             print("message:")

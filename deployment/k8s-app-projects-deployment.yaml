@@ -43,6 +43,8 @@ spec:
               value: http://servicio-app-company/
             - name: EMPLOYEE_URI
               value: http://servicio-app-company-employees/
+            - name: CANDIDATE_URL
+              value: http://servicio-app-candidate/
             
 
 ---

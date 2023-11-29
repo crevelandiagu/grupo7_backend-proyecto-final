@@ -198,6 +198,7 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@db_project:5432/
       COMPANY_URI: http://app_company:3001/
       EMPLOYEE_URI: http://app_company_employees:3002/
+      CANDIDATE_URL: http://app_candidate:3000/
     ports:
       - "3007:3007"
     expose:

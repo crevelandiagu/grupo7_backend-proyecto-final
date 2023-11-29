@@ -14,12 +14,14 @@ def get_contract_text(request, user):
         ).first()
         if progress_status:
             return {"contract": CONTRACT}, 200
+        return {"message": "We don\'t have contracts yet"}, 200
     elif user == 'company':
         progress_status = Contract.query.filter(
             Contract.companyId == companyId
         ).first()
         if progress_status:
             return {"contract": CONTRACT}, 200
+        return {"message": "We don\'t have contracts yet"}, 200
 
 
 def sign_contract_user(request):
