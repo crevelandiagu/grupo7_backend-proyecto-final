@@ -109,7 +109,7 @@ jobs:
           gcloud container clusters get-credentials autopilot-abc-jobs-k8s --region us-central1  --project $GOOGLE_PROJECT
           sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s-app-contract-deployment.yaml
           kubectl apply -f k8s-app-contract-deployment.yaml
-          kubectl rollout restart deployment/contract
+          kubectl rollout restart deployment/contracts
 
   merge-branch-develop:
     name: Merge-dev
