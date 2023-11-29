@@ -14,7 +14,7 @@ class Error400(BaseModel):
 
 
 class MakeEvaluation(BaseModel):
-    employeeId: int = Field(None, description='employee Id', example=1)
+    performanceId: int = Field(..., description='performance Id', example=1)
     score: int = Field(..., description='score', example=1)
 
 
@@ -41,17 +41,13 @@ class EvaluationAll(MakeEvaluation):
     candidate_name: str = Field("usertest test2", description="name candidate")
     companyId:int = Field(1, description="last name candidate")
     company_name: str = Field("company test", description="name candidate")
-
+    createdAt: str = Field("2023-11-13", description="name candidate")
     employees: list = [{"companyId": 1, "companyProjectId": None, "email": "employeetest@gmail.com", "employeeId": 1}]
-
-    projectId: int = Field(1, description="last name candidate")
-    project_name: str = Field("mayhem", description="name candidate")
-
-
-    createdAt:  str = Field("2023-11-13", description="name candidate")
-    feedback:  str = Field("good job", description="name candidate")
+    feedback: str = Field("good job", description="name candidate")
     id: int = Field(1, description="last name candidate")
     metrics:  str = Field("{\"communication\": \"80/100\", \"company values\": \"80/100\", \"leadership\": \"70/100\", \"overall performance\": \"60/100\"}", description="name candidate")
+    projectId: int = Field(1, description="last name candidate")
+    project_name: str = Field("mayhem", description="name candidate")
 
 
 class EvaluationAllResponse(BaseModel):

@@ -160,12 +160,24 @@ def get_selection_process(request):
 
 
 def sign_contract_process(request):
+
+    data_proyect = get_project(
+        companyId=request.json.get('companyId'),
+        projectId=request.json.get('projectId'),
+        candidateId=request.json.get('candidateId')
+    )
+
     data = {
         "candidateId": request.json.get('candidateId'),
         "projectId": request.json.get('projectId'),
-        "companyId": request.json.get('companyId')
+        "companyId": request.json.get('companyId'),
+        "candidate_name": data_proyect.get('candidateName', 'none'),
+        "project_name": data_proyect.get('projectName', 'none'),
+        "company_name": data_proyect.get('companyName', 'none'),
     }
-    CONTRACT_URI = os.getenv('CONTRACT_URI', "http://127.0.0.1:3003/")
+
+
+    CONTRACT_URI = os.getenv('CONTRACT_', "http://127.0.0.1:3003/")
     project_path_basicinfo = f"contracts/company/contract-made"
     url_contrac = f"{CONTRACT_URI}{project_path_basicinfo}"
 
@@ -173,8 +185,28 @@ def sign_contract_process(request):
     performance_path_basicinfo = f"performance/candidate-evaluate"
     url_performance = f"{PERFORMANCE_URI}{performance_path_basicinfo}"
     try:
-        response_performance = requests.post(url=url_performance, json=data)
+        requests.post(url=url_performance, json=data)
         response_token = requests.post(url=url_contrac, json=data)
         return response_token.json(), 200
     except Exception as e:
         return e, 401
+
+
+def stop_process(request):
+    message_start_process = {
+        "where": "candidate-stop-process",
+        "candidateId": request.json['candidateId'],
+        "projectId": request.json['projectId'],
+        "companyId": request.json['companyId'],
+    }
+
+    logging.warning(f'Watch! DELETE')
+    try:
+        logging.warning(f'Watch! send DELETE')
+        publicar = GCP()
+        publicar.publisher_message(message_start_process)
+    except Exception as e:
+        logging.warning(f'Watch! NO SEND {e}')
+        print({"message": f"{e}"})
+    return {"message": "The candidate does not continue in the process"}, 200
+

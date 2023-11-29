@@ -29,8 +29,7 @@ def make_evaluation_performance(request):
             return {"message": "interview not found"}, 404
 
         performance_details.score = request.json["score"]
-        performance_details.employeeId = request.json.get('employeeId', 0),
-        performance_details.feedback = feedback,
+        performance_details.feedback = feedback
         performance_details.metrics = metrics
         db.session.commit()
 
@@ -49,10 +48,9 @@ def get_performance(request):
     id_company = request.view_args.get('id_company', -1)
     id_candidate = request.view_args.get('id_candidate', -1)
     if id_company > 0:
-        list_performance = Performance.query.filter(Performance.candidateId == id_candidate).all()
-    else:
         list_performance = Performance.query.filter(Performance.companyId == id_company).all()
-
+    else:
+        list_performance = Performance.query.filter(Performance.candidateId == id_candidate).all()
     projects_list = [projectsSchema.dump(performance) for performance in list_performance]
     [performance.update({"employees": json.loads(performance.get("employees"))})
         for performance in projects_list if performance.get("employees")]

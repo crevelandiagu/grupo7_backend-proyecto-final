@@ -11,16 +11,13 @@ from .serializer_tecnical import (
     SearchPathCandidate
 )
 
-# assement/company/1
-# assement/take-exam/1/candidate/
-
-tecnical = APIBlueprint('tecnical', __name__,url_prefix='/assement')
+tecnical = APIBlueprint('tecnical', __name__, url_prefix='/assement')
 
 tecnical_tag = Tag(name="tecnical", description="manage tecnical process")
 
 
 @tecnical.post("/take-exam/<int:assementId>/candidate", tags=[tecnical_tag], responses=RESPONSE_TAKE_EXAM)
-def post_take_exam(body: TakeExamCandidateBody, path:SearchPath):
+def post_take_exam(path: SearchPath):
     """
     Company can create interviews
     :return: response

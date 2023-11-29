@@ -69,7 +69,7 @@ def get_company_projects(request):
         list_candi = project_com.get('candidate_project_id')
         list_a = []
         for candi in list_candi:
-            inf_candidate = CandidateProject.query.filter(CandidateProject.candidate_id == candi).first()
+            inf_candidate = CandidateProject.query.filter(CandidateProject.id == candi).first()
             if inf_candidate:
                 data_candidate = json.loads(inf_candidate.data)
                 data_candidate['candidate_id'] = inf_candidate.candidate_id

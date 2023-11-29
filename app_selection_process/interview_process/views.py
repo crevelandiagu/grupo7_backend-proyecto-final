@@ -91,6 +91,17 @@ def post_sign_contract_process(body: CreateContract):
     return response, status
 
 
+@selection_process.post("/stop-process/", tags=[selection_process_tag])
+def post_stop_process(body: CreateContract):
+    """
+    Do not continue with the process
+    :return: response
+    """
+
+    response, status = stop_process(request)
+    return response, status
+
+
 interviews_health_tag = Tag(name="Interviews healtcheck", description="Some interviews")
 
 

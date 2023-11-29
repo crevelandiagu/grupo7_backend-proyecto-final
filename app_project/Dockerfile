@@ -9,6 +9,7 @@ ENV DATABASE_URL default
 ENV GCP_JSON default
 ENV COMPANY_URI default
 ENV EMPLOYEE_URI default
+ENV CANDIDATE_URL default
 
 COPY . .
 #RUN pytest --cov --cov-report=html:template
