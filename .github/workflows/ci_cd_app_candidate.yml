@@ -151,6 +151,7 @@ jobs:
 
   codecov:
     name: upload coverage codecov
+    if:  ${{ contains(github.event.head_commit.message, 'app_candidate') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout de repositorio

@@ -59,5 +59,3 @@ Este proyecto hace uso de pipenv para gestión de dependencias y pytest para el 
 ```shell
   pytest --cov=. -v -s --cov-fail-under=70
 ```
-
-
