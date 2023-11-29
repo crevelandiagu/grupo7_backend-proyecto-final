@@ -160,12 +160,24 @@ def get_selection_process(request):
 
 
 def sign_contract_process(request):
+
+    data_proyect = get_project(
+        companyId=request.json.get('companyId'),
+        projectId=request.json.get('projectId'),
+        candidateId=request.json.get('candidateId')
+    )
+
     data = {
         "candidateId": request.json.get('candidateId'),
         "projectId": request.json.get('projectId'),
-        "companyId": request.json.get('companyId')
+        "companyId": request.json.get('companyId'),
+        "candidate_name": data_proyect.get('candidateName', 'none'),
+        "project_name": data_proyect.get('projectName', 'none'),
+        "company_name": data_proyect.get('companyName', 'none'),
     }
-    CONTRACT_URI = os.getenv('CONTRACT_URI', "http://127.0.0.1:3003/")
+
+
+    CONTRACT_URI = os.getenv('CONTRACT_', "http://127.0.0.1:3003/")
     project_path_basicinfo = f"contracts/company/contract-made"
     url_contrac = f"{CONTRACT_URI}{project_path_basicinfo}"
 

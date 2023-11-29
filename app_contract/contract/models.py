@@ -13,6 +13,11 @@ class Contract(db.Model):
     candidateId: int = db.Column(db.Integer)
     projectId: int = db.Column(db.Integer)
     companyId: int = db.Column(db.Integer)
+
+    candidate_name: str = db.Column(db.String(150))
+    project_name: str = db.Column(db.String(150))
+    company_name: str = db.Column(db.String(150))
+
     createdAt: datetime = db.Column(db.DateTime, default=datetime.now())
 
 

@@ -183,7 +183,7 @@ def selection_process_user(request):
     id_candidate = request.view_args.get('id_candidate', -1)
     info_cv_candidate = CvSkills.query.filter(CvSkills.candidate_id == id_candidate).first()
 
-    if request.json.get('chooseOne'):
+    if isinstance(request.json.get('chooseOne'), bool):
         info_cv_candidate.choose_one = request.json.get('chooseOne')
         db.session.commit()
         return {"message": "User start process"}, 200

@@ -129,14 +129,32 @@ services:
 
 ## -----------------------Servicio app_contract -----------------------------
 
+  db_contract:
+    image: "postgres:11.5-alpine"
+    restart: always
+    environment:
+      POSTGRES_DB: contract_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web_global
+
   app_contract:
     build: app_contract/
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db_performance:5432/
+      DATABASE_URL: postgresql://postgres:postgres@db_contract:5432/
     ports:
       - "3003:3003"
     expose:
       - "3003"
+    depends_on:
+      db_contract:
+        condition: service_healthy
     networks:
       - web_global
 

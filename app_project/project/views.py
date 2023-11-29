@@ -63,8 +63,6 @@ def root():
     Healt Check
     :return: pong
     """
-    d = CandidateProject.delete().where(addresses_table.c.retired == 1)
-    d.execute()
     return 'pong'
 
 
