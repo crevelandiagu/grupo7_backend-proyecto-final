@@ -91,11 +91,11 @@ def build_basicinfo(request):
         return basic_info, 200
 
     elif request.method == 'POST':
-        info_company.nit = random.randint(100000000, 900000000)
-        info_company.number_employees = random.randint(50, 1000)
-        info_company.core = ['fintech', 'e-commerce', 'bank', 'browser'][random.randint(0, 3)]
-        info_company.senority = random.randint(3, 50)
-        db.session.commit()
+        # info_company.nit = random.randint(100000000, 900000000)
+        # info_company.number_employees = random.randint(50, 1000)
+        # info_company.core = ['fintech', 'e-commerce', 'bank', 'browser'][random.randint(0, 3)]
+        # info_company.senority = random.randint(3, 50)
+        # db.session.commit()
         return {"message": "Company add info basic successfully"}, 200
     return {"message": "No exist "}, 400
 

@@ -24,7 +24,7 @@ app.url_map.strict_slashes = False
 dbname = os.getenv('DB_NAME', 'company_db')
 url_posgres = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/')
 
-if os.getenv('TEST_APP'):
+if os.getenv('TEST_APP', True):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = f"{url_posgres}{dbname}"
