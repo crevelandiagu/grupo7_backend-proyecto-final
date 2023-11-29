@@ -1,8 +1,9 @@
 from app import app
 import json
 from faker import Faker
-
+from unittest.mock import patch
 fake_data = Faker()
+
 '''----------- Test ping --------------------'''
 
 
@@ -15,8 +16,10 @@ def test_ping():
 
 '''----------- Test create project --------------------'''
 
-
-def test_projects_create_201_412():
+# trayectos.views.get_token
+# project.factory.get_company
+@patch('project.core.get_company')
+def test_projects_create_201_412(mock_token):
     data = {
         "projectName": fake_data.word(),
         "description": fake_data.text(max_nb_chars=100),
@@ -36,7 +39,7 @@ def test_projects_create_201_412():
         "description": fake_data.text(max_nb_chars=400),
         "companyId": fake_data.random_int()
     }
-
+    mock_token.return_value = dict()
     response_data_201 = app.test_client().post('/projects/', json=data)
     response_data_project_name_412 = app.test_client().post('/projects/', json=data1)
     response_data_company_id_412 = app.test_client().post('/projects/', json=data2)
