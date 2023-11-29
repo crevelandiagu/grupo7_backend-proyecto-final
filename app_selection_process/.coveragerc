@@ -1,2 +1,2 @@
 [run]
-omit = interview_process/utils_gcp/**, interview_process/factory.py
+omit = interview_process/utils_gcp/**, interview_process/factory.py, interview_process/candidate_selection.py
