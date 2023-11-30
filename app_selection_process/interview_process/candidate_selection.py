@@ -44,7 +44,6 @@ def add_selection_process(value):
         company_name=data_proyect.get('companyName', 'none'),
         test_id=random.randint(1, 2),
         status="tecnical_test",
-        score=0
     )
     db.session.add(new_candidate_assement)
     db.session.commit()
@@ -56,7 +55,6 @@ def add_selection_process(value):
         project_name=data_proyect.get('projectName', 'none'),
         company_id=companyId,
         company_name=data_proyect.get('companyName', 'none'),
-        score=0,
         pogress_status="tecnical_test"
     )
     db.session.add(new_process)

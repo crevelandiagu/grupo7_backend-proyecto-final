@@ -15,7 +15,7 @@ def take_exam_candidate(request):
     }
     assement = dict_assement[id_test]
     score = 0
-    if request.json.get("score"):
+    if int(request.json.get("score", -1)) >= 0:
         score = int(request.json.get("score"))
     else:
         for answer in request.json:

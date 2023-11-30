@@ -19,7 +19,8 @@ class TakeExamCandidate(BaseModel):
     answer: str = Field(..., description='password valid 8 caracteres', example='6')
 
 class TakeExamCandidateBody(BaseModel):
-    __root__: List[TakeExamCandidate]
+    score: int = Field(30, description='email valid', example='30')
+    # __root__: List[TakeExamCandidate]
 
 
 class TakeExamCandidateResponse(BaseModel):

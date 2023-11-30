@@ -17,7 +17,7 @@ tecnical_tag = Tag(name="tecnical", description="manage tecnical process")
 
 
 @tecnical.post("/take-exam/<int:assementId>/candidate", tags=[tecnical_tag], responses=RESPONSE_TAKE_EXAM)
-def post_take_exam(path: SearchPath):
+def post_take_exam(path: SearchPath, body: TakeExamCandidateBody):
     """
     Company can create interviews
     :return: response

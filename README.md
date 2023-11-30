@@ -76,3 +76,4 @@ cambiar el puerto dependiendo de la aplicacion
 8. gcloud SDK
 9. kubectl
 10. Git
+11. CodeCov
