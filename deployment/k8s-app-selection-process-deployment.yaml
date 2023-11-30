@@ -34,6 +34,11 @@ spec:
                 secretKeyRef:
                   name: secretdb
                   key: DATABASE_URL
+            - name: "GCP_JSON"
+              valueFrom:
+                secretKeyRef:
+                  name: secretdb
+                  key: GCP_JSON
             - name: PROJECT_URI
               value: http://servicio-app-projects/
             - name: CONTRACT_URI
