@@ -38,7 +38,7 @@ class GCP:
     def subscriber_message(self, app):
         credentials_pub = self.auth_gcp(self.publisher_audience, self.audience)
         subscriber = pubsub_v1.SubscriberClient(credentials=credentials_pub)
-        subscription_path = subscriber.subscription_path(self.PROJECT_ID, "project-sub-back")
+        subscription_path = subscriber.subscription_path(self.PROJECT_ID, "test-sub-back")
 
         def callback(message: pubsub_v1.subscriber.message.Message) -> None:
             print("message:")
