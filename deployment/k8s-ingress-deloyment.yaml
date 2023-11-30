@@ -69,6 +69,20 @@ spec:
             port:
               number: 80
       - pathType: Prefix
+        path: /selection-process
+        backend:
+          service:
+            name: servicio-app-selection-process
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /assement
+        backend:
+          service:
+            name: servicio-app-selection-process
+            port:
+              number: 80
+      - pathType: Prefix
         path: /
         backend:
          service:
