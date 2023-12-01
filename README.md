@@ -77,4 +77,3 @@ cambiar el puerto dependiendo de la aplicacion
 9. kubectl
 10. Git
 11. CodeCov
-12. 

@@ -144,8 +144,8 @@ def evaluate_company_interview(request):
 def get_selection_process(request):
     companyId = int(request.view_args.get('id_company', -1))
     company_process = SelectionProcess.query.filter(SelectionProcess.company_id == companyId).all()
-    if company_process:
-        company_process =[{
+
+    company_process =[{
                                 "id": inter.id,
                                 'candidate_id': inter.candidate_id,
                                 'candidate_name': inter.candidate_name,
@@ -156,8 +156,8 @@ def get_selection_process(request):
                                 'pogress_status': inter.pogress_status,
                                 'score': inter.score
                                  } for inter in company_process]
-        return company_process, 200
-    return {"message": "Company dont have candidates yet"}, 400
+    return company_process, 200
+
 
 
 def sign_contract_process(request):
